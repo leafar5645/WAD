@@ -1,0 +1,32 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+     <package name="paquete"  extends="struts-default">
+   <action name="Logear" class="paquete.ActionLogear">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+             <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>        
+        </action>
+        <action name="Register" class="paquete.ActionRegister">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                    <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
+         <action name="LogOut" class="paquete.LogOut">
+           
+                <result name="success" >login.html</result>
+        </action>
+     </package>
+</struts>

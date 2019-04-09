@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 4/04/2019 07:29:10 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Usuarios" table="usuarios" catalog="proyectowad2" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="correo" type="string">
+            <column name="correo" length="100" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" />
+        </property>
+        <property name="passwords" type="string">
+            <column name="passwords" length="50" />
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,29 @@
+---------Nuevo Proyecto
+ //enter para todo por default
+npm init
+
+//copiar todo junto:
+npm install --save react
+npm install --save react-dom
+npm install --save-dev babel-preset-react
+npm install --save-dev babel-preset-env
+
+//Crear Archivo con nombre ".babelrc" con lo siguiente dentro:
+
+{
+  "presets": ["env", "react"]
+}
+
+----------Correr en servidor de npm localhost:1234
+parcel ARCHIVO.html
+//en nuestro caso
+parcel src/ARCHIVO.html
+
+----------Construir para proyecto 
+parcel build src/ARCHIVO.html -d directorio/salida --public-url /ProyectoWAD
+
+//en carpeta por default "dist" //limpiar carpeta antes de esto
+parcel build src/ARCHIVO.html --public-url /ProyectoWAD
+
+//USAR ESTE PARA EL PROYECTO Correr terminal desde web\src-react 
+parcel build src/ARCHIVO.html -d ../ --public-url /ProyectoWAD

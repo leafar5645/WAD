@@ -26,4 +26,4 @@ parcel build src/ARCHIVO.html -d directorio/salida --public-url /ProyectoWAD
 parcel build src/ARCHIVO.html --public-url /ProyectoWAD
 
 //USAR ESTE PARA EL PROYECTO Correr terminal desde web\src-react 
-parcel build src/ARCHIVO.html -d ../ --public-url /ProyectoWAD
+parcel build src/ARCHIVO.html -d ../web --public-url /ProyectoWAD

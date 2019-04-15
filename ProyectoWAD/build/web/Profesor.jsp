@@ -14,10 +14,10 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <ul>
-            <li> <a href="TablaPreguntasProfesor.jsp">Mis Preguntas</a> </li>
-            <li> <a href="LogOut">Cerrar Sesion</a> </li>
-        </ul>
+        <div id="barra">
+     </div>
+<script src="/ProyectoWAD/BarraNavRender.898bd891.js"> 
+</script> 
         <br>
         <% Usuarios a =(Usuarios) session.getAttribute("user"); %>
         <h1>Bienvenido:  <% if(a!=null) out.print(a.getNombre());  %></h1>

@@ -24,9 +24,13 @@
                         <param name="inputName">responseStream</param>
                     </result>
         </action>
-         <action name="LogOut" class="paquete.LogOut">
-           
-                <result name="success" >login.html</result>
+         <action name="Logout" class="paquete.LogOut">
+             <result name="success">login.html</result>
+        </action>
+        <action name="Home" class="paquete.Home">
+                <result name="alumno" >Alumno.jsp</result>
+                <result name="login" >login.html</result>
+                <result name="profesor" >Profesor.jsp</result>
         </action>
      </package>
 </struts>

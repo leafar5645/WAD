@@ -10,18 +10,19 @@ Mis Preguntas</title>
 </head>
 
 <body>
+     <div id="barra">
+     </div>
+ 
  <% Usuarios a=(Usuarios) session.getAttribute("user");%>
         <h1>
             Preguntas de: <% if(a!=null)out.print(a.getNombre()); else response.sendRedirect("index.html");%>
         </h1>
- <div id="barra">
- </div>
+
  <div id="root">
  </div>
-<script src="/ProyectoWAD/TablaPreguntasProfesor.d162e21c.js">
-        </script>
-        <script src="/ProyectoWAD/BarraNavRender.5b78434d.js">
-        </script>
-    
+ <script src="/ProyectoWAD/TablaPreguntasProfesor.d162e21c.js"> 
+</script> 
+ <script src="/ProyectoWAD/BarraNavRender.898bd891.js"> 
+</script> 
   </body>
 </html>

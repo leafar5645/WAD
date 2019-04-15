@@ -19,6 +19,7 @@ public class LogOut extends ActionSupport {
     }
     
     public String execute() throws Exception {
+     
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("user");
         session.invalidate();

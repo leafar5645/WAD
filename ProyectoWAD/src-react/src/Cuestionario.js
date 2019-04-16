@@ -43,7 +43,6 @@ export class Cuestionario extends React.Component {
   	var preg=this.pedir();
     return (
       <div>
-       Seleccione la Respuesta Correcta: <br/>
        <button onClick={this.AgregarMultiple}>Agregar Opcion Multiple</button>
        <br/>
        {preg}  

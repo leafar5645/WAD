@@ -31,8 +31,9 @@ export class Recurso extends React.Component {
   {
     if (this.state.Tipo=="video") 
     {
+      console.log("video");
       var etq=(<video controls>
-              <source src={this.state.Nombre} type={"video/"+this.state.Ext}/>
+              <source src={this.state.Nombre} type={"video/"+this.state.Ext} key={this.state.Nombre}/>
                 Tu navegador no implementa el elemento <code>video</code>
               </video>
             );
@@ -40,12 +41,12 @@ export class Recurso extends React.Component {
 
     else if (this.state.Tipo=="img")
     {
-     var etq= <img src={this.state.Nombre}/>;
+     var etq= <img src={this.state.Nombre} width="70%" height="50%" key={this.state.Nombre}/>;
     }
 
    else if (this.state.Tipo=="audio")
    {
-     var etq= (<audio src={this.state.Nombre} controls autoplay loop>
+     var etq= (<audio src={this.state.Nombre} controls autoplay loop key={this.state.Nombre}>
                 <p>Tu navegador no implementa el elemento audio</p>
                 </audio>);
    }
@@ -57,7 +58,7 @@ export class Recurso extends React.Component {
   render() {
     return (
       <div>
-      {this.state.Nombre}
+      Nombre de Recurso: {this.state.Nombre}
       <br/>
       {this.generarEtiqueta()}
       </div>

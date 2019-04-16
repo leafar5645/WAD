@@ -14,7 +14,7 @@
                         <param name="inputName">responseStream</param>
                     </result>        
         </action>
-        <action name="Register" class="paquete.ActionRegister">
+        <action name="Registar" class="paquete.ActionRegister">
              <result name="success" type="stream" >
                         <param name="contentType">text/html</param>
                         <param name="inputName">responseStream</param>

@@ -26183,7 +26183,7 @@ var _Cuestionario = require("./Cuestionario.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom.default.render(_react.default.createElement(_Cuestionario.Cuestionario, null), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Cuestionario.js":"Cuestionario.js"}],"../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Cuestionario.js":"Cuestionario.js"}],"C:/Users/Rafael/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -26211,7 +26211,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54917" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55652" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -26386,5 +26386,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","CuestionarioUnion.js"], null)
+},{}]},{},["C:/Users/Rafael/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","CuestionarioUnion.js"], null)
 //# sourceMappingURL=/CuestionarioUnion.3b3cfd5c.js.map

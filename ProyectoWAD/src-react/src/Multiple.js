@@ -30,7 +30,7 @@ export class Multiple extends React.Component {
     {
       this.setState({Respuesta:e.target.value});
     }
-    //console.log(e.target.value);
+    console.log(e.target.value);
   }
   handleSubmit()
   {
@@ -59,7 +59,7 @@ export class Multiple extends React.Component {
   }
   obtenerRecursosUsuario()
   {
-    var rec=["imagen.jpg","video.mp4","audio.mp3"];
+    var rec=["Recursos/imagen.jpg","Recursos/video.mp4","Recursos/audio.mp3"];
     var selects=[];
     selects.push(<option value="">Sin Medios</option>);
    
@@ -80,7 +80,7 @@ export class Multiple extends React.Component {
        opciones.push(this.state.Opciones[i]);
        opciones.push(<br/>);
     } 
-    if(Recurso=="")
+    if(this.state.Recurso=="")
       return (<div>{opciones} </div>);
     else
     {
@@ -92,8 +92,9 @@ export class Multiple extends React.Component {
     var opciones = [];
     opciones.push("Pregunta: ");
     opciones.push(<textarea name="nombre" placeholder="Ej.:¿Como te llamas?" key="NamePreg" onChange={this.manejadorCambiosEscritura}/>)
-     if(Recurso!="")
-      opciones.push(<Recurso src={this.state.Recurso}/>);
+    opciones.push(<br/>);
+     if(this.state.Recurso!="")
+      opciones.push(<Recurso src={this.state.Recurso} key={this.state.Recurso+this.state.Pregunta}/>);
 
     for (var i = 0 ; i< 3; i++) 
     {

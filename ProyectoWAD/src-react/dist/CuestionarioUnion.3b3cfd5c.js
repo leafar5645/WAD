@@ -25816,22 +25816,29 @@ function (_React$Component) {
     key: "generarEtiqueta",
     value: function generarEtiqueta() {
       if (this.state.Tipo == "video") {
+        console.log("video");
+
         var etq = _react.default.createElement("video", {
           controls: true
         }, _react.default.createElement("source", {
           src: this.state.Nombre,
-          type: "video/" + this.state.Ext
+          type: "video/" + this.state.Ext,
+          key: this.state.Nombre
         }), "Tu navegador no implementa el elemento ", _react.default.createElement("code", null, "video"));
       } else if (this.state.Tipo == "img") {
         var etq = _react.default.createElement("img", {
-          src: this.state.Nombre
+          src: this.state.Nombre,
+          width: "70%",
+          height: "50%",
+          key: this.state.Nombre
         });
       } else if (this.state.Tipo == "audio") {
         var etq = _react.default.createElement("audio", {
           src: this.state.Nombre,
           controls: true,
           autoplay: true,
-          loop: true
+          loop: true,
+          key: this.state.Nombre
         }, _react.default.createElement("p", null, "Tu navegador no implementa el elemento audio"));
       } //console.log(this.state.Tipo);
       //console.log(etq);
@@ -25842,7 +25849,7 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      return _react.default.createElement("div", null, this.state.Nombre, _react.default.createElement("br", null), this.generarEtiqueta());
+      return _react.default.createElement("div", null, "Nombre de Recurso: ", this.state.Nombre, _react.default.createElement("br", null), this.generarEtiqueta());
     }
   }]);
 
@@ -25930,7 +25937,8 @@ function (_React$Component) {
         this.setState({
           Respuesta: e.target.value
         });
-      } //console.log(e.target.value);
+      }
+      console.log(e.target.value);
     }
   }, {
     key: "handleSubmit",
@@ -25965,7 +25973,7 @@ function (_React$Component) {
   }, {
     key: "obtenerRecursosUsuario",
     value: function obtenerRecursosUsuario() {
-      var rec = ["imagen.jpg", "video.mp4", "audio.mp3"];
+      var rec = ["Recursos/imagen.jpg", "Recursos/video.mp4", "Recursos/audio.mp3"];
       var selects = [];
       selects.push(_react.default.createElement("option", {
         value: ""
@@ -25997,7 +26005,7 @@ function (_React$Component) {
         opciones.push(_react.default.createElement("br", null));
       }
 
-      if (_recurso.Recurso == "") return _react.default.createElement("div", null, opciones, " ");else {
+      if (this.state.Recurso == "") return _react.default.createElement("div", null, opciones, " ");else {
         return _react.default.createElement("div", null, _react.default.createElement(_recurso.Recurso, {
           src: this.state.Recurso
         }), opciones);
@@ -26014,8 +26022,10 @@ function (_React$Component) {
         key: "NamePreg",
         onChange: this.manejadorCambiosEscritura
       }));
-      if (_recurso.Recurso != "") opciones.push(_react.default.createElement(_recurso.Recurso, {
-        src: this.state.Recurso
+      opciones.push(_react.default.createElement("br", null));
+      if (this.state.Recurso != "") opciones.push(_react.default.createElement(_recurso.Recurso, {
+        src: this.state.Recurso,
+        key: this.state.Recurso + this.state.Pregunta
       }));
 
       for (var i = 0; i < 3; i++) {
@@ -26157,7 +26167,7 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var preg = this.pedir();
-      return _react.default.createElement("div", null, "Seleccione la Respuesta Correcta: ", _react.default.createElement("br", null), _react.default.createElement("button", {
+      return _react.default.createElement("div", null, _react.default.createElement("button", {
         onClick: this.AgregarMultiple
       }, "Agregar Opcion Multiple"), _react.default.createElement("br", null), preg, _react.default.createElement("input", {
         type: "submit",
@@ -26183,7 +26193,7 @@ var _Cuestionario = require("./Cuestionario.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _reactDom.default.render(_react.default.createElement(_Cuestionario.Cuestionario, null), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Cuestionario.js":"Cuestionario.js"}],"C:/Users/Rafael/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Cuestionario.js":"Cuestionario.js"}],"../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -26211,7 +26221,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55652" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49904" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -26386,5 +26396,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["C:/Users/Rafael/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","CuestionarioUnion.js"], null)
+},{}]},{},["../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","CuestionarioUnion.js"], null)
 //# sourceMappingURL=/CuestionarioUnion.3b3cfd5c.js.map

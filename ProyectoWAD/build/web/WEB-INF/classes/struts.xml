@@ -32,5 +32,19 @@
                 <result name="login" >login.html</result>
                 <result name="profesor" >Profesor.jsp</result>
         </action>
+           
+              <action name="Subir" class="paquete.Action">
+          <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">resourceStream</param>
+                    </result>
+                             
+        </action>
+        <action name="ActionRecursos" class="paquete.ActionRecurso">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">resourceStream</param>
+                    </result>
+        </action>
      </package>
 </struts>

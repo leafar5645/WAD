@@ -29,13 +29,13 @@ export class BiblioNav extends React.Component
   }
   createMedia()
   {
-	  const res = this.state.viewResource;
+	  const res ="image/" + this.state.viewResource;
 	  const type = this.state.tipo; 
 	 // alert(res + type);
 	  
 	  if(type=="image")
 	  {
-		  return <img height='100' width='100' src={res} />
+		  return <img height='100' width='100' src= {res} />
 	  }
 	  if(type=="video")
 	  {
@@ -53,6 +53,7 @@ export class BiblioNav extends React.Component
 	   //alert(array);
 	   const resources=array.toString().split("@");
 	  var barra=[];
+	  console.log("resources" + resources);
 	  const option = <option value='1' >Selecciona una opcion </option>;
 	 
 	  barra.push(option);
@@ -77,11 +78,12 @@ export class BiblioNav extends React.Component
             url: 'ActionRecursos',
             type: 'Post',
             data: formData,
+			async:false,
             processData: false, // tell jQuery not to process the data
             contentType: false, // tell jQuery not to set contentType
             success: function (data) {
                 array  =data.toString();
-             
+				console.log(array);
             },
             error: function () {
                 alert("Archivo invalido");
@@ -121,9 +123,10 @@ export class BiblioNav extends React.Component
 
 	  else{
 		 // alert("entre2");
-		  this.setState({validResourcesI: false, validResourcesV: false, validResourcesA: false, resources:" "});
+		  this.setState({validResourcesI: false, validResourcesV: false, validResourcesA: false, resources:"-"});
 		  this.setState({validResource: false});
 	  }
+	  console.log("que esta pasando" + this.state.resources);
 	// alert(array);
 	  
   }

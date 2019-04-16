@@ -20,6 +20,7 @@ public class Home extends ActionSupport {
     
     public String execute() throws Exception {
        Usuarios us = (Usuarios) ServletActionContext.getRequest().getSession().getAttribute("user");
+        System.out.println("----Rafas" + us.getTipo());
        if(us!=null)
        {
           if(us.getTipo().equals("Profesor"))

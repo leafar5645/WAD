@@ -16,12 +16,18 @@
     <body>
         <div id="barra">
      </div>
-<script src="/ProyectoWAD/BarraNavRender.898bd891.js"> 
-</script> 
+<script src="/ProyectoWAD/BarraNavRender.898bd891.js"> </script> 
+
         <br>
         <% Usuarios a =(Usuarios) session.getAttribute("user"); %>
         <h1>Bienvenido:  <% if(a!=null) out.print(a.getNombre());  %></h1>
-        
-     
+        <br/>
+        <br/>
+      <div id="biblioteca"> 
+ </div> 
+ <script src="/ProyectoWAD/BibliotecaNavRender.e2f6d113.js"> 
+</script> 
+      
+
     </body>
 </html>

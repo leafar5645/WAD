@@ -36398,7 +36398,7 @@ function (_React$Component) {
   }, {
     key: "createMedia",
     value: function createMedia() {
-      var res = this.state.viewResource;
+      var res = "image/" + this.state.viewResource;
       var type = this.state.tipo; // alert(res + type);
 
       if (type == "image") {
@@ -36434,6 +36434,7 @@ function (_React$Component) {
 
       var resources = array.toString().split("@");
       var barra = [];
+      console.log("resources" + resources);
 
       var option = _react.default.createElement("option", {
         value: "1"
@@ -36467,12 +36468,14 @@ function (_React$Component) {
         url: 'ActionRecursos',
         type: 'Post',
         data: formData,
+        async: false,
         processData: false,
         // tell jQuery not to process the data
         contentType: false,
         // tell jQuery not to set contentType
         success: function success(data) {
           array = data.toString();
+          console.log(array);
         },
         error: function error() {
           alert("Archivo invalido");
@@ -36537,13 +36540,14 @@ function (_React$Component) {
           validResourcesI: false,
           validResourcesV: false,
           validResourcesA: false,
-          resources: " "
+          resources: "-"
         });
         this.setState({
           validResource: false
         });
-      } // alert(array);
+      }
 
+      console.log("que esta pasando" + this.state.resources); // alert(array);
     }
   }, {
     key: "upload",

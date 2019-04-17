@@ -9,7 +9,7 @@ export class Multiple extends React.Component {
     if(props.modo=="ver"||props.modo=="editar")
       this.state = {id:props.id, Pregunta:this.obtenerPregunta(), Opciones: this.obtenerOpciones(), Respuesta: this.obtenerRespuesta(), Recurso: this.obtenerRecurso()};
     else if(props.modo=="nuevo")
-      this.state = {id:"",Pregunta:"", Opciones: [], Respuesta: "", Recurso: ""};
+      this.state = {id:props.id,Pregunta:"", Opciones: [], Respuesta: "", Recurso: ""};
     this.manejadorCambiosEscritura=this.manejadorCambiosEscritura.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
   }
@@ -33,20 +33,37 @@ export class Multiple extends React.Component {
     }
     console.log(e.target.value);
   }
-  handleSubmit()
+  handleSubmit(event)
   {
+    event.preventDefault();
     if(this.props.modo=="nuevo")
     {
-    alert("Armado de XML");
-    inicial = "<bookstore><book>" +
-    "<title>Everyday Italian</title>" +
-    "<author>Giada De Laurentiis</author>" +
-    "<year>2005</year>" +
-    "</book></bookstore>";
+      var inicial = "<section text='"+this.state.Pregunta+"' tipo='multiple' id='"+this.state.id+"' respuesta='"+this.state.Respuesta+"'></section>";
+      
+      var parser = new DOMParser();
+      var xmlDoc = parser.parseFromString(inicial,"text/xml");
+      //agregando el recurso
+      if(this.state.Recurso!="")
+      {
+        var rec=xmlDoc.createElement("Recurso");
+        var att = xmlDoc.createAttribute("src");      
+        att.value = this.state.Recurso; 
+        rec.setAttributeNode(att); 
+        xmlDoc.getElementsByTagName("section")[0].appendChild(rec);
+      }
+      //agregando opciones
+      for (var i = 0 ; i< this.state.Opciones.length; i++) 
+      {
+        var opc=xmlDoc.createElement("Opcion");
+        var att = xmlDoc.createAttribute("value");      
+        att.value = this.state.Opciones[i];
+        opc.setAttributeNode(att); 
+         xmlDoc.getElementsByTagName("section")[0].appendChild(opc);
+      } 
     }
-    parser = new DOMParser();
-    xmlDoc = parser.parseFromString(text,"text/xml");
-    event.preventDefault();
+    console.log(xmlDoc);
+    
+    alert("Armado de XML");
   }
   obtenerOpciones()
   {
@@ -74,10 +91,10 @@ export class Multiple extends React.Component {
     var formData = new FormData();
    formData.append("tipo" , "image");
      $.ajax({
-            url: 'http://localhost:8080/ProyectoWAD/ActionRecursos',
+            url: 'ActionRecursos',
             type: 'Post',
             data: formData,
-      async:false,
+            async:false,
             processData: false, // tell jQuery not to process the data
             contentType: false, // tell jQuery not to set contentType
             success: function (data) {
@@ -86,7 +103,8 @@ export class Multiple extends React.Component {
                 console.log(data.toString());
             },
             error: function () {
-                alert("Archivo invalido");
+                console.log("ERROR DE PETICION");
+                rec=["ejemplo/imagen.jpg","ejemplo/video.mp4","ejemplo/audio.mp3"];
             }
         });
     var selects=[];

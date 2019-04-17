@@ -36486,7 +36486,7 @@ function (_React$Component) {
       Respuesta: _this.obtenerRespuesta(),
       Recurso: _this.obtenerRecurso()
     };else if (props.modo == "nuevo") _this.state = {
-      id: "",
+      id: props.id,
       Pregunta: "",
       Opciones: [],
       Respuesta: "",
@@ -36520,15 +36520,34 @@ function (_React$Component) {
     }
   }, {
     key: "handleSubmit",
-    value: function handleSubmit() {
+    value: function handleSubmit(event) {
+      event.preventDefault();
+
       if (this.props.modo == "nuevo") {
-        alert("Armado de XML");
-        inicial = "<bookstore><book>" + "<title>Everyday Italian</title>" + "<author>Giada De Laurentiis</author>" + "<year>2005</year>" + "</book></bookstore>";
+        var inicial = "<section text='" + this.state.Pregunta + "' tipo='multiple' id='" + this.state.id + "' respuesta='" + this.state.Respuesta + "'></section>";
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString(inicial, "text/xml"); //agregando el recurso
+
+        if (this.state.Recurso != "") {
+          var rec = xmlDoc.createElement("Recurso");
+          var att = xmlDoc.createAttribute("src");
+          att.value = this.state.Recurso;
+          rec.setAttributeNode(att);
+          xmlDoc.getElementsByTagName("section")[0].appendChild(rec);
+        } //agregando opciones
+
+
+        for (var i = 0; i < this.state.Opciones.length; i++) {
+          var opc = xmlDoc.createElement("Opcion");
+          var att = xmlDoc.createAttribute("value");
+          att.value = this.state.Opciones[i];
+          opc.setAttributeNode(att);
+          xmlDoc.getElementsByTagName("section")[0].appendChild(opc);
+        }
       }
 
-      parser = new DOMParser();
-      xmlDoc = parser.parseFromString(text, "text/xml");
-      event.preventDefault();
+      console.log(xmlDoc);
+      alert("Armado de XML");
     }
   }, {
     key: "obtenerOpciones",
@@ -36562,7 +36581,7 @@ function (_React$Component) {
       formData.append("tipo", "image");
 
       _jquery.default.ajax({
-        url: 'http://localhost:8080/ProyectoWAD/ActionRecursos',
+        url: 'ActionRecursos',
         type: 'Post',
         data: formData,
         async: false,
@@ -36571,11 +36590,12 @@ function (_React$Component) {
         contentType: false,
         // tell jQuery not to set contentType
         success: function success(data) {
-          rec = data.toString().split("@");
+          if (data.toString().indexOf("@") != -1) rec = data.toString().split("@");
           console.log(data.toString());
         },
         error: function error() {
-          alert("Archivo invalido");
+          console.log("ERROR DE PETICION");
+          rec = ["ejemplo/imagen.jpg", "ejemplo/video.mp4", "ejemplo/audio.mp3"];
         }
       });
 
@@ -36727,7 +36747,8 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Cuestionario).call(this, props));
     _this.state = {
       Preguntas: [],
-      i: 0
+      i: 0,
+      idPreg: props.id
     };
     _this.AgregarMultiple = _this.AgregarMultiple.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
@@ -36741,7 +36762,10 @@ function (_React$Component) {
 
       var aux = this.state.Preguntas;
       aux.push(_react.default.createElement(_Multiple.Multiple, {
-        modo: "nuevo"
+        modo: "nuevo",
+        idPreg: this.state.idPreg,
+        id: this.state.i,
+        key: this.state.i
       }));
       this.setState(function (state) {
         return {
@@ -36827,7 +36851,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50492" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58080" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

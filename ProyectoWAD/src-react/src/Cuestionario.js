@@ -8,7 +8,7 @@ export class Cuestionario extends React.Component {
   constructor(props) 
   {
     super(props);
-      this.state = {Preguntas: [],i:0};
+      this.state = {Preguntas: [],i:0, idPreg: props.id};
 
     this.AgregarMultiple=this.AgregarMultiple.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
@@ -16,7 +16,7 @@ export class Cuestionario extends React.Component {
   AgregarMultiple()
   {
     var aux=this.state.Preguntas;
-    aux.push(<Multiple modo="nuevo"/>,);
+    aux.push(<Multiple modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
     this.setState((state) => (
 
     	{Preguntas: aux, i:this.state.i+1})

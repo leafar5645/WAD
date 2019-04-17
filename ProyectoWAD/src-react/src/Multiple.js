@@ -1,5 +1,6 @@
 import React from "react";
 import {Recurso} from "./recurso.js";
+import $ from 'jquery'; 
 //tienes tres modos editar nuevo y ver los cuales se envian como props
 export class Multiple extends React.Component {
   constructor(props) 
@@ -34,7 +35,17 @@ export class Multiple extends React.Component {
   }
   handleSubmit()
   {
+    if(this.props.modo=="nuevo")
+    {
     alert("Armado de XML");
+    inicial = "<bookstore><book>" +
+    "<title>Everyday Italian</title>" +
+    "<author>Giada De Laurentiis</author>" +
+    "<year>2005</year>" +
+    "</book></bookstore>";
+    }
+    parser = new DOMParser();
+    xmlDoc = parser.parseFromString(text,"text/xml");
     event.preventDefault();
   }
   obtenerOpciones()
@@ -59,14 +70,31 @@ export class Multiple extends React.Component {
   }
   obtenerRecursosUsuario()
   {
-    var rec=["Recursos/imagen.jpg","Recursos/video.mp4","Recursos/audio.mp3"];
+    var rec=[];
+    var formData = new FormData();
+   formData.append("tipo" , "image");
+     $.ajax({
+            url: 'http://localhost:8080/ProyectoWAD/ActionRecursos',
+            type: 'Post',
+            data: formData,
+      async:false,
+            processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType
+            success: function (data) {
+              if(data.toString().indexOf("@")!=-1)
+                rec  =data.toString().split("@");
+                console.log(data.toString());
+            },
+            error: function () {
+                alert("Archivo invalido");
+            }
+        });
     var selects=[];
     selects.push(<option value="">Sin Medios</option>);
    
     for (var i =  0; i < rec.length; i++) 
     {
-      selects.push(<option value={rec[i]}>{rec[i]}</option>);
-      
+      selects.push(<option value={"image/"+rec[i]}>{rec[i]}</option>);
     }
     return selects;
   }
@@ -84,7 +112,7 @@ export class Multiple extends React.Component {
       return (<div>{opciones} </div>);
     else
     {
-      return (<div><Recurso src={this.state.Recurso}/>{opciones}</div>);
+      return (<div><Recurso src={this.state.Recurso} key={this.state.Recurso+"/"+this.state.Pregunta}/>{opciones}</div>);
     }
   }
   generarOpcionesMod()

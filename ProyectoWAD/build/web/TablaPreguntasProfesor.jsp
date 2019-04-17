@@ -20,9 +20,10 @@ Mis Preguntas</title>
 
  <div id="root">
  </div>
- <script src="/ProyectoWAD/TablaPreguntasProfesor.d162e21c.js"> 
+ <script src="/ProyectoWAD/TablaPreguntasProfesor.69aca4c7.js"> 
 </script> 
  <script src="/ProyectoWAD/BarraNavRender.898bd891.js"> 
 </script> 
+<a href="Cuestionario.html">Nueva Pregunta</a>
   </body>
 </html>

@@ -10,7 +10,6 @@ export class Recurso extends React.Component {
   {
     var aux=this.props.src.split(".");
     var ex= aux[aux.length-1];
-    //console.log("|"+ex+"|");
     if(ex=="jpeg"||ex=="jpg"||ex=="png"||ex=="gif")
       return "img";
     else if (ex=="mp4") 
@@ -46,7 +45,7 @@ export class Recurso extends React.Component {
 
    else if (this.state.Tipo=="audio")
    {
-     var etq= (<audio src={this.state.Nombre} controls autoplay loop key={this.state.Nombre}>
+     var etq= (<audio src={this.state.Nombre} controls key={this.state.Nombre}>
                 <p>Tu navegador no implementa el elemento audio</p>
                 </audio>);
    }

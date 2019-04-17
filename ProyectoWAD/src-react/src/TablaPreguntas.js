@@ -57,6 +57,7 @@ export class TablaPreguntas extends React.Component {
       <div>
         <h1>Hello, world!</h1>
         <table border='1'> {this.generarTabla()} </table>
+       <button onClick={function(e){window.location.replace("Cuestionario.html")}}>Nueva Pregunta</button>
       </div>
       
     );

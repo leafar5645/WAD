@@ -27,11 +27,6 @@ public class ActionRecurso extends ActionSupport {
     public InputStream getResourceStream() {
         return resourceStream;
     }
-
- 
-        
-        
-
     public String getTipo() {
         return tipo;
     }
@@ -64,10 +59,10 @@ public class ActionRecurso extends ActionSupport {
     {
         if(tipo.contains("image"))
         { 
-        if(file.contains(".jpeg") || file.contains(".png") || file.contains(".jpg"))
-        {
-            return true;
-        }
+            if(file.contains(".jpeg") || file.contains(".png") || file.contains(".jpg"))
+            {
+                return true;
+            }
         }
         if(tipo.contains("video"))
         {

@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.text.Normalizer;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
@@ -62,8 +63,10 @@ public class Action extends ActionSupport {
         System.out.println("arch:"+archivoContentType);
         
        String path= ServletActionContext.getServletContext().getRealPath("/image");
-      
-       path=path + "/" + archivoFileName;
+      String cadenaNormalize = Normalizer.normalize(archivoFileName, Normalizer.Form.NFD);   
+      String cadenaSinAcentos = cadenaNormalize.replaceAll("[^\\p{ASCII}]", "");
+      System.out.println("Resultado: " + cadenaSinAcentos);
+       path=path + "/" + cadenaSinAcentos;
         System.out.println( path );
         try
         {

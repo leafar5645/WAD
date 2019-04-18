@@ -144,4 +144,25 @@ li a {
 li a:hover {
   background-color: aqua;
 }
-
+ #recursos
+  {
+       width: 200px;
+    height: 35px;
+    font-family:Courier;
+   font-weight:bold;
+   font-style:italic;
+    background-color: lightgoldenrodyellow;
+     box-shadow: none;
+      
+  }
+  #tipo
+  {
+       width: 200px;
+    height: 35px;
+    font-family:Courier;
+   font-weight:bold;
+   font-style:italic;
+    background-color: lightgoldenrodyellow;
+     box-shadow: none;
+      
+  }

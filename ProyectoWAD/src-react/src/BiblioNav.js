@@ -58,7 +58,7 @@ export class BiblioNav extends React.Component
 	 
 	  barra.push(option);
 	 
-   for (var i = 1; i <resources.length ; i++)
+   for (var i = 0; i <resources.length ; i++)
    {
 	   const option=<option value={resources[i]}>{resources[i]}</option>;
 		barra.push(option);

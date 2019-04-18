@@ -48,5 +48,15 @@
                         <param name="inputName">resourceStream</param>
                     </result>
         </action>
+         <action name="ActionAddSection" class="paquete.ActionAddSection">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                      <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
      </package>
 </struts>

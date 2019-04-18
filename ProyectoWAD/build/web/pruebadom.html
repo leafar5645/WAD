@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+          <script>
+    function sendDom()
+    {
+        var textDom="<Seccion texto='texto3' tipo='seleccion' id='3' respuesta='option3'>"+
+           " <Recurso tipo='audio' src='audio.mp3'/>" +
+           " <option value='option1'></option>"  +
+           " <option value='option2'></option>"  +
+           " <option value='option3'></option>"  +          
+           " <option value='option4'></option>"  +
+        "</Seccion>"; 
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString(textDom,"text/xml");
+        var oSerializer = new XMLSerializer();
+        var sXML = oSerializer.serializeToString(xmlDoc);
+        alert(sXML);
+        var formd= new FormData();
+        formd.append("Seccion" ,sXML );
+        $.ajax({
+            url: 'ActionAddSection',
+            type: 'Post',
+            data: formd,
+            processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType
+            success: function (data) {
+            alert(data.toString());
+            },
+            error: function () {
+                alert("Archivo invalido");
+            }
+        });
+        
+        
+    }
+    </script>
+    </head>
+  
+    <body>
+        <button type="button" onclick="sendDom()">Enviar</button>
+    </body>
+</html>

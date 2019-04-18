@@ -63,7 +63,7 @@ public class ActionAddSection extends ActionSupport {
           File fXmlFile = new File(path);
           SAXBuilder builder = new SAXBuilder();
           doc=builder.build(fXmlFile);
-           System.out.println("-----------------llegue" );
+           //System.out.println("-----------------llegue" );
           InputStream stream = new ByteArrayInputStream(seccion.getBytes("UTF-8"));
           System.out.println("----" + seccion);
           Document Dseccion = builder.build(stream);
@@ -84,7 +84,7 @@ public class ActionAddSection extends ActionSupport {
            xmlout.setFormat(Format.getPrettyFormat());
                xmlout.output(doc,new FileWriter(path));
                xmlout.output(doc,System.out);
-            String    respuesta="nice";
+            String    respuesta="listo";
       responseStream = new StringBufferInputStream(respuesta);
                       
     return SUCCESS;

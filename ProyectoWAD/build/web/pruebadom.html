@@ -26,9 +26,9 @@ and open the template in the editor.
         var sXML = oSerializer.serializeToString(xmlDoc);
         alert(sXML);
         var formd= new FormData();
-        formd.append("Seccion" ,sXML );
+       // formd.append("Seccion" ,sXML );
         $.ajax({
-            url: 'ActionAddSection',
+            url: 'UltimaPregunta',
             type: 'Post',
             data: formd,
             processData: false, // tell jQuery not to process the data

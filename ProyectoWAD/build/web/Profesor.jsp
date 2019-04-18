@@ -23,7 +23,7 @@
         <h1>Bienvenido:  <% if(a!=null) out.print(a.getNombre());  %></h1>
         <br/>
         <br/>
-     <div id="biblioteca"> </div> <script src="/ProyectoWAD/BibliotecaNavRender.200873a3.js"></script>  
+     <div id="biblioteca"> </div> <script src="/ProyectoWAD/BibliotecaNavRender.1fb96131.js"></script> 
       
 
     </body>

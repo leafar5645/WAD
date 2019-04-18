@@ -35,11 +35,11 @@ export class BiblioNav extends React.Component
 	  
 	  if(type=="image")
 	  {
-		  return <img height='100' width='100' src= {res} />
+		  return <img src= {res} />
 	  }
 	  if(type=="video")
 	  {
-		  return <video height='200' width='300' src={res} controls='true' />
+		  return <video  src={res} controls='true' />
 	  }
 	  if(type == 'audio')
 	  {
@@ -159,9 +159,12 @@ export class BiblioNav extends React.Component
 	<div id='Biblio'>
 	<div id='SubirF'>
 		<form onSubmit={this.upload}>
-	   <input type='file' name='archivo' id='archivo'/>
-	   <input type='submit' name='subir' value='subir' />
+	   <input type='file' class='custom-file' name='archivo' id='archivo'/>
+	   <br/>
+	   <input type='submit' name='subir' value='subir' id='submitLogin' />
 	   </form>
+	   <br/>
+	   <br/>
 	</div>
 	
 	<div id='media'>
@@ -175,7 +178,10 @@ export class BiblioNav extends React.Component
 	{this.state.validResourcesV &&  (<select name='recursos' ref='recursos' id='recursos' onChange={this.playResource}>{this.createSelect()}</select>)}
 	{this.state.validResourcesI &&  (<select name='recursos' ref='recursos' id='recursos' onChange={this.playResource}>{this.createSelect()}</select>)}
 	<br/>
+	<br/>
+	<center>
 	{this.state.validResource && this.createMedia()}
+	</center>
 	</div>
 	</div>
 	);

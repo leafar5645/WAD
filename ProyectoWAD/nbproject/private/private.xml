@@ -10,9 +10,9 @@
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/web/Profesor.jsp</file>
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionRegister.java</file>
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionLogear.java</file>
-            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionUltimaPregunta.java</file>
+            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionEditarSeccion.java</file>
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/Action.java</file>
-            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/entity/Usuarios.hbm.xml</file>
+            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionEditarPregunta.java</file>
         </group>
     </open-files>
 </project-private>

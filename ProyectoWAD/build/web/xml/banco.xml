@@ -29,23 +29,9 @@
     <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
       <Recurso tipo="audio" src="audio.mp3" />
       <option value="option1" />
-      <option value="option2" />
-      <option value="option3" />
-      <option value="option4" />
-    </Seccion>
-    <Seccion texto="texto1" tipo="seleccion 2" id="2" respuesta="option2">
-      <Recurso tipo="video" src="video.mp4" />
       <option value="option1" />
-      <option value="option2" />
-      <option value="option3" />
-      <option value="option4" />
-    </Seccion>
-    <Seccion texto="texto3" tipo="seleccion" id="3" respuesta="option3">
-      <Recurso tipo="audio" src="audio.mp3" />
       <option value="option1" />
-      <option value="option2" />
-      <option value="option3" />
-      <option value="option4" />
+      <option value="option1" />
     </Seccion>
   </Pregunta>
 </Banco>

@@ -93,7 +93,7 @@ public class ActionRegister extends ActionSupport {
  else
  {
      
-  
+ 
  hibernateSession=HibernateUtil.getSessionFactory().openSession(); 
  
   //Insert
@@ -106,6 +106,7 @@ public class ActionRegister extends ActionSupport {
      hibernateSession.save(us);
      t0.commit();
       respuesta="Usuario registrado";
+      hibernateSession.close();
         responseStream = new StringBufferInputStream(respuesta);
      return SUCCESS;
  }

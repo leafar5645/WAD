@@ -13,7 +13,7 @@ and open the template in the editor.
           <script>
     function sendDom()
     {
-       var textDom="  <Pregunta id='1' texto='Pregunta de prueba'>"+
+       var textDom="  <Pregunta id='3' texto='Pregunta de prueba'>"+
     "<Seccion texto='texto1' tipo='seleccion' id='1' respuesta='option1'>"+
     "<Recurso tipo='audio' src='audio.mp3' />"+
       "<option value='option1' />" +
@@ -28,20 +28,16 @@ and open the template in the editor.
         var sXML = oSerializer.serializeToString(xmlDoc);
         alert(sXML);
         var formd= new FormData();
-        formd.append("idpregunta" ,1 );
+        formd.append("pregunta" ,1 );
         $.ajax({
-            url: 'DarPregunta',
+            url: 'EliminarPregunta',
             type: 'Post',
             data: formd,
             processData: false, // tell jQuery not to process the data
             contentType: false, // tell jQuery not to set contentType
             success: function (data) {
                 var a = data.toString();
-                var parser = new DOMParser();
-        var xmlDoc = parser.parseFromString(a,"text/xml");
-        var oSerializer = new XMLSerializer();
-        var sXML = oSerializer.serializeToString(xmlDoc);
-        alert(sXML);
+                alert(a);
           // alert(data.toString());
             },
             error: function () {

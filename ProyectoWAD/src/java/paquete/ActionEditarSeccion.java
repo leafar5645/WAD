@@ -26,6 +26,15 @@ import org.jdom.output.XMLOutputter;
 public class ActionEditarSeccion extends ActionSupport {
     String seccion;
        InputStream responseStream;
+       private int idpregunta;
+
+    public int getIdpregunta() {
+        return idpregunta;
+    }
+
+    public void setIdpregunta(int idpregunta) {
+        this.idpregunta = idpregunta;
+    }
 
     public String getSeccion() {
         return seccion;
@@ -47,7 +56,7 @@ public class ActionEditarSeccion extends ActionSupport {
     }
     
     public String execute() throws Exception {
-        int idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
+         idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
         String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
         System.out.println("" + path);

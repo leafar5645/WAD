@@ -34,5 +34,14 @@
       <option value="option1" />
     </Seccion>
   </Pregunta>
+  <Pregunta id="2" texto="Pregunta de prueba">
+    <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
+      <Recurso tipo="audio" src="audio.mp3" />
+      <option value="option1" />
+      <option value="option1" />
+      <option value="option1" />
+      <option value="option1" />
+    </Seccion>
+  </Pregunta>
 </Banco>
 

@@ -98,5 +98,25 @@
                         <param name="inputName">responseStream</param>
                     </result>
         </action>
+         <action name="CrearPregunta" class="paquete.ActionCrearPregunta">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                      <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
+         <action name="EliminarPregunta" class="paquete.ActionEliminarPregunta">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                      <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
      </package>
 </struts>

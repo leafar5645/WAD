@@ -44,11 +44,22 @@ public class ActionUltimaPregunta extends ActionSupport {
 	try {
             Document document = (Document) builder.build(xmlFile);	
             Element rootNode = document.getRootElement();
-            List usuarios = rootNode.getChildren("Pregunta");
-           int n=usuarios.size();
-           respuesta=""+n;
-           
+            List preguntas = rootNode.getChildren("Pregunta");
+            int mayor=0;
+            int n=0;
+            int p=0;
+            for (int z=0; z<preguntas.size() ; z++)
+            {
+                Element pregunta =(Element)preguntas.get(z);
+               p=Integer.parseInt(pregunta.getAttributeValue("id"));
+               if(p>mayor)
+               {
+                   mayor=p;
+               }
             }
+           n=mayor+1;
+           respuesta=""+n;
+           }
 	   catch (IOException | JDOMException io) {
 		System.out.println(io.getMessage());
 	  }

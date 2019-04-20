@@ -31,6 +31,15 @@ import org.xml.sax.SAXException;
 public class ActionAddSection extends ActionSupport {
     private String seccion;
     InputStream responseStream; 
+    private int idpregunta;
+
+    public int getIdpregunta() {
+        return idpregunta;
+    }
+
+    public void setIdpregunta(int idpregunta) {
+        this.idpregunta = idpregunta;
+    }
 
     public InputStream getResponseStream() {
         return responseStream;
@@ -54,7 +63,7 @@ public class ActionAddSection extends ActionSupport {
     public String execute() throws Exception {
         
            
-        int idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
+       // int idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
         String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
         System.out.println("" + path);

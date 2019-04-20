@@ -2,12 +2,14 @@
 package paquete;
 
 import com.opensymphony.xwork2.ActionSupport;
+import entity.Usuarios;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -43,7 +45,9 @@ public class ActionEditarPregunta extends ActionSupport {
     }
     
     public String execute() throws Exception {
-        System.out.println("entre"  );
+         HttpSession sesion=ServletActionContext.getRequest().getSession();
+         Usuarios us =(Usuarios)sesion.getAttribute("user");
+        int id =us.getId();
       //  int idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
         String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
@@ -61,14 +65,16 @@ public class ActionEditarPregunta extends ActionSupport {
           Element newpregunta2=(Element)newpregunta.clone();
           newpregunta2.detach();
         int npregunta =Integer.parseInt(newpregunta2.getAttributeValue("id"));
+        newpregunta2.setAttribute("idcreador", ""+id);
        Element root =doc.getRootElement();
          List lista = root.getChildren("Pregunta");
           for(int i =0; i<lista.size(); i++)
           {
               Element pregunta = (Element) lista.get(i);
               System.out.println("------"+pregunta.getAttribute("id").getValue());
-              if(Integer.parseInt(pregunta.getAttribute("id").getValue())==npregunta)
+              if(Integer.parseInt(pregunta.getAttribute("id").getValue())==npregunta && Integer.parseInt(pregunta.getAttribute("idcreador").getValue())==id)
               {
+                  System.out.println("entre: "  );
                    pregunta.detach();
                    root.addContent(newpregunta2);
                   

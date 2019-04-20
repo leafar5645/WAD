@@ -6,6 +6,7 @@
 package paquete;
 
 import com.opensymphony.xwork2.ActionSupport;
+import entity.Usuarios;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -63,7 +65,10 @@ public class ActionAddSection extends ActionSupport {
     public String execute() throws Exception {
         
            
-       // int idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
+        int idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
+         HttpSession sesion=ServletActionContext.getRequest().getSession();
+         Usuarios us =(Usuarios)sesion.getAttribute("user");
+        int id =us.getId();
         String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
         System.out.println("" + path);
@@ -84,7 +89,7 @@ public class ActionAddSection extends ActionSupport {
           {
               Element pregunta = (Element) lista.get(i);
               System.out.println("------"+pregunta.getAttribute("id").getValue());
-              if(Integer.parseInt(pregunta.getAttribute("id").getValue())==idpregunta)
+              if(Integer.parseInt(pregunta.getAttribute("id").getValue())==idpregunta && Integer.parseInt(pregunta.getAttribute("idcreador").getValue())==id)
               {
                pregunta.addContent(newSeccion2);
               }

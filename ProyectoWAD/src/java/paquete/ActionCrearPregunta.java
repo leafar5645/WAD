@@ -6,11 +6,13 @@
 package paquete;
 
 import com.opensymphony.xwork2.ActionSupport;
+import entity.Usuarios;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -48,6 +50,10 @@ public class ActionCrearPregunta extends ActionSupport {
     }
     
     public String execute() throws Exception {
+        HttpSession sesion=ServletActionContext.getRequest().getSession();
+       Usuarios us =(Usuarios)sesion.getAttribute("user");
+        int id =us.getId();
+        System.out.println("" + id);
        String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
         System.out.println("" + path);
@@ -63,6 +69,7 @@ public class ActionCrearPregunta extends ActionSupport {
           Element newPregunta=Dpregunta.getRootElement();
           Element newPregunta2=(Element)newPregunta.clone();
           newPregunta2.detach();
+          newPregunta2.setAttribute("idcreador", ""+id);
           Element root=doc.getRootElement();
           root.addContent(newPregunta2);
           xmlout.setFormat(Format.getPrettyFormat());

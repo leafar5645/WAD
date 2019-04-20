@@ -6,11 +6,10 @@
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/web/pruebadom.html</file>
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/struts.xml</file>
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionAddSection.java</file>
-            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/hibernate.cfg.xml</file>
-            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/web/Profesor.jsp</file>
-            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionRegister.java</file>
-            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionLogear.java</file>
+            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionEliminarPregunta.java</file>
+            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionCrearPregunta.java</file>
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionEditarSeccion.java</file>
+            <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionUltimaPregunta.java</file>
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/Action.java</file>
             <file>file:/D:/ProyectoWad/WAD/WAD/ProyectoWAD/src/java/paquete/ActionEditarPregunta.java</file>
         </group>

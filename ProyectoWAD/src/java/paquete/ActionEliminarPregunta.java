@@ -6,12 +6,14 @@
 package paquete;
 
 import com.opensymphony.xwork2.ActionSupport;
+import entity.Usuarios;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -47,6 +49,9 @@ public class ActionEliminarPregunta extends ActionSupport {
     }
     
     public String execute() throws Exception {
+          HttpSession sesion=ServletActionContext.getRequest().getSession();
+        Usuarios us =(Usuarios)sesion.getAttribute("user");
+        int id =us.getId();
         String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
         System.out.println("" + path);
@@ -62,7 +67,7 @@ public class ActionEliminarPregunta extends ActionSupport {
           for(i=0;i<lista.size();i++)
           {
              Element pregunta2=(Element)lista.get(i);
-              if(Integer.parseInt(pregunta2.getAttributeValue("id"))==pregunta)
+              if(Integer.parseInt(pregunta2.getAttributeValue("id"))==pregunta && Integer.parseInt(pregunta2.getAttributeValue("idcreador"))==id)
               {
                   break;
               }
@@ -74,8 +79,11 @@ public class ActionEliminarPregunta extends ActionSupport {
             for(i=i;i<lista.size();i++)
             {
                 Element pregunta3 = (Element)lista.get(i);
+                if(Integer.parseInt(pregunta3.getAttributeValue("idcreador"))==id)
+                {
                 pregunta3.getAttribute("id").setValue("" + z);
                 z++;
+                }
             }
           
           xmlout.setFormat(Format.getPrettyFormat());

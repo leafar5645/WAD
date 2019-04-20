@@ -2,14 +2,7 @@
 <!DOCTYPE Banco>
 
 <Banco>
-  <Pregunta id="0" texto="Pregunta de prueba">
-    <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
-      <Recurso tipo="audio" src="audio.mp3" />
-      <option value="option1" />
-      <option value="option2" />
-      <option value="option3" />
-      <option value="option4" />
-    </Seccion>
+  <Pregunta id="0" texto="Pregunta de prueba" idcreador="1">
     <Seccion texto="texto1" tipo="seleccion 2" id="2" respuesta="option2">
       <Recurso tipo="video" src="video.mp4" />
       <option value="option1" />
@@ -24,8 +17,33 @@
       <option value="option3" />
       <option value="option4" />
     </Seccion>
+    <Seccion texto="Replace" tipo="seleccion" id="1" respuesta="option1">
+      <Recurso tipo="audio" src="audio.mp3" />
+      <option value="option1" />
+      <option value="option1" />
+      <option value="option1" />
+      <option value="option1" />
+    </Seccion>
   </Pregunta>
-  <Pregunta id="1" texto="Pregunta de prueba">
+  <Pregunta id="1" texto="Pregunta de prueba 1" idcreador="1">
+    <Seccion texto="texto1" tipo="seleccion 2" id="2" respuesta="option2">
+      <Recurso tipo="video" src="video.mp4" />
+      <option value="option1" />
+      <option value="option2" />
+      <option value="option3" />
+      <option value="option4" />
+    </Seccion>
+  </Pregunta>
+  <Pregunta id="2" texto="Pregunta de prueba 2" idcreador="1">
+    <Seccion texto="texto1" tipo="seleccion 2" id="2" respuesta="option2">
+      <Recurso tipo="video" src="video.mp4" />
+      <option value="option1" />
+      <option value="option2" />
+      <option value="option3" />
+      <option value="option4" />
+    </Seccion>
+  </Pregunta>
+  <Pregunta id="0" texto="Pregunta 0 del creador 2" idcreador="2">
     <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
       <Recurso tipo="audio" src="audio.mp3" />
       <option value="option1" />
@@ -34,7 +52,7 @@
       <option value="option1" />
     </Seccion>
   </Pregunta>
-  <Pregunta id="2" texto="Pregunta de prueba">
+  <Pregunta id="1" texto="Pregunta 1 del creador 2" idcreador="2">
     <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
       <Recurso tipo="audio" src="audio.mp3" />
       <option value="option1" />
@@ -43,5 +61,14 @@
       <option value="option1" />
     </Seccion>
   </Pregunta>
-</Banco>
+  <Pregunta id="0" texto="Pregunta 0 del creador 3" idcreador="3">
+    <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
+      <Recurso tipo="audio" src="audio.mp3" />
+      <option value="option1" />
+      <option value="option1" />
+      <option value="option1" />
+      <option value="option1" />
+    </Seccion>
+  </Pregunta>
+ </Banco>
 

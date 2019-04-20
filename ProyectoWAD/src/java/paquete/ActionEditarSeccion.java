@@ -6,12 +6,14 @@
 package paquete;
 
 import com.opensymphony.xwork2.ActionSupport;
+import entity.Usuarios;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -56,6 +58,9 @@ public class ActionEditarSeccion extends ActionSupport {
     }
     
     public String execute() throws Exception {
+          HttpSession sesion=ServletActionContext.getRequest().getSession();
+        Usuarios us =(Usuarios)sesion.getAttribute("user");
+        int id =us.getId();
          idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
         String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
@@ -79,7 +84,7 @@ public class ActionEditarSeccion extends ActionSupport {
           {
               Element pregunta = (Element) lista.get(i);
               System.out.println("------"+pregunta.getAttribute("id").getValue());
-              if(Integer.parseInt(pregunta.getAttribute("id").getValue())==idpregunta)
+              if(Integer.parseInt(pregunta.getAttribute("id").getValue())==idpregunta && Integer.parseInt(pregunta.getAttribute("idcreador").getValue())==id )
               {
                   System.out.println("la i " + i);
               List lista2= pregunta.getChildren("Seccion");

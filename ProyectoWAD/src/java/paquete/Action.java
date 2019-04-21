@@ -1,6 +1,7 @@
 package paquete;
 
 import com.opensymphony.xwork2.ActionSupport;
+import entity.Usuarios;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
@@ -59,10 +60,11 @@ public class Action extends ActionSupport {
         HttpServletRequest r=ServletActionContext.getRequest();
         //password=r.getParameter("password");
         //nombre=r.getParameter("nombre");
-    
+    Usuarios us =(Usuarios) r.getSession().getAttribute("user");
         System.out.println("arch:"+archivoContentType);
         
        String path= ServletActionContext.getServletContext().getRealPath("/image");
+      path=path + "/" + us.getId();
       String cadenaNormalize = Normalizer.normalize(archivoFileName, Normalizer.Form.NFD);   
       String cadenaSinAcentos = cadenaNormalize.replaceAll("[^\\p{ASCII}]", "");
       System.out.println("Resultado: " + cadenaSinAcentos);

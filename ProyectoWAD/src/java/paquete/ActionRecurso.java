@@ -61,7 +61,7 @@ public class ActionRecurso extends ActionSupport {
     {
         if(tipo.contains("image"))
         { 
-            if(file.contains(".jpeg") || file.contains(".png") || file.contains(".jpg"))
+            if(file.contains(".jpeg") || file.contains(".png") || file.contains(".jpg") || file.contains(".gif"))
             {
                 return true;
             }

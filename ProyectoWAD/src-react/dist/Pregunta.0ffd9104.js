@@ -36761,7 +36761,7 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.Multiple = Multiple;
-},{"react":"../node_modules/react/index.js","./recurso.js":"recurso.js","jquery":"../node_modules/jquery/dist/jquery.js"}],"Cuestionario.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./recurso.js":"recurso.js","jquery":"../node_modules/jquery/dist/jquery.js"}],"Pregunta.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36810,14 +36810,39 @@ function (_React$Component) {
     _this.state = {
       Preguntas: [],
       i: 0,
-      idPreg: props.id
+      idPreg: _this.obtenerIDPreg()
     };
     _this.AgregarMultiple = _this.AgregarMultiple.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.manejadorCambiosTitulo = _this.manejadorCambiosTitulo.bind(_assertThisInitialized(_this));
     return _this;
-  }
+  } //haciendo peticion AJAX para obtener el siguiete ID de pregunta.
+
 
   _createClass(Pregunta, [{
+    key: "obtenerIDPreg",
+    value: function obtenerIDPreg() {
+      var formData = new FormData();
+      $.ajax({
+        url: 'ActionAddSection',
+        type: 'Post',
+        data: formData,
+        async: false,
+        processData: false,
+        // tell jQuery not to process the data
+        contentType: false,
+        // tell jQuery not to set contentType
+        success: function success(data) {
+          console.log(data.toString());
+          return parseInt(data.toString);
+        },
+        error: function error(data) {
+          console.log(data.toString());
+          alert("ERROR en recepcion de IDPREG");
+        }
+      });
+    }
+  }, {
     key: "AgregarMultiple",
     value: function AgregarMultiple() {
       var _this2 = this;
@@ -36864,10 +36889,42 @@ function (_React$Component) {
       alert("eliminar" + id);
     }
   }, {
+    key: "manejadorCambiosEscritura",
+    value: function manejadorCambiosEscritura(e) {
+      console.log(e.target.value);
+      var formData = new FormData();
+      formData.append("idpregunta", this.props.idPreg);
+      formData.append("seccion", xmlDoc);
+      $.ajax({
+        url: 'ActionAddSection',
+        type: 'Post',
+        data: formData,
+        async: false,
+        processData: false,
+        // tell jQuery not to process the data
+        contentType: false,
+        // tell jQuery not to set contentType
+        success: function success(data) {
+          console.log(data.toString());
+          if (data.toString == "listo") alerta("Guardado");else alert("ERROR");
+        },
+        error: function error(data) {
+          console.log(data.toString());
+          alert("ERROR");
+        }
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var preg = this.pedir();
-      return _react.default.createElement("div", null, _react.default.createElement("button", {
+      return _react.default.createElement("div", null, "Nombre de pregunta: ", _react.default.createElement("input", {
+        type: "text",
+        name: "pregunta",
+        onChange: this.manejadorCambiosTitulo
+      }), _react.default.createElement("button", {
+        onClick: this.manejadorCambiosTitulo
+      }, "Listo"), _react.default.createElement("br", null), _react.default.createElement("button", {
         onClick: this.AgregarMultiple
       }, "Agregar Opcion Multiple"), _react.default.createElement("br", null), preg, _react.default.createElement("input", {
         type: "submit",
@@ -36881,19 +36938,7 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.Pregunta = Pregunta;
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Multiple.js":"Multiple.js"}],"CuestionarioUnion.js":[function(require,module,exports) {
-"use strict";
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactDom = _interopRequireDefault(require("react-dom"));
-
-var _Cuestionario = require("./Cuestionario.js");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_reactDom.default.render(_react.default.createElement(Pregunta, null), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Cuestionario.js":"Cuestionario.js"}],"../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Multiple.js":"Multiple.js"}],"../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -36921,7 +36966,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50402" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55809" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -37096,5 +37141,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","CuestionarioUnion.js"], null)
-//# sourceMappingURL=/CuestionarioUnion.3b3cfd5c.js.map
+},{}]},{},["../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","Pregunta.js"], null)
+//# sourceMappingURL=/Pregunta.0ffd9104.js.map

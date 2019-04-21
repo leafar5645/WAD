@@ -14,7 +14,7 @@ export class Recurso extends React.Component {
       return "img";
     else if (ex=="mp4") 
       return "video";
-    else if(ex=="mp3")
+    else if(ex=="mp3"||ex=="m4a")
       return "audio";
     else 
       return "error";

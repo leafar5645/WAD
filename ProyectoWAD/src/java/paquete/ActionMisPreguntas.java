@@ -58,7 +58,7 @@ public class ActionMisPreguntas extends ActionSupport {
               if(Integer.parseInt(pregunta.getAttributeValue("idcreador"))==id)
               {
                   System.out.println("entre: " + pregunta.getAttributeValue("id") );
-                  preguntas[Integer.parseInt(pregunta.getAttributeValue("id"))]=pregunta.getAttributeValue("id") + ") " +pregunta.getAttributeValue("texto") ;
+                  preguntas[Integer.parseInt(pregunta.getAttributeValue("id"))]=pregunta.getAttributeValue("id") + ")" +pregunta.getAttributeValue("texto") ;
               }
           }
           String respuesta="";
@@ -67,6 +67,8 @@ public class ActionMisPreguntas extends ActionSupport {
               if(preguntas[i]!= null)
               respuesta=respuesta + preguntas[i] + "@";
           }
+         if(respuesta.equals(""))
+             respuesta="@_VACIO_@@";
          respuesta= respuesta.substring(0, respuesta.length()-1);
           responseStream = new StringBufferInputStream(respuesta);
         return SUCCESS;

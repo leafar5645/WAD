@@ -18,12 +18,9 @@ Mis Preguntas</title>
             Preguntas de: <% if(a!=null)out.print(a.getNombre()); else response.sendRedirect("index.html");%>
         </h1>
 
- <div id="root">
- </div>
- <script src="/ProyectoWAD/TablaPreguntasProfesor.69aca4c7.js"> 
-</script> 
- <script src="/ProyectoWAD/BarraNavRender.898bd891.js"> 
-</script> 
-<a href="Cuestionario.html">Nueva Pregunta</a>
+        <div id="root">
+        </div>
+        <script src="/ProyectoWAD/TablaPreguntasProfesor.ff459745.js"></script>
+        <script src="/ProyectoWAD/BarraNavRender.898bd891.js"></script>
   </body>
 </html>

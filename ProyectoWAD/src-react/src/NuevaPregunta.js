@@ -1,9 +1,9 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import {Cuestionario} from "./Cuestionario.js"
+import {Pregunta} from "./Pregunta.js"
 
 ReactDOM.render(
-  <Cuestionario/>,
+  <Pregunta modo="nuevo" />,
   document.getElementById('root')
 );

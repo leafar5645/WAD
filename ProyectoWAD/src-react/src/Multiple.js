@@ -7,15 +7,16 @@ export class Multiple extends React.Component {
   {
     super(props);
     if(props.modo=="ver"||props.modo=="editar")
-      this.state = {id:props.id, Pregunta:this.obtenerPregunta(), Opciones: this.obtenerOpciones(), Respuesta: this.obtenerRespuesta(), Recurso: this.obtenerRecurso()};
+      this.state = {modo:props.modo, id:props.id, Pregunta:this.obtenerPregunta(), Opciones: this.obtenerOpciones(), Respuesta: this.obtenerRespuesta(), Recurso: this.obtenerRecurso(), RecursosUser: [], Tipo:""};
     else if(props.modo=="nuevo")
-      this.state = {id:props.id,Pregunta:"", Opciones: [], Respuesta: "", Recurso: ""};
+      this.state = {modo:props.modo, id:props.id,Pregunta:"", Opciones: [], Respuesta: "", Recurso: "", RecursosUser: [], Tipo:""};
     this.manejadorCambiosEscritura=this.manejadorCambiosEscritura.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
+    this.obtenerRecursosUsuario=this.obtenerRecursosUsuario.bind(this);
   }
+  //Actualiza los estados conforma se escribe
   manejadorCambiosEscritura(e)
   {
-
     if(e.target.name=="nombre")
       this.setState({Pregunta: e.target.value});
     else if(e.target.name=="recurso")
@@ -31,8 +32,9 @@ export class Multiple extends React.Component {
     {
       this.setState({Respuesta:e.target.value});
     }
-    console.log(e.target.value);
+    //console.log(e.target.value);
   }
+  //guarda en servidor la seccion
   handleSubmit(event)
   {
     event.preventDefault();
@@ -54,67 +56,225 @@ export class Multiple extends React.Component {
       //agregando opciones
       for (var i = 0 ; i< this.state.Opciones.length; i++) 
       {
-        var opc=xmlDoc.createElement("Opcion");
+        var opc=xmlDoc.createElement("option");
         var att = xmlDoc.createAttribute("value");      
         att.value = this.state.Opciones[i];
         opc.setAttributeNode(att); 
          xmlDoc.getElementsByTagName("section")[0].appendChild(opc);
       } 
+      this.setState({modo:"editar"});
     }
-    console.log(xmlDoc);
-    
-    alert("Armado de XML");
+    //Haciendo peticion para enviar xml construido
+    //console.log(xmlDoc);
+    var oSerializer = new XMLSerializer();
+      var sXML = oSerializer.serializeToString(xmlDoc);
+      var formData = new FormData();
+     formData.append("idpregunta" ,this.props.idPreg);
+     formData.append("seccion" ,sXML);
+       $.ajax({
+              url: 'ActionAddSection',
+              type: 'Post',
+              data: formData,
+              async:false,
+              processData: false, // tell jQuery not to process the data
+              contentType: false, // tell jQuery not to set contentType
+              success: function (data) {
+                  console.log(data.toString());
+                  if(data.toString=="listo")
+                    alerta("Guardado");
+                  else
+                    alert("ERROR");
+              },
+              error: function (data) {
+                  console.log(data.toString());
+                  alert("ERROR");
+              }
+          });
   }
   obtenerOpciones()
   {
-    var opciones=["=5","=8","=4"];
+    var opciones=[];
+    var formData = new FormData();
+     formData.append("idpregunta" ,this.state.idPreg);
+       $.ajax({
+              url: 'DarPregunta',
+              type: 'Post',
+              data: formData,
+              async:false,
+              processData: false, // tell jQuery not to process the data
+              contentType: false, // tell jQuery not to set contentType
+              success: function (data) {
+                   var parser = new DOMParser();
+                   var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
+                   console.log(xmlDoc);
+                   var sec=xmlDoc.getElementsByTagName("Seccion");
+                   for (var i = 0; i < sec.length; i++) 
+                   {
+                     if(sec[i].id==this.props.id)
+                     {
+                        var opc =sec[i].getElementsByTagName('option'); 
+                       for (var j = 0; i < opc.length; j++) 
+                       {
+                         opciones.push(opc[j].value);
+                       }
+                     }
+                    
+                   }
+              },
+              error: function (data)
+              {
+                  console.log(data.toString());
+                  opciones=["=5","=8","=4"];
+                  alert("ERROR en recepcion de Opciones");
+              }
+          });
     return opciones;
   }
    obtenerRespuesta()
   {
-    var res="5"
+    var res="";
+    var formData = new FormData();
+     formData.append("idpregunta" ,this.state.idPreg);
+       $.ajax({
+              url: 'DarPregunta',
+              type: 'Post',
+              data: formData,
+              async:false,
+              processData: false, // tell jQuery not to process the data
+              contentType: false, // tell jQuery not to set contentType
+              success: function (data) {
+                   var parser = new DOMParser();
+                   var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
+                   console.log(xmlDoc);
+                   var sec=xmlDoc.getElementsByTagName("Seccion");
+                   for (var i = 0; i < sec.length; i++) 
+                   {
+                     if(sec[i].id==this.props.id)
+                     {
+                        res =sec[i].respuesta; 
+                     }
+                    
+                   }
+              },
+              error: function (data)
+              {
+                  console.log(data.toString());
+                  res="1=";
+                  alert("ERROR en recepcion de RESPUESTA");
+              }
+          });
     return res;
   }
     obtenerPregunta()
   {
-    var pregunta= "¿2+2?"
-    return pregunta;
+    var res="";
+    var formData = new FormData();
+     formData.append("idpregunta" ,this.state.idPreg);
+       $.ajax({
+              url: 'DarPregunta',
+              type: 'Post',
+              data: formData,
+              async:false,
+              processData: false, // tell jQuery not to process the data
+              contentType: false, // tell jQuery not to set contentType
+              success: function (data) {
+                   var parser = new DOMParser();
+                   var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
+                   console.log(xmlDoc);
+                   var sec=xmlDoc.getElementsByTagName("Seccion");
+                   for (var i = 0; i < sec.length; i++) 
+                   {
+                     if(sec[i].id==this.props.id)
+                     {
+                        res =sec[i].texto; 
+                     }
+                    
+                   }
+              },
+              error: function (data)
+              {
+                  console.log(data.toString());
+                  res="1+1"
+                  alert("ERROR en recepcion de PREGUNTA");
+              }
+          });
+    return res;
   }
   obtenerRecurso()
   {
-    var src= "Recursos/imagen.jpg"
-    return src;
-  }
-  obtenerRecursosUsuario()
-  {
-    var rec=[];
+    var res="";
     var formData = new FormData();
-   formData.append("tipo" , "image");
-     $.ajax({
-            url: 'ActionRecursos',
-            type: 'Post',
-            data: formData,
-            async:false,
-            processData: false, // tell jQuery not to process the data
-            contentType: false, // tell jQuery not to set contentType
-            success: function (data) {
-              if(data.toString().indexOf("@")!=-1)
-                rec  =data.toString().split("@");
-                console.log(data.toString());
-            },
-            error: function () {
-                console.log("ERROR DE PETICION");
-                rec=["ejemplo/imagen.jpg","ejemplo/video.mp4","ejemplo/audio.mp3"];
-            }
-        });
-    var selects=[];
-    selects.push(<option value="">Sin Medios</option>);
-   
-    for (var i =  0; i < rec.length; i++) 
+     formData.append("idpregunta" ,this.state.idPreg);
+       $.ajax({
+              url: 'DarPregunta',
+              type: 'Post',
+              data: formData,
+              async:false,
+              processData: false, // tell jQuery not to process the data
+              contentType: false, // tell jQuery not to set contentType
+              success: function (data) {
+                   var parser = new DOMParser();
+                   var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
+                   console.log(xmlDoc);
+                   var sec=xmlDoc.getElementsByTagName("Seccion");
+                   for (var i = 0; i < sec.length; i++) 
+                   {
+                     if(sec[i].id==this.props.id)
+                     {
+                        res =sec[i].getElementsByTagName('Recurso')[0].src; 
+                     }
+                    
+                   }
+              },
+              error: function (data)
+              {
+                  console.log(data.toString());
+                  res="image/imagen.jpg";
+                  alert("ERROR en recepcion de RECURSO");
+              }
+          });
+    return res;
+  }
+  //solicita al servidor los recursos del cliente
+  obtenerRecursosUsuario(e)
+  {
+    console.log(e.target.value);
+    this.setState({Tipo: e.target.value});
+    if(e.target.value!="")
     {
-      selects.push(<option value={"image/"+rec[i]}>{rec[i]}</option>);
+      var rec=[];
+      var formData = new FormData();
+     formData.append("tipo" ,e.target.value);
+       $.ajax({
+              url: 'ActionRecursos',
+              type: 'Post',
+              data: formData,
+              async:false,
+              processData: false, // tell jQuery not to process the data
+              contentType: false, // tell jQuery not to set contentType
+              success: function (data) {
+                if(data.toString().indexOf("@")!=-1)
+                  rec  =data.toString().split("@");
+                  console.log(data.toString());
+              },
+              error: function () {
+                  console.log("ERROR DE PETICION");
+                  rec=["ejemplo/imagen.jpg","ejemplo/video.mp4","ejemplo/audio.mp3"];
+              }
+          });
+      var selects=[];
+      selects.push(<option value="">Sin Medios</option>);
+     
+      for (var i =  0; i < rec.length; i++) 
+      {
+        selects.push(<option value={e.target.value+"/"+rec[i]} key={rec[i]}>{rec[i]}</option>);
+      }
+
+      this.setState({RecursosUser: selects});
     }
-    return selects;
+    else
+      this.setState({RecursosUser: [<option value="">Sin Medios</option>]});
+    
   }
   generarOpcionesVer()
   {
@@ -150,28 +310,36 @@ export class Multiple extends React.Component {
     } 
 
     opciones.push("Seleccione un Recurso: ");
-    
-    opciones.push(
-          <select value={this.state.Recurso} name ="recurso" key="NameRec" onChange={this.manejadorCambiosEscritura}>
-          {this.obtenerRecursosUsuario()}
+      opciones.push(
+          <select  name="tipo" key={"NameTipo"+this.state.id}  onChange={this.obtenerRecursosUsuario}> 
+            <option value="">Sin Medios</option>
+            <option value="image">Imagenes</option>
+            <option value="video">Videos</option>
+            <option value="audio">Audios</option>
+          </select>
+          );
+      opciones.push(
+          <select value={this.state.Recurso} name ="recurso" key={"NameRec"+this.state.id} onChange={this.manejadorCambiosEscritura}>
+          {this.state.RecursosUser}
           </select>
       );
     return opciones;
    
   }
   render() {
-    if (this.props.modo=="ver")
+    if (this.state.modo=="ver")
       var opciones=this.generarOpcionesVer();
     else
       var opciones=this.generarOpcionesMod();
     return (
       <div>
        <form onSubmit={this.handleSubmit}>
-       Seleccione la Respuesta Correcta: <br/>
+       
       {opciones}  
       <br/>
        <input type="submit" value="Guardar" />
       </form>
+      <br/><br/>
       </div>
       
     );

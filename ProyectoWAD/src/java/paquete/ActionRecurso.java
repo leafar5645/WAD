@@ -66,7 +66,6 @@ public class ActionRecurso extends ActionSupport {
         }
         if(tipo.contains("video"))
         {
-            System.out.println("entre");
             if(file.contains(".mp4"))
             {
                 return true;
@@ -92,17 +91,17 @@ public class ActionRecurso extends ActionSupport {
          for(int i=0;i<ficheros.length;i++)
          {
              resources = new ArrayList<String>();
-             System.out.println("--" + ficheros[i]);
+             //System.out.println("--" + ficheros[i]);
              if(validResource(ficheros[i]))
              resource = resource + "@" + ficheros[i];
          }
          if(resource.length()>1)
          {
-       resource=resource.substring(1);
+            resource=resource.substring(1);
          }
          else
          {
-         resource="vacio";    
+            resource="vacio";    
          }
          System.out.println("" + resource);
        resourceStream = new StringBufferInputStream(resource);

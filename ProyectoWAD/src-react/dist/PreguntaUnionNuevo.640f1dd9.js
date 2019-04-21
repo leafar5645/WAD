@@ -36556,13 +36556,14 @@ function (_React$Component) {
           modo: "editar"
         });
       } //Haciendo peticion para enviar xml construido
+      //console.log(xmlDoc);
 
 
-      console.log(xmlDoc);
-      var rec = [];
+      var oSerializer = new XMLSerializer();
+      var sXML = oSerializer.serializeToString(xmlDoc);
       var formData = new FormData();
       formData.append("idpregunta", this.props.idPreg);
-      formData.append("seccion", xmlDoc);
+      formData.append("seccion", sXML);
 
       _jquery.default.ajax({
         url: 'ActionAddSection',
@@ -36753,7 +36754,7 @@ function (_React$Component) {
       }, opciones, _react.default.createElement("br", null), _react.default.createElement("input", {
         type: "submit",
         value: "Guardar"
-      })));
+      })), _react.default.createElement("br", null), _react.default.createElement("br", null));
     }
   }]);
 
@@ -36761,7 +36762,7 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.Multiple = Multiple;
-},{"react":"../node_modules/react/index.js","./recurso.js":"recurso.js","jquery":"../node_modules/jquery/dist/jquery.js"}],"Cuestionario.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./recurso.js":"recurso.js","jquery":"../node_modules/jquery/dist/jquery.js"}],"Pregunta.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36774,6 +36775,8 @@ var _react = _interopRequireDefault(require("react"));
 var _reactDom = _interopRequireDefault(require("react-dom"));
 
 var _Multiple = require("./Multiple.js");
+
+var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36809,15 +36812,75 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Pregunta).call(this, props));
     _this.state = {
       Preguntas: [],
-      i: 0,
-      idPreg: props.id
+      i: _this.obtenerIDMaxSec(),
+      idPreg: _this.obtenerIDPreg(),
+      modo: props.modo,
+      nombre: props.nombre
     };
     _this.AgregarMultiple = _this.AgregarMultiple.bind(_assertThisInitialized(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.manejadorCambiosTitulo = _this.manejadorCambiosTitulo.bind(_assertThisInitialized(_this));
+    _this.NuevoTitulo = _this.NuevoTitulo.bind(_assertThisInitialized(_this));
     return _this;
-  }
+  } //haciendo peticion AJAX para obtener el siguiete ID de pregunta.
+
 
   _createClass(Pregunta, [{
+    key: "obtenerIDPreg",
+    value: function obtenerIDPreg() {
+      if (this.props.modo == "nuevo") {
+        _jquery.default.ajax({
+          url: 'UltimaPregunta',
+          type: 'Post',
+          async: false,
+          processData: false,
+          // tell jQuery not to process the data
+          contentType: false,
+          // tell jQuery not to set contentType
+          success: function success(data) {
+            console.log(data.toString());
+            return parseInt(data.toString);
+          },
+          error: function error(data) {
+            console.log(data.toString());
+            alert("ERROR en recepcion de IDPREG");
+          }
+        });
+      } else {
+        return this.props.id;
+      }
+    }
+  }, {
+    key: "obtenerIDMaxSec",
+    value: function obtenerIDMaxSec() {
+      if (this.props.modo == "nuevo") {
+        return 0;
+      } else {
+        _jquery.default.ajax({
+          url: 'UltimaPregunta',
+          type: 'Post',
+          async: false,
+          processData: false,
+          // tell jQuery not to process the data
+          contentType: false,
+          // tell jQuery not to set contentType
+          success: function success(data) {
+            console.log(data.toString());
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(data.toString(), "text/xml");
+            console.log(xmlDoc);
+            var sec = xmlDoc.getElementsByTagName("Seccion");
+            console.log(sec.length() - 1);
+            return sec.length() - 1;
+          },
+          error: function error(data) {
+            console.log(data.toString());
+            alert("ERROR en recepcion de IDMAXSEC");
+          }
+        });
+      }
+    }
+  }, {
     key: "AgregarMultiple",
     value: function AgregarMultiple() {
       var _this2 = this;
@@ -36844,19 +36907,30 @@ function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit() {
-      alert("Armado de XML");
+      window.location.replace("TablaPreguntasProfesor.jsp");
       event.preventDefault();
     }
   }, {
     key: "pedir",
     value: function pedir() {
-      var aux = [];
+      if (this.state.modo != "ver") {
+        var aux = [];
 
-      for (var i = 0; i < this.state.Preguntas.length; i++) {
-        aux.push(this.state.Preguntas[i]);
-      }
+        for (var i = 0; i < this.state.Preguntas.length; i++) {
+          aux.push(this.state.Preguntas[i]);
+        }
 
-      return aux;
+        return aux;
+      } else //en caso de que solo queremos "ver" todos los modos se cambian a ver
+        {
+          var aux = [];
+
+          for (var i = 0; i < this.state.Preguntas.length; i++) {
+            aux.push(this.state.Preguntas[i].modo = "ver");
+          }
+
+          return aux;
+        }
     }
   }, {
     key: "Eliminar",
@@ -36864,10 +36938,107 @@ function (_React$Component) {
       alert("eliminar" + id);
     }
   }, {
+    key: "manejadorCambiosTitulo",
+    value: function manejadorCambiosTitulo(e) {
+      this.setState({
+        nombre: e.target.value
+      });
+    }
+  }, {
+    key: "NuevoTitulo",
+    value: function NuevoTitulo() {
+      console.log("Nuevo titulo");
+
+      if (this.state.modo == "nuevo") {
+        var inicial = "<Pregunta id='" + this.state.idPreg + "' texto='" + this.state.nombre + "' ></Pregunta>";
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString(inicial, "text/xml");
+        var oSerializer = new XMLSerializer();
+        var sXML = oSerializer.serializeToString(xmlDoc);
+        var formData = new FormData();
+        console.log("XML: " + sXML);
+        formData.append("pregunta", sXML);
+
+        _jquery.default.ajax({
+          url: 'CrearPregunta',
+          type: 'Post',
+          data: formData,
+          async: false,
+          processData: false,
+          // tell jQuery not to process the data
+          contentType: false,
+          // tell jQuery not to set contentType
+          success: function success(data) {
+            if (data.toString() != "listo") alert("ERROR en envio de Titulo");
+          },
+          error: function error(data) {
+            console.log(data.toString());
+            alert("ERROR en envio de Titulo");
+          }
+        });
+
+        this.setState({
+          modo: "editar"
+        });
+      } else if (this.state.modo == "editar") {
+        //pedimos la pregunta actual
+        var pregunta;
+        var formData = new FormData();
+        formData.append("idpregunta", this.state.idPreg);
+
+        _jquery.default.ajax({
+          url: 'DarPregunta',
+          type: 'Post',
+          data: formData,
+          async: false,
+          processData: false,
+          // tell jQuery not to process the data
+          contentType: false,
+          // tell jQuery not to set contentType
+          success: function success(data) {
+            var parser = new DOMParser();
+            pregunta = parser.parseFromString(data.toString(), "text/xml");
+            pregunta.getElementsByTagName('Pregunta')[0].texto = this.state.nombre;
+          },
+          error: function error(data) {
+            console.log(data.toString());
+            alert("ERROR en envio de Titulo");
+          }
+        });
+
+        var formData = new FormData();
+        formData.append("pregunta", pregunta);
+
+        _jquery.default.ajax({
+          url: 'EditarPregunta',
+          type: 'Post',
+          data: formData,
+          async: false,
+          processData: false,
+          // tell jQuery not to process the data
+          contentType: false,
+          // tell jQuery not to set contentType
+          success: function success(data) {
+            if (data.toString() != "listo") alert("ERROR en envio de Titulo");
+          },
+          error: function error(data) {
+            console.log(data.toString());
+            alert("ERROR en envio de Titulo");
+          }
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var preg = this.pedir();
-      return _react.default.createElement("div", null, _react.default.createElement("button", {
+      return _react.default.createElement("div", null, "Nombre de pregunta: ", _react.default.createElement("input", {
+        type: "text",
+        name: "pregunta",
+        onChange: this.manejadorCambiosTitulo
+      }), _react.default.createElement("button", {
+        onClick: this.NuevoTitulo
+      }, "Listo"), _react.default.createElement("br", null), _react.default.createElement("button", {
         onClick: this.AgregarMultiple
       }, "Agregar Opcion Multiple"), _react.default.createElement("br", null), preg, _react.default.createElement("input", {
         type: "submit",
@@ -36881,19 +37052,21 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.Pregunta = Pregunta;
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Multiple.js":"Multiple.js"}],"CuestionarioUnion.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Multiple.js":"Multiple.js","jquery":"../node_modules/jquery/dist/jquery.js"}],"PreguntaUnionNuevo.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
 
-var _Cuestionario = require("./Cuestionario.js");
+var _Pregunta = require("./Pregunta.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom.default.render(_react.default.createElement(Pregunta, null), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Cuestionario.js":"Cuestionario.js"}],"../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+_reactDom.default.render(_react.default.createElement(_Pregunta.Pregunta, {
+  modo: "nuevo"
+}), document.getElementById('root'));
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Pregunta.js":"Pregunta.js"}],"../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -36921,7 +37094,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50402" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57111" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -37096,5 +37269,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","CuestionarioUnion.js"], null)
-//# sourceMappingURL=/CuestionarioUnion.3b3cfd5c.js.map
+},{}]},{},["../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","PreguntaUnionNuevo.js"], null)
+//# sourceMappingURL=/PreguntaUnionNuevo.640f1dd9.js.map

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Banco>
+
+<Banco>
+  <Pregunta id="0" texto="Pregunta de prueba" idcreador="1">
+    <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
+      <Recurso tipo="audio" src="audio.mp3" />
+      <option value="option1" />
+      <option value="option2" />
+      <option value="option3" />
+      <option value="option4" />
+    </Seccion>
+    <Seccion texto="seccion 3" tipo="seleccion" id="2" respuesta="option1">
+      <Recurso tipo="audio" src="audio.mp3" />
+      <option value="option1" />
+      <option value="option2" />
+      <option value="option3" />
+      <option value="option4" />
+    </Seccion>
+    <Seccion texto="seccion 4" tipo="seleccion" id="3" respuesta="option1">
+      <Recurso tipo="audio" src="audio.mp3" />
+      <option value="option1" />
+      <option value="option2" />
+      <option value="option3" />
+      <option value="option4" />
+    </Seccion>
+  </Pregunta>
+  <Pregunta id="1" texto="Pregunta1" idcreador="2">
+    <Seccion texto="que edad tienes" tipo="multiple" id="1" respuesta="4">
+      <option value="1" />
+      <option value="2" />
+      <option value="4" />
+    </Seccion>
+    <Seccion texto="como te llamas" tipo="multiple" id="0" respuesta="Hola3">
+      <option value="Hola1" />
+      <option value="Hola2" />
+      <option value="Hola5" />
+    </Seccion>
+  </Pregunta>
+</Banco>
+

@@ -63,7 +63,7 @@ public class ActionCrearPregunta extends ActionSupport {
           SAXBuilder builder = new SAXBuilder();
           doc=builder.build(fXmlFile);
            //System.out.println("-----------------llegue" );
-          InputStream stream = new ByteArrayInputStream(pregunta.getBytes("UTF-8"));
+          InputStream stream = new ByteArrayInputStream(pregunta.getBytes("ISO-8859-1"));
           System.out.println("----" + pregunta);
           Document Dpregunta = builder.build(stream);
           Element newPregunta=Dpregunta.getRootElement();

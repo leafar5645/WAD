@@ -91,7 +91,8 @@ public class ActionRecurso extends ActionSupport {
          String path= ServletActionContext.getServletContext().getRealPath("/image");
          path= path +"/" + us.getId();
         File dir = new File(path); //La clase file tiene 3 constructores  File (String path).  Crea una nueva instancia de tipo file  convirtiendo la cadena de nombre de ruta dada en una ruta de acceso abstracta.
-         String[] ficheros = dir.list();
+         dir.mkdirs();
+        String[] ficheros = dir.list();
           
          resource="";
          for(int i=0;i<ficheros.length;i++)

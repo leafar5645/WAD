@@ -20,7 +20,7 @@ Mis Preguntas</title>
 
         <div id="root">
         </div>
-        <script src="/ProyectoWAD/TablaPreguntasProfesor.ff459745.js"></script>
+        <script src="/ProyectoWAD/TablaPreguntasProfesor.20295238.js"></script>
         <script src="/ProyectoWAD/BarraNavRender.898bd891.js"></script>
   </body>
 </html>

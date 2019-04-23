@@ -61,7 +61,6 @@ public class ActionEditarSeccion extends ActionSupport {
           HttpSession sesion=ServletActionContext.getRequest().getSession();
         Usuarios us =(Usuarios)sesion.getAttribute("user");
         int id =us.getId();
-         idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
         String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
         System.out.println("" + path);
@@ -71,7 +70,7 @@ public class ActionEditarSeccion extends ActionSupport {
           SAXBuilder builder = new SAXBuilder();
           doc=builder.build(fXmlFile);
            //System.out.println("-----------------llegue" );
-          InputStream stream = new ByteArrayInputStream(seccion.getBytes("UTF-8"));
+          InputStream stream = new ByteArrayInputStream(seccion.getBytes("ISO-8859-1"));
           System.out.println("----" + seccion);
           Document Dseccion = builder.build(stream);
           Element newSeccion=Dseccion.getRootElement();

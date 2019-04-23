@@ -63,10 +63,7 @@ public class ActionAddSection extends ActionSupport {
     }
     
     public String execute() throws Exception {
-        
-           
-        int idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
-         HttpSession sesion=ServletActionContext.getRequest().getSession();
+        HttpSession sesion=ServletActionContext.getRequest().getSession();
          Usuarios us =(Usuarios)sesion.getAttribute("user");
         int id =us.getId();
         String path=ServletActionContext.getServletContext().getRealPath("/xml");
@@ -78,13 +75,15 @@ public class ActionAddSection extends ActionSupport {
           SAXBuilder builder = new SAXBuilder();
           doc=builder.build(fXmlFile);
            //System.out.println("-----------------llegue" );
-          InputStream stream = new ByteArrayInputStream(seccion.getBytes("UTF-8"));
+          InputStream stream = new ByteArrayInputStream(seccion.getBytes("ISO-8859-1"));
           System.out.println("----" + seccion);
           Document Dseccion = builder.build(stream);
           Element newSeccion=Dseccion.getRootElement();
           Element newSeccion2=(Element)newSeccion.clone();
           newSeccion2.detach();
           List lista = doc.getRootElement().getChildren("Pregunta");
+         // System.out.println("tamLista"+lista.size());
+          //System.out.println("idpreg="+idpregunta);
           for(int i =0; i<lista.size(); i++)
           {
               Element pregunta = (Element) lista.get(i);
@@ -92,8 +91,9 @@ public class ActionAddSection extends ActionSupport {
               if(Integer.parseInt(pregunta.getAttribute("id").getValue())==idpregunta && Integer.parseInt(pregunta.getAttribute("idcreador").getValue())==id)
               {
                pregunta.addContent(newSeccion2);
+               break;
               }
-              break;
+              
           }
            xmlout.setFormat(Format.getPrettyFormat());
                xmlout.output(doc,new FileWriter(path));

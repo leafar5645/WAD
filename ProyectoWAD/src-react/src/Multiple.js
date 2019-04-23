@@ -38,9 +38,16 @@ export class Multiple extends React.Component {
   handleSubmit(event)
   {
     event.preventDefault();
-    if(this.props.modo=="nuevo")
+    var urlConsulta="";
+    if(this.state.modo=="nuevo")
     {
-      var inicial = "<section text='"+this.state.Pregunta+"' tipo='multiple' id='"+this.state.id+"' respuesta='"+this.state.Respuesta+"'></section>";
+      this.setState({modo:"editar"});
+      urlConsulta="ActionAddSection";
+    }
+    else
+      urlConsulta="EditarSeccion";
+    
+      var inicial = "<Seccion texto='"+this.state.Pregunta+"' tipo='multiple' id='"+this.state.id+"' respuesta='"+this.state.Respuesta+"'></Seccion>";
       
       var parser = new DOMParser();
       var xmlDoc = parser.parseFromString(inicial,"text/xml");
@@ -51,7 +58,7 @@ export class Multiple extends React.Component {
         var att = xmlDoc.createAttribute("src");      
         att.value = this.state.Recurso; 
         rec.setAttributeNode(att); 
-        xmlDoc.getElementsByTagName("section")[0].appendChild(rec);
+        xmlDoc.getElementsByTagName("Seccion")[0].appendChild(rec);
       }
       //agregando opciones
       for (var i = 0 ; i< this.state.Opciones.length; i++) 
@@ -60,19 +67,21 @@ export class Multiple extends React.Component {
         var att = xmlDoc.createAttribute("value");      
         att.value = this.state.Opciones[i];
         opc.setAttributeNode(att); 
-         xmlDoc.getElementsByTagName("section")[0].appendChild(opc);
+         xmlDoc.getElementsByTagName("Seccion")[0].appendChild(opc);
       } 
-      this.setState({modo:"editar"});
-    }
+      
+
     //Haciendo peticion para enviar xml construido
     //console.log(xmlDoc);
+
     var oSerializer = new XMLSerializer();
       var sXML = oSerializer.serializeToString(xmlDoc);
       var formData = new FormData();
+      console.log("-----idpreg= "+this.props.idPreg);
      formData.append("idpregunta" ,this.props.idPreg);
      formData.append("seccion" ,sXML);
        $.ajax({
-              url: 'ActionAddSection',
+              url: urlConsulta,
               type: 'Post',
               data: formData,
               async:false,
@@ -80,17 +89,19 @@ export class Multiple extends React.Component {
               contentType: false, // tell jQuery not to set contentType
               success: function (data) {
                   console.log(data.toString());
-                  if(data.toString=="listo")
-                    alerta("Guardado");
+                  if(data.toString()=="listo")
+                    alert("Guardado");
                   else
-                    alert("ERROR");
+                    alert("ERROR en respuesta");
               },
               error: function (data) {
                   console.log(data.toString());
-                  alert("ERROR");
+                  alert("ERROR en peticion");
               }
           });
+
   }
+  //pide las opciones de esta pregunta
   obtenerOpciones()
   {
     var opciones=[];
@@ -130,6 +141,7 @@ export class Multiple extends React.Component {
           });
     return opciones;
   }
+  //se recupera la respuesta correcta del sistema
    obtenerRespuesta()
   {
     var res="";
@@ -165,6 +177,7 @@ export class Multiple extends React.Component {
           });
     return res;
   }
+  //se recupera el nombrer de la pregunta del servidor
     obtenerPregunta()
   {
     var res="";
@@ -200,6 +213,7 @@ export class Multiple extends React.Component {
           });
     return res;
   }
+  //recupera el recurso usado paar esta pregunta
   obtenerRecurso()
   {
     var res="";
@@ -255,6 +269,11 @@ export class Multiple extends React.Component {
               success: function (data) {
                 if(data.toString().indexOf("@")!=-1)
                   rec  =data.toString().split("@");
+                else if(data.toString()=="vacio")
+                  rec=[];
+                else
+                  rec=[data.toString()];
+
                   console.log(data.toString());
               },
               error: function () {
@@ -267,7 +286,7 @@ export class Multiple extends React.Component {
      
       for (var i =  0; i < rec.length; i++) 
       {
-        selects.push(<option value={e.target.value+"/"+rec[i]} key={rec[i]}>{rec[i]}</option>);
+        selects.push(<option value={"image"+rec[i]} key={rec[i]}>{rec[i]}</option>);
       }
 
       this.setState({RecursosUser: selects});
@@ -276,6 +295,7 @@ export class Multiple extends React.Component {
       this.setState({RecursosUser: [<option value="">Sin Medios</option>]});
     
   }
+  //gebnera de manera estatica.
   generarOpcionesVer()
   {
     var opciones = [];
@@ -293,6 +313,7 @@ export class Multiple extends React.Component {
       return (<div><Recurso src={this.state.Recurso} key={this.state.Recurso+"/"+this.state.Pregunta}/>{opciones}</div>);
     }
   }
+  //genera para modo de edicion y de creacion
   generarOpcionesMod()
   {
     var opciones = [];
@@ -339,7 +360,6 @@ export class Multiple extends React.Component {
       <br/>
        <input type="submit" value="Guardar" />
       </form>
-      <br/><br/>
       </div>
       
     );

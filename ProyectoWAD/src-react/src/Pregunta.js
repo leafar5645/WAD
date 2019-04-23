@@ -9,9 +9,12 @@ export class Pregunta extends React.Component {
   constructor(props) 
   {
     super(props);
-      this.state = {Preguntas: [],i:this.obtenerIDMaxSec(), idPreg: this.obtenerIDPreg(), modo:props.modo, nombre:props.nombre};
+      this.state = {Preguntas: [], idPreg: this.obtenerIDPreg(),i:0, modo:props.modo, nombre:props.nombre};
       if(props.modo!="nuevo")
+      {
         this.pedirPreguntas();
+        this.obtenerIDMaxSec();
+      }
     this.AgregarMultiple=this.AgregarMultiple.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
     this.manejadorCambiosTitulo=this.manejadorCambiosTitulo.bind(this);
@@ -22,6 +25,7 @@ export class Pregunta extends React.Component {
   {
      var preg=[];
     var formData = new FormData();
+    var sec;
      formData.append("idpregunta" ,this.state.idPreg);
        $.ajax({
               url: 'DarPregunta',
@@ -34,16 +38,8 @@ export class Pregunta extends React.Component {
                    var parser = new DOMParser();
                    var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
                    console.log(xmlDoc);
-                   var sec=xmlDoc.getElementsByTagName("Seccion");
-                   for (var i = 0; i < sec.length; i++) 
-                   {
-                     if(sec[i].tipo=="multiple")
-                     {
-                        preg.push(<Multiple modo="editar" idPreg={this.state.idPreg} id={sec[i].id} key={sec[i].id}/>);  
-                     }
-                     preg.push(<br/>);
-                     preg.push(<button onClick={this.Eliminar.bind(this,sec[i].id)}>Eliminar Seccion</button>);
-                   }
+                   sec=xmlDoc.getElementsByTagName("Seccion");
+                   
               },
               error: function (data)
               {
@@ -51,6 +47,15 @@ export class Pregunta extends React.Component {
                   alert("ERROR en recepcion de SECCIONES");
               }
           });
+       for (var i = 0; i < sec.length; i++) 
+       {
+         if(sec[i].tipo=="multiple")
+         {
+            preg.push(<Multiple modo="editar" idPreg={this.state.idPreg} id={sec[i].id} key={sec[i].id}/>);  
+         }
+         preg.push(<br/>);
+         preg.push(<button onClick={this.Eliminar.bind(this,sec[i].id)}>Eliminar Seccion</button>);
+       }
        this.setState({Preguntas: preg});
   }
   //haciendo peticion AJAX para obtener el siguiete ID de pregunta.
@@ -58,6 +63,7 @@ export class Pregunta extends React.Component {
   {
     if(this.props.modo=="nuevo")
     {
+      var result;
        $.ajax({
               url: 'UltimaPregunta',
               type: 'Post',
@@ -66,13 +72,14 @@ export class Pregunta extends React.Component {
               contentType: false, // tell jQuery not to set contentType
               success: function (data) {
                   console.log(data.toString());
-                  return parseInt(data.toString);
+                  result= data.toString();
               },
               error: function (data) {
                   console.log(data.toString());
                   alert("ERROR en recepcion de IDPREG");
               }
           });
+       return result;
      }
      else 
      {
@@ -90,10 +97,13 @@ export class Pregunta extends React.Component {
       }
       else
       {
+        var formData = new FormData();
+         formData.append("idpregunta" ,this.state.idPreg);
         var id=0;
        $.ajax({
-              url: 'UltimaPregunta',
+              url: 'DarPregunta',
               type: 'Post',
+              data: formData,
               async:false,
               processData: false, // tell jQuery not to process the data
               contentType: false, // tell jQuery not to set contentType
@@ -103,8 +113,8 @@ export class Pregunta extends React.Component {
                    var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
                    console.log(xmlDoc);
                    var sec=xmlDoc.getElementsByTagName("Seccion");
-                   console.log(sec.length() -1);
-                   id= sec.length() -1;
+                   console.log((sec.length-1));
+                   id= sec.length -1;
 
               },
               error: function (data)
@@ -122,6 +132,7 @@ export class Pregunta extends React.Component {
     aux.push(<Multiple modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
     aux.push(<br/>);
     aux.push(<button onClick={this.Eliminar.bind(this,this.state.i)}>Eliminar Seccion</button>);
+    aux.push(<br/>);
     this.setState((state) => (
     	{Preguntas: aux, i:this.state.i+1})
     );
@@ -156,7 +167,35 @@ export class Pregunta extends React.Component {
   }
   Eliminar(id)
   {
-  	alert("eliminar"+id)
+    if(confirm("¿Esta Seguro de Eliminar Esta Pregunta?"))
+    {
+      formData.append("idpregunta" ,this.props.idPreg);
+      /*
+     formData.append("seccion" ,sXML);
+       $.ajax({
+              url: urlConsulta,
+              type: 'Post',
+              data: formData,
+              async:false,
+              processData: false, // tell jQuery not to process the data
+              contentType: false, // tell jQuery not to set contentType
+              success: function (data) {
+                  console.log(data.toString());
+                  if(data.toString()=="listo")
+                    alert("Guardado");
+                  else
+                    alert("ERROR en respuesta");
+              },
+              error: function (data) {
+                  console.log(data.toString());
+                  alert("ERROR en peticion");
+              }
+          });
+          */
+
+          alert("Seccion eliminada");
+     }
+  	
   }
   manejadorCambiosTitulo(e)
   {
@@ -193,12 +232,13 @@ export class Pregunta extends React.Component {
           });
       this.setState({modo: "editar"});
     }
-    else if(this.state.modo=="editar")
+    else
     {
       //pedimos la pregunta actual
       var pregunta;
        var formData = new FormData();
      formData.append("idpregunta" ,this.state.idPreg);
+     var nombre=this.state.nombre;
       $.ajax({
               url: 'DarPregunta',
               type: 'Post',
@@ -209,7 +249,7 @@ export class Pregunta extends React.Component {
               success: function (data) {
                    var parser = new DOMParser();
                   pregunta = parser.parseFromString(data.toString(),"text/xml");
-                  pregunta.getElementsByTagName('Pregunta')[0].texto=this.state.nombre;
+                  pregunta.getElementsByTagName('Pregunta')[0].texto=nombre;
               },
               error: function (data) {
                   console.log(data.toString());

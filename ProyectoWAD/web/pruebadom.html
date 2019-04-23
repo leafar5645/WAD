@@ -22,15 +22,16 @@ and open the template in the editor.
       "<option value='option1' />" +
    " </Seccion>" +
    "  </Pregunta>";
-        var parser = new DOMParser();
-        var xmlDoc = parser.parseFromString(textDom,"text/xml");
-        var oSerializer = new XMLSerializer();
-        var sXML = oSerializer.serializeToString(xmlDoc);
-        alert(sXML);
+      //  var parser = new DOMParser();
+        //var xmlDoc = parser.parseFromString(textDom,"text/xml");
+        //var oSerializer = new XMLSerializer();
+        //var sXML = oSerializer.serializeToString(xmlDoc);
+        //alert(sXML);
         var formd= new FormData();
-        //formd.append("pregunta" ,0 );
+        formd.append("idpregunta" ,0 );
+        formd.append("idseccion" ,2 );
         $.ajax({
-            url: 'MisPreguntas',
+            url: 'EliminarSeccion',
             type: 'Post',
             data: formd,
             processData: false, // tell jQuery not to process the data

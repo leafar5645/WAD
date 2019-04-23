@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/betoj/Documents/WAD/ProyectoFinal/GIT/WAD/ProyectoWAD/src/java/paquete/ActionMisPreguntas.java</file>
             <file>file:/C:/Users/betoj/Documents/WAD/ProyectoFinal/GIT/WAD/ProyectoWAD/web/xml/banco.xml</file>
             <file>file:/C:/Users/betoj/Documents/WAD/ProyectoFinal/GIT/WAD/ProyectoWAD/src/java/paquete/ActionAddSection.java</file>
@@ -14,6 +15,18 @@
             <file>file:/C:/Users/betoj/Documents/WAD/ProyectoFinal/GIT/WAD/ProyectoWAD/src/java/paquete/ActionEditarSeccion.java</file>
             <file>file:/C:/Users/betoj/Documents/WAD/ProyectoFinal/GIT/WAD/ProyectoWAD/web/NuevaPregunta.html</file>
             <file>file:/C:/Users/betoj/Documents/WAD/ProyectoFinal/GIT/WAD/ProyectoWAD/src/java/paquete/ActionEditarPregunta.java</file>
+=======
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/src/java/paquete/ActionEliminarSeccion.java</file>
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/web/pruebadom.html</file>
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/src/java/paquete/ActionRecurso.java</file>
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/src/java/paquete/Action.java</file>
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/src/java/struts.xml</file>
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/web/CSS/style.css</file>
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/web/login.html</file>
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/src/java/paquete/ActionRegister.java</file>
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/src/java/paquete/ActionEditarSeccion.java</file>
+            <file>file:/D:/ProyectoWad/WAD/ProyectoWAD/src/java/paquete/ActionEliminarPregunta.java</file>
+>>>>>>> f1b223c7eaf4604855a9fd588faeae143e6894e4
         </group>
     </open-files>
 </project-private>

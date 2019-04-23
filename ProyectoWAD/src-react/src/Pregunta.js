@@ -47,8 +47,10 @@ export class Pregunta extends React.Component {
                   alert("ERROR en recepcion de SECCIONES");
               }
           });
+console.log(sec.length);
        for (var i = 0; i < sec.length; i++) 
        {
+console.log(sec[i]);
          if(sec[i].tipo=="multiple")
          {
             preg.push(<Multiple modo="editar" idPreg={this.state.idPreg} id={sec[i].id} key={sec[i].id}/>);  
@@ -281,6 +283,7 @@ export class Pregunta extends React.Component {
   render() 
   {
   	var preg=this.pedir();
+console.log(preg);
     return (
       <div>
        Nombre de pregunta: <input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo}/>

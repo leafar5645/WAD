@@ -31,7 +31,7 @@ export class Recurso extends React.Component {
     if (this.state.Tipo=="video") 
     {
       console.log("video");
-      var etq=(<video controls>
+      var etq=(<video width="600" height="400" controls >
               <source src={this.state.Nombre} type={"video/"+this.state.Ext} key={this.state.Nombre}/>
                 Tu navegador no implementa el elemento <code>video</code>
               </video>
@@ -40,7 +40,7 @@ export class Recurso extends React.Component {
 
     else if (this.state.Tipo=="img")
     {
-     var etq= <img src={this.state.Nombre} width="70%" height="50%" key={this.state.Nombre}/>;
+     var etq= <img src={this.state.Nombre} width="600" height="400" key={this.state.Nombre}/>;
     }
 
    else if (this.state.Tipo=="audio")

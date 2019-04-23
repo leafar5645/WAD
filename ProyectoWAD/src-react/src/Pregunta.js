@@ -9,24 +9,28 @@ export class Pregunta extends React.Component {
   constructor(props) 
   {
     super(props);
-      this.state = {Preguntas: [], idPreg: this.obtenerIDPreg(),i:0, modo:props.modo, nombre:props.nombre};
-      if(props.modo!="nuevo")
+    var preguntas=[];
+    var IDMAX=0;
+    var idPreg = this.obtenerIDPreg();
+     if(props.modo!="nuevo")
       {
-        this.pedirPreguntas();
-        this.obtenerIDMaxSec();
+        preguntas = this.pedirPreguntas(idPreg);
+        IDMAX =this.obtenerIDMaxSec(idPreg);
       }
+      this.state = {Preguntas: preguntas, idPreg: idPreg ,i:IDMAX, modo:props.modo, nombre:props.nombre};
+     
     this.AgregarMultiple=this.AgregarMultiple.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
     this.manejadorCambiosTitulo=this.manejadorCambiosTitulo.bind(this);
     this.NuevoTitulo=this.NuevoTitulo.bind(this);
   }
   //haciendo peticion y obteniendo las secciones
-  pedirPreguntas()
+  pedirPreguntas( idPreg)
   {
      var preg=[];
     var formData = new FormData();
     var sec;
-     formData.append("idpregunta" ,this.state.idPreg);
+     formData.append("idpregunta" ,idPreg);
        $.ajax({
               url: 'DarPregunta',
               type: 'Post',
@@ -37,28 +41,28 @@ export class Pregunta extends React.Component {
               success: function (data) {
                    var parser = new DOMParser();
                    var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-                   console.log(xmlDoc);
+
                    sec=xmlDoc.getElementsByTagName("Seccion");
                    
               },
               error: function (data)
               {
-                  console.log(data.toString());
                   alert("ERROR en recepcion de SECCIONES");
               }
           });
-console.log(sec.length);
+
        for (var i = 0; i < sec.length; i++) 
        {
-console.log(sec[i]);
-         if(sec[i].tipo=="multiple")
+
+         if(sec[i].tipo=="multiple");
          {
-            preg.push(<Multiple modo="editar" idPreg={this.state.idPreg} id={sec[i].id} key={sec[i].id}/>);  
+            preg.push(<Multiple modo="editar" idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
          }
          preg.push(<br/>);
-         preg.push(<button onClick={this.Eliminar.bind(this,sec[i].id)}>Eliminar Seccion</button>);
+         if(this.props.modo!="ver")
+            preg.push(<button onClick={this.Eliminar.bind(this,sec[i].id)}>Eliminar Seccion</button>);
        }
-       this.setState({Preguntas: preg});
+       return preg;
   }
   //haciendo peticion AJAX para obtener el siguiete ID de pregunta.
   obtenerIDPreg()
@@ -73,7 +77,6 @@ console.log(sec[i]);
               processData: false, // tell jQuery not to process the data
               contentType: false, // tell jQuery not to set contentType
               success: function (data) {
-                  console.log(data.toString());
                   result= data.toString();
               },
               error: function (data) {
@@ -91,42 +94,32 @@ console.log(sec[i]);
        return this.props.id;
      }
   }
-  obtenerIDMaxSec()
+  obtenerIDMaxSec(idPreg)
   {
-      if(this.props.modo=="nuevo")
-      {
-        return 0;
-      }
-      else
-      {
-        var formData = new FormData();
-         formData.append("idpregunta" ,this.state.idPreg);
-        var id=0;
-       $.ajax({
-              url: 'DarPregunta',
-              type: 'Post',
-              data: formData,
-              async:false,
-              processData: false, // tell jQuery not to process the data
-              contentType: false, // tell jQuery not to set contentType
-              success: function (data) {
-                  console.log(data.toString());
-                   var parser = new DOMParser();
-                   var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-                   console.log(xmlDoc);
-                   var sec=xmlDoc.getElementsByTagName("Seccion");
-                   console.log((sec.length-1));
-                   id= sec.length -1;
+    var formData = new FormData();
+     formData.append("idpregunta" ,idPreg);
+    var id=0;
+   $.ajax({
+          url: 'DarPregunta',
+          type: 'Post',
+          data: formData,
+          async:false,
+          processData: false, // tell jQuery not to process the data
+          contentType: false, // tell jQuery not to set contentType
+          success: function (data) {
 
-              },
-              error: function (data)
-              {
-                  console.log(data.toString());
-                  alert("ERROR en recepcion de IDMAXSEC");
-              }
-          });
-       return id;
-      }
+               var parser = new DOMParser();
+               var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
+               var sec=xmlDoc.getElementsByTagName("Seccion");
+               id= sec.length;
+          },
+          error: function (data)
+          {
+              console.log(data.toString());
+              alert("ERROR en recepcion de IDMAXSEC");
+          }
+      });
+   return id;
   }
   AgregarMultiple()
   {
@@ -134,6 +127,7 @@ console.log(sec[i]);
     aux.push(<Multiple modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
     aux.push(<br/>);
     aux.push(<button onClick={this.Eliminar.bind(this,this.state.i)}>Eliminar Seccion</button>);
+    aux.push(<br/>);
     aux.push(<br/>);
     this.setState((state) => (
     	{Preguntas: aux, i:this.state.i+1})
@@ -143,8 +137,11 @@ console.log(sec[i]);
   }
   handleSubmit()
   {
-    window.location.replace("TablaPreguntasProfesor.jsp");
     event.preventDefault();
+    if(confirm("¿Esta seguro de finalizar? Se perderan los cambio que no esten guardados."))
+    {
+      window.location.replace("TablaPreguntasProfesor.jsp");
+    }
   }
   pedir()
   {
@@ -205,7 +202,6 @@ console.log(sec[i]);
   }
   NuevoTitulo()
   {
-    console.log("Nuevo titulo");
     if(this.state.modo=="nuevo")
     {
        var inicial = "<Pregunta id='"+this.state.idPreg+"' texto='"+this.state.nombre+"' ></Pregunta>";
@@ -214,7 +210,6 @@ console.log(sec[i]);
       var oSerializer = new XMLSerializer();
       var sXML = oSerializer.serializeToString(xmlDoc);
       var formData = new FormData();
-      console.log("XML: "+sXML);
      formData.append("pregunta" ,sXML);
       $.ajax({
               url: 'CrearPregunta',
@@ -226,6 +221,7 @@ console.log(sec[i]);
               success: function (data) {
                   if(data.toString()!="listo")
                     alert("ERROR en envio de Titulo");
+                  alert("Nuevo titulo guardado");
               },
               error: function (data) {
                   console.log(data.toString());
@@ -251,16 +247,18 @@ console.log(sec[i]);
               success: function (data) {
                    var parser = new DOMParser();
                   pregunta = parser.parseFromString(data.toString(),"text/xml");
-                  pregunta.getElementsByTagName('Pregunta')[0].texto=nombre;
+                  pregunta.getElementsByTagName('Pregunta')[0].setAttribute("texto",nombre);
               },
               error: function (data) {
                   console.log(data.toString());
                   alert("ERROR en envio de Titulo");
               }
           });
+      console.log(pregunta);
       var oSerializer = new XMLSerializer();
       var sXML = oSerializer.serializeToString(pregunta);
       var formData = new FormData();
+
      formData.append("pregunta" ,sXML);
       $.ajax({
               url: 'EditarPregunta',
@@ -272,6 +270,7 @@ console.log(sec[i]);
               success: function (data) {
                   if(data.toString()!="listo")
                     alert("ERROR en envio de Titulo");
+                  alert("Nuevo titulo guardado");
               },
               error: function (data) {
                   console.log(data.toString());
@@ -283,10 +282,9 @@ console.log(sec[i]);
   render() 
   {
   	var preg=this.pedir();
-console.log(preg);
     return (
       <div>
-       Nombre de pregunta: <input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo}/>
+       Nombre de pregunta: <input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo} value={this.state.nombre}/>
         <button onClick={this.NuevoTitulo}>Listo</button>
        <br/>
        <button onClick={this.AgregarMultiple}>Agregar Opcion Multiple</button>

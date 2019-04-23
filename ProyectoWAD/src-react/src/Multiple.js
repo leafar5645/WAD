@@ -7,7 +7,7 @@ export class Multiple extends React.Component {
   {
     super(props);
     if(props.modo=="ver"||props.modo=="editar")
-      this.state = {modo:props.modo, id:props.id, Pregunta:this.obtenerPregunta(), Opciones: this.obtenerOpciones(), Respuesta: this.obtenerRespuesta(), Recurso: this.obtenerRecurso(), RecursosUser: [], Tipo:""};
+      this.state = {modo:props.modo, id:props.id, Pregunta:this.obtenerPregunta(), Opciones: this.obtenerOpciones(), Respuesta: this.obtenerRespuesta(), Recurso: this.obtenerRecurso(), RecursosUser: [], Tipo:this.obtenerTipoRecurso()};
     else if(props.modo=="nuevo")
       this.state = {modo:props.modo, id:props.id,Pregunta:"", Opciones: [], Respuesta: "", Recurso: "", RecursosUser: [], Tipo:""};
     this.manejadorCambiosEscritura=this.manejadorCambiosEscritura.bind(this);
@@ -39,6 +39,11 @@ export class Multiple extends React.Component {
   {
     event.preventDefault();
     var urlConsulta="";
+    if(this.state.Respuesta=="")
+    {
+      alert("Favor de dar la respuesta correcta");
+      return;
+    }
     if(this.state.modo=="nuevo")
     {
       this.setState({modo:"editar"});
@@ -57,6 +62,10 @@ export class Multiple extends React.Component {
         var rec=xmlDoc.createElement("Recurso");
         var att = xmlDoc.createAttribute("src");      
         att.value = this.state.Recurso; 
+        rec.setAttributeNode(att);
+
+        var att = xmlDoc.createAttribute("tipo");      
+        att.value = this.state.Tipo; 
         rec.setAttributeNode(att); 
         xmlDoc.getElementsByTagName("Seccion")[0].appendChild(rec);
       }
@@ -77,7 +86,6 @@ export class Multiple extends React.Component {
     var oSerializer = new XMLSerializer();
       var sXML = oSerializer.serializeToString(xmlDoc);
       var formData = new FormData();
-      console.log("-----idpreg= "+this.props.idPreg);
      formData.append("idpregunta" ,this.props.idPreg);
      formData.append("seccion" ,sXML);
        $.ajax({
@@ -88,7 +96,6 @@ export class Multiple extends React.Component {
               processData: false, // tell jQuery not to process the data
               contentType: false, // tell jQuery not to set contentType
               success: function (data) {
-                  console.log(data.toString());
                   if(data.toString()=="listo")
                     alert("Guardado");
                   else
@@ -104,9 +111,10 @@ export class Multiple extends React.Component {
   //pide las opciones de esta pregunta
   obtenerOpciones()
   {
+    var id=this.props.id;
     var opciones=[];
     var formData = new FormData();
-     formData.append("idpregunta" ,this.state.idPreg);
+     formData.append("idpregunta" ,this.props.idPreg);
        $.ajax({
               url: 'DarPregunta',
               type: 'Post',
@@ -117,16 +125,15 @@ export class Multiple extends React.Component {
               success: function (data) {
                    var parser = new DOMParser();
                    var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-                   console.log(xmlDoc);
                    var sec=xmlDoc.getElementsByTagName("Seccion");
                    for (var i = 0; i < sec.length; i++) 
                    {
-                     if(sec[i].id==this.props.id)
+                     if(sec[i].id==id)
                      {
                         var opc =sec[i].getElementsByTagName('option'); 
-                       for (var j = 0; i < opc.length; j++) 
+                       for (var j = 0; j < opc.length; j++) 
                        {
-                         opciones.push(opc[j].value);
+                         opciones.push(opc[j].getAttribute("value"));
                        }
                      }
                     
@@ -146,7 +153,8 @@ export class Multiple extends React.Component {
   {
     var res="";
     var formData = new FormData();
-     formData.append("idpregunta" ,this.state.idPreg);
+    var id=this.props.id;
+     formData.append("idpregunta" ,this.props.idPreg);
        $.ajax({
               url: 'DarPregunta',
               type: 'Post',
@@ -157,13 +165,13 @@ export class Multiple extends React.Component {
               success: function (data) {
                    var parser = new DOMParser();
                    var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-                   console.log(xmlDoc);
                    var sec=xmlDoc.getElementsByTagName("Seccion");
                    for (var i = 0; i < sec.length; i++) 
                    {
-                     if(sec[i].id==this.props.id)
+                     if(sec[i].id==id)
                      {
-                        res =sec[i].respuesta; 
+                        res =sec[i].getAttribute("respuesta");; 
+                        console.log(res);
                      }
                     
                    }
@@ -182,7 +190,8 @@ export class Multiple extends React.Component {
   {
     var res="";
     var formData = new FormData();
-     formData.append("idpregunta" ,this.state.idPreg);
+     formData.append("idpregunta" ,this.props.idPreg);
+     var id=this.props.id;
        $.ajax({
               url: 'DarPregunta',
               type: 'Post',
@@ -193,13 +202,12 @@ export class Multiple extends React.Component {
               success: function (data) {
                    var parser = new DOMParser();
                    var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-                   console.log(xmlDoc);
                    var sec=xmlDoc.getElementsByTagName("Seccion");
                    for (var i = 0; i < sec.length; i++) 
                    {
-                     if(sec[i].id==this.props.id)
+                     if(sec[i].id==id)
                      {
-                        res =sec[i].texto; 
+                        res =sec[i].getAttribute('texto'); 
                      }
                     
                    }
@@ -216,9 +224,10 @@ export class Multiple extends React.Component {
   //recupera el recurso usado paar esta pregunta
   obtenerRecurso()
   {
+    var id=this.props.id;
     var res="";
     var formData = new FormData();
-     formData.append("idpregunta" ,this.state.idPreg);
+     formData.append("idpregunta" ,this.props.idPreg);
        $.ajax({
               url: 'DarPregunta',
               type: 'Post',
@@ -229,13 +238,14 @@ export class Multiple extends React.Component {
               success: function (data) {
                    var parser = new DOMParser();
                    var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-                   console.log(xmlDoc);
                    var sec=xmlDoc.getElementsByTagName("Seccion");
                    for (var i = 0; i < sec.length; i++) 
                    {
-                     if(sec[i].id==this.props.id)
+                     if(sec[i].id==id)
                      {
-                        res =sec[i].getElementsByTagName('Recurso')[0].src; 
+                     
+                      if(sec[i].getElementsByTagName('Recurso').length>0)
+                          res =sec[i].getElementsByTagName('Recurso')[0].getAttribute("src");
                      }
                     
                    }
@@ -247,12 +257,51 @@ export class Multiple extends React.Component {
                   alert("ERROR en recepcion de RECURSO");
               }
           });
+       //console.log(res);
+    return res;
+  }
+  //obtener el tipo del recurso del usuario
+  obtenerTipoRecurso()
+  {
+    var id=this.props.id;
+    var res="";
+    var formData = new FormData();
+     formData.append("idpregunta" ,this.props.idPreg);
+       $.ajax({
+              url: 'DarPregunta',
+              type: 'Post',
+              data: formData,
+              async:false,
+              processData: false, // tell jQuery not to process the data
+              contentType: false, // tell jQuery not to set contentType
+              success: function (data) {
+                   var parser = new DOMParser();
+                   var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
+                   var sec=xmlDoc.getElementsByTagName("Seccion");
+                   for (var i = 0; i < sec.length; i++) 
+                   {
+                     if(sec[i].id==id)
+                     {
+                     
+                      if(sec[i].getElementsByTagName('Recurso').length>0)
+                          res =sec[i].getElementsByTagName('Recurso')[0].getAttribute("tipo");
+                     }
+                    
+                   }
+              },
+              error: function (data)
+              {
+                  console.log(data.toString());
+                  res="image/imagen.jpg";
+                  alert("ERROR en recepcion de RECURSO");
+              }
+          });
+       //console.log(res);
     return res;
   }
   //solicita al servidor los recursos del cliente
   obtenerRecursosUsuario(e)
   {
-    console.log(e.target.value);
     this.setState({Tipo: e.target.value});
     if(e.target.value!="")
     {
@@ -273,8 +322,6 @@ export class Multiple extends React.Component {
                   rec=[];
                 else
                   rec=[data.toString()];
-
-                  console.log(data.toString());
               },
               error: function () {
                   console.log("ERROR DE PETICION");
@@ -318,21 +365,26 @@ export class Multiple extends React.Component {
   {
     var opciones = [];
     opciones.push("Pregunta: ");
-    opciones.push(<textarea name="nombre" placeholder="Ej.:¿Como te llamas?" key="NamePreg" onChange={this.manejadorCambiosEscritura}/>)
+    opciones.push(<textarea name="nombre" placeholder="Ej.:¿Como te llamas?" key="NamePreg" onChange={this.manejadorCambiosEscritura} required>{this.state.Pregunta}</textarea>);
     opciones.push(<br/>);
      if(this.state.Recurso!="")
       opciones.push(<Recurso src={this.state.Recurso} key={this.state.Recurso+this.state.Pregunta}/>);
 
     for (var i = 0 ; i< 3; i++) 
     {
-       opciones.push(<input type="radio" id={"op:"+i} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio"+i} onChange={this.manejadorCambiosEscritura}/>);
-       opciones.push(<input type="text" name={"Opcion:"+i} placeholder={"Inserta Opcion "+i} key={"id-text"+i} onChange={this.manejadorCambiosEscritura}/>);
+      var opc= <input type="radio" id={"op:"+i} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio"+i} onChange={this.manejadorCambiosEscritura}/> ;
+      if(this.state.Respuesta==this.state.Opciones[i])
+      {
+        opc= <input type="radio" id={"op:"+i} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio"+i} onChange={this.manejadorCambiosEscritura} checked />;
+      }
+       opciones.push(opc);
+       opciones.push(<input type="text" name={"Opcion:"+i} placeholder={"Inserta Opcion "+i} key={"id-text"+i} onChange={this.manejadorCambiosEscritura} value={this.state.Opciones[i]} required/>);
        opciones.push(<br/>);
     } 
 
     opciones.push("Seleccione un Recurso: ");
       opciones.push(
-          <select  name="tipo" key={"NameTipo"+this.state.id}  onChange={this.obtenerRecursosUsuario}> 
+          <select  name="tipo" key={"NameTipo"+this.state.id}  onChange={this.obtenerRecursosUsuario} value={this.state.Tipo}> 
             <option value="">Sin Medios</option>
             <option value="image">Imagenes</option>
             <option value="video">Videos</option>

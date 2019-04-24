@@ -2,6 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Multiple} from "./Multiple.js"
+import {Texto} from "./Texto.js"
 import $ from 'jquery'; 
 
 //tienes tres modos editar nuevo y ver los cuales se envian como props
@@ -18,8 +19,10 @@ export class Pregunta extends React.Component {
         IDMAX =this.obtenerIDMaxSec(idPreg);
       }
       this.state = {Preguntas: preguntas, idPreg: idPreg ,i:IDMAX, modo:props.modo, nombre:props.nombre};
-     
+     //funciones tipos de preguntas
     this.AgregarMultiple=this.AgregarMultiple.bind(this);
+    this.AgregarTexto=this.AgregarTexto.bind(this);
+    //funciones manejo de datos
     this.handleSubmit=this.handleSubmit.bind(this);
     this.manejadorCambiosTitulo=this.manejadorCambiosTitulo.bind(this);
     this.NuevoTitulo=this.NuevoTitulo.bind(this);
@@ -53,14 +56,18 @@ export class Pregunta extends React.Component {
 
        for (var i = 0; i < sec.length; i++) 
        {
-
-         if(sec[i].tipo=="multiple");
+         //console.log(sec[i].getAttribute("tipo"));
+         if(sec[i].getAttribute("tipo")=="multiple")
          {
-            preg.push(<Multiple modo="editar" idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
+            preg.push(<Multiple modo={this.props.modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
+         }
+         else if(sec[i].getAttribute("tipo")=="texto")
+         {
+            preg.push(<Texto modo={this.props.modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
          }
          preg.push(<br/>);
          if(this.props.modo!="ver")
-            preg.push(<button onClick={this.Eliminar.bind(this,sec[i].id)}>Eliminar Seccion</button>);
+            preg.push(<button onClick={this.Eliminar.bind(this,sec[i].id)} key={"b"+sec[i].id}>Eliminar Seccion</button>);
        }
        return preg;
   }
@@ -121,12 +128,13 @@ export class Pregunta extends React.Component {
       });
    return id;
   }
+  //--------------Funciones de agregado de tipos de preguntas
   AgregarMultiple()
   {
     var aux=this.state.Preguntas;
     aux.push(<Multiple modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
     aux.push(<br/>);
-    aux.push(<button onClick={this.Eliminar.bind(this,this.state.i)}>Eliminar Seccion</button>);
+    aux.push(<button onClick={this.Eliminar.bind(this,this.state.i)} key={"b"+this.state.i}>Eliminar Seccion</button>);
     aux.push(<br/>);
     aux.push(<br/>);
     this.setState((state) => (
@@ -135,13 +143,34 @@ export class Pregunta extends React.Component {
     //this.setState({Preguntas: aux, i:this.state.i+1});
     return aux;
   }
+  AgregarTexto()
+  {
+    var aux=this.state.Preguntas;
+    aux.push(<Texto modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
+    aux.push(<br/>);
+    aux.push(<button onClick={this.Eliminar.bind(this,this.state.i)} key={"b"+this.state.i}>Eliminar Seccion</button>);
+    aux.push(<br/>);
+    aux.push(<br/>);
+    this.setState((state) => (
+      {Preguntas: aux, i:this.state.i+1})
+    );
+    //this.setState({Preguntas: aux, i:this.state.i+1});
+    return aux;
+  }
+  //para sali de la pantalla.
   handleSubmit()
   {
     event.preventDefault();
-    if(confirm("¿Esta seguro de finalizar? Se perderan los cambio que no esten guardados."))
+    if(this.props.modo!="ver")
     {
-      window.location.replace("TablaPreguntasProfesor.jsp");
+      if(confirm("¿Esta seguro de finalizar? Se perderan los cambio que no esten guardados."))
+      {
+        window.location.replace("TablaPreguntasProfesor.jsp");
+      }
     }
+    else
+      window.location.replace("TablaPreguntasProfesor.jsp");
+
   }
   pedir()
   {
@@ -159,20 +188,22 @@ export class Pregunta extends React.Component {
       var aux=[];
       for (var i = 0; i < this.state.Preguntas.length; i++) 
       {
-        aux.push(this.state.Preguntas[i].modo="ver");
+        aux.push(this.state.Preguntas[i]);
+        //console.log(aux[i]);
       }
       return aux;
     }
   }
   Eliminar(id)
   {
-    if(confirm("¿Esta Seguro de Eliminar Esta Pregunta?"))
+    if(confirm("¿Esta Seguro de Eliminar Esta Seccion?"))
     {
-      formData.append("idpregunta" ,this.props.idPreg);
-      /*
-     formData.append("seccion" ,sXML);
+      var formData = new FormData();
+      formData.append("idpregunta" ,this.state.idPreg);
+     formData.append("idseccion" ,id);
+     var aux=this.state.Preguntas;
        $.ajax({
-              url: urlConsulta,
+              url: "EliminarSeccion",
               type: 'Post',
               data: formData,
               async:false,
@@ -181,18 +212,28 @@ export class Pregunta extends React.Component {
               success: function (data) {
                   console.log(data.toString());
                   if(data.toString()=="listo")
-                    alert("Guardado");
+                  {
+                    for (var i = 0; i < aux.length; i++) 
+                    {
+                      console.log(aux[i]);
+                      if(aux[i].key==id||aux[i].key=="b"+id)
+                      {
+                        console.log("----entro: "+aux[i]);
+                        aux.splice(i,1);
+                        i--;
+                      }
+                    }
+                    alert("Seccion eliminada");
+                  }
                   else
-                    alert("ERROR en respuesta");
+                    alert("ERROR en Eliminacion");
               },
               error: function (data) {
                   console.log(data.toString());
-                  alert("ERROR en peticion");
+                  alert("ERROR en peticion eliminacion Seccion");
               }
           });
-          */
-
-          alert("Seccion eliminada");
+       this.setState({Preguntas: aux});
      }
   	
   }
@@ -282,12 +323,24 @@ export class Pregunta extends React.Component {
   render() 
   {
   	var preg=this.pedir();
+    var editar=[];
+    if(this.state.modo!="ver")
+    {
+      editar.push("Nombre de pregunta:");
+      editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo} value={this.state.nombre}/>);
+      editar.push(<button onClick={this.NuevoTitulo}>Listo</button>);
+      editar.push(<br/>);
+      //botones para agregar tipos de preguntas
+      editar.push(<button onClick={this.AgregarMultiple}>Agregar Opcion Multiple</button>);
+      editar.push(<button onClick={this.AgregarTexto}>Agregar Texto Plano</button>);
+    }
+    else
+    {
+      editar.push(<h1>{this.state.nombre}</h1>);
+    }
     return (
       <div>
-       Nombre de pregunta: <input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo} value={this.state.nombre}/>
-        <button onClick={this.NuevoTitulo}>Listo</button>
-       <br/>
-       <button onClick={this.AgregarMultiple}>Agregar Opcion Multiple</button>
+       {editar}
        <br/>
        {preg}  
        <input type="submit" value="Finalizar" onClick={this.handleSubmit}/>

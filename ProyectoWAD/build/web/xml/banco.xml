@@ -27,14 +27,20 @@
   </Pregunta>
   <Pregunta id="1" texto="Pregunta1" idcreador="2">
     <Seccion texto="que edad tienes" tipo="multiple" id="1" respuesta="4">
+      <Recurso src="image/2/572911_agua-azul-1.jpg" tipo="image" />
       <option value="1" />
       <option value="2" />
       <option value="4" />
     </Seccion>
-    <Seccion texto="como te llamas" tipo="multiple" id="0" respuesta="Hola3">
+    <Seccion texto="como te llamas" tipo="multiple" id="0" respuesta="Hola2">
       <option value="Hola1" />
       <option value="Hola2" />
       <option value="Hola5" />
+    </Seccion>
+  </Pregunta>
+  <Pregunta id="2" texto="Pregunta3" idcreador="2">
+    <Seccion texto="Cuanto es 2+2: " tipo="texto" id="1" respuesta="4 o 8/2">
+      <Recurso src="image/2/572911_agua-azul-1.jpg" tipo="image" />
     </Seccion>
   </Pregunta>
 </Banco>

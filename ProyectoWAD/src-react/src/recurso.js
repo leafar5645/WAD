@@ -30,7 +30,7 @@ export class Recurso extends React.Component {
   {
     if (this.state.Tipo=="video") 
     {
-      console.log("video");
+      //console.log("video");
       var etq=(<video width="600" height="400" controls >
               <source src={this.state.Nombre} type={"video/"+this.state.Ext} key={this.state.Nombre}/>
                 Tu navegador no implementa el elemento <code>video</code>

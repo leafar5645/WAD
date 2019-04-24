@@ -2,14 +2,14 @@ import React from "react";
 import {Recurso} from "./recurso.js";
 import $ from 'jquery'; 
 //tienes tres modos editar nuevo y ver los cuales se envian como props
-export class Multiple extends React.Component {
+export class Texto extends React.Component {
   constructor(props) 
   {
     super(props);
     if(props.modo=="ver"||props.modo=="editar")
-      this.state = {modo:props.modo, id:props.id, Pregunta:this.obtenerPregunta(), Opciones: this.obtenerOpciones(), Respuesta: this.obtenerRespuesta(), Recurso: this.obtenerRecurso(), RecursosUser: [], Tipo:this.obtenerTipoRecurso()};
+      this.state = {modo:props.modo, id:props.id, Pregunta:this.obtenerPregunta(), Respuesta: this.obtenerRespuesta(), Recurso: this.obtenerRecurso(), RecursosUser: [], Tipo:this.obtenerTipoRecurso()};
     else if(props.modo=="nuevo")
-      this.state = {modo:props.modo, id:props.id,Pregunta:"", Opciones: [], Respuesta: "", Recurso: "", RecursosUser: [], Tipo:""};
+      this.state = {modo:props.modo, id:props.id,Pregunta:"",  Respuesta: "", Recurso: "", RecursosUser: [], Tipo:""};
     this.manejadorCambiosEscritura=this.manejadorCambiosEscritura.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
     this.obtenerRecursosUsuario=this.obtenerRecursosUsuario.bind(this);
@@ -22,14 +22,7 @@ export class Multiple extends React.Component {
       this.setState({Pregunta: e.target.value});
     else if(e.target.name=="recurso")
       this.setState({Recurso: e.target.value});
-    else if(e.target.name.indexOf("Opcion")!=-1)
-    {
-      var pos=e.target.name.split(":")[1];
-      var aux= this.state.Opciones;
-      aux[parseInt(pos)]= e.target.value;
-      this.setState({Opciones: aux});
-    }
-    else if(e.target.checked)
+    else if(e.target.name=="Respuesta")
     {
       this.setState({Respuesta:e.target.value});
     }
@@ -53,7 +46,7 @@ export class Multiple extends React.Component {
     else
       urlConsulta="EditarSeccion";
     
-      var inicial = "<Seccion texto='"+this.state.Pregunta+"' tipo='multiple' id='"+this.state.id+"' respuesta='"+this.state.Respuesta+"'></Seccion>";
+      var inicial = "<Seccion texto='"+this.state.Pregunta+"' tipo='texto' id='"+this.state.id+"' respuesta='"+this.state.Respuesta+"'></Seccion>";
       
       var parser = new DOMParser();
       var xmlDoc = parser.parseFromString(inicial,"text/xml");
@@ -69,17 +62,7 @@ export class Multiple extends React.Component {
         att.value = this.state.Tipo; 
         rec.setAttributeNode(att); 
         xmlDoc.getElementsByTagName("Seccion")[0].appendChild(rec);
-      }
-      //agregando opciones
-      for (var i = 0 ; i< this.state.Opciones.length; i++) 
-      {
-        var opc=xmlDoc.createElement("option");
-        var att = xmlDoc.createAttribute("value");      
-        att.value = this.state.Opciones[i];
-        opc.setAttributeNode(att); 
-         xmlDoc.getElementsByTagName("Seccion")[0].appendChild(opc);
-      } 
-      
+      }    
 
     //Haciendo peticion para enviar xml construido
     //console.log(xmlDoc);
@@ -109,46 +92,7 @@ export class Multiple extends React.Component {
           });
 
   }
-  //pide las opciones de esta pregunta
-  obtenerOpciones()
-  {
-    var id=this.props.id;
-    var opciones=[];
-    var formData = new FormData();
-     formData.append("idpregunta" ,this.props.idPreg);
-       $.ajax({
-              url: 'DarPregunta',
-              type: 'Post',
-              data: formData,
-              async:false,
-              processData: false, // tell jQuery not to process the data
-              contentType: false, // tell jQuery not to set contentType
-              success: function (data) {
-                   var parser = new DOMParser();
-                   var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-                   var sec=xmlDoc.getElementsByTagName("Seccion");
-                   for (var i = 0; i < sec.length; i++) 
-                   {
-                     if(sec[i].id==id)
-                     {
-                        var opc =sec[i].getElementsByTagName('option'); 
-                       for (var j = 0; j < opc.length; j++) 
-                       {
-                         opciones.push(opc[j].getAttribute("value"));
-                       }
-                     }
-                    
-                   }
-              },
-              error: function (data)
-              {
-                  console.log(data.toString());
-                  opciones=["=5","=8","=4"];
-                  alert("ERROR en recepcion de Opciones");
-              }
-          });
-    return opciones;
-  }
+
   //se recupera la respuesta correcta del sistema
    obtenerRespuesta()
   {
@@ -348,16 +292,11 @@ export class Multiple extends React.Component {
   {
     var opciones = [];
     opciones.push(<h2>{this.state.Pregunta}</h2>);
+     opciones.push(<input type="text" name="Respuesta" placeholder="Respuesta" key={"id-text"} required/>);
     opciones.push(<br/>);
      if(this.state.Recurso!="")
       opciones.push(<Recurso src={this.state.Recurso} key={this.state.Recurso+"/"+this.state.Pregunta}/>);
     opciones.push(<br/>);
-    for (var i = 0 ; i< this.state.Opciones.length; i++) 
-    {
-       opciones.push(<input type="radio" id={"op:"+i} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id"+i}/>);
-       opciones.push(<label>{this.state.Opciones[i]}</label>);
-       opciones.push(<br/>);
-    } 
    return opciones;
   }
   //genera para modo de edicion y de creacion
@@ -366,21 +305,10 @@ export class Multiple extends React.Component {
     var opciones = [];
     opciones.push("Pregunta: ");
     opciones.push(<textarea name="nombre" placeholder="Ej.:¿Como te llamas?" key="NamePreg" onChange={this.manejadorCambiosEscritura} required>{this.state.Pregunta}</textarea>);
+    opciones.push(<input type="text" name="Respuesta" placeholder="Respuesta" key={"id-text"} onChange={this.manejadorCambiosEscritura} value={this.state.Respuesta} required/>);
     opciones.push(<br/>);
      if(this.state.Recurso!="")
       opciones.push(<Recurso src={this.state.Recurso} key={this.state.Recurso+this.state.Pregunta}/>);
-
-    for (var i = 0 ; i< 3; i++) 
-    {
-      var opc= <input type="radio" id={"op:"+i} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio"+i} onChange={this.manejadorCambiosEscritura}/> ;
-      if(this.state.Respuesta==this.state.Opciones[i])
-      {
-        opc= <input type="radio" id={"op:"+i} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio"+i} onChange={this.manejadorCambiosEscritura} checked />;
-      }
-       opciones.push(opc);
-       opciones.push(<input type="text" name={"Opcion:"+i} placeholder={"Inserta Opcion "+i} key={"id-text"+i} onChange={this.manejadorCambiosEscritura} value={this.state.Opciones[i]} required/>);
-       opciones.push(<br/>);
-    } 
 
     opciones.push("Seleccione un Recurso: ");
       opciones.push(

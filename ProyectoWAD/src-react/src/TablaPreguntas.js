@@ -21,7 +21,7 @@ export class TablaPreguntas extends React.Component {
               processData: false, // tell jQuery not to process the data
               contentType: false, // tell jQuery not to set contentType
               success: function (data) {
-                  console.log(data.toString());
+                  //console.log(data.toString());
                   if(data.toString()!="@_VACIO_@")
                   {
                     var aux= data.toString().split("@");
@@ -50,7 +50,7 @@ export class TablaPreguntas extends React.Component {
               processData: false, // tell jQuery not to process the data
               contentType: false, // tell jQuery not to set contentType
               success: function (data) {
-                  console.log(data.toString());
+                  //console.log(data.toString());
                   var aux= data.toString().split("@");
                     for (var i = 0; i < aux.length; i++) {
                       nombres[i]=aux[i].split(")")[0];

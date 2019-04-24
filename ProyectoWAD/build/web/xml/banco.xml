@@ -2,7 +2,7 @@
 <!DOCTYPE Banco>
 
 <Banco>
-  <Pregunta id="0" texto="Pregunta de prueba" idcreador="1">
+  <Pregunta id="0" texto="Pregunta de prueba" idcreador="2">
     <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
       <Recurso tipo="audio" src="audio.mp3" />
       <option value="option1" />
@@ -25,7 +25,7 @@
       <option value="option4" />
     </Seccion>
   </Pregunta>
-  <Pregunta id="1" texto="Pregunta1" idcreador="2">
+  <Pregunta id="1" texto="Pregunta1" idcreador="1">
     <Seccion texto="que edad tienes" tipo="multiple" id="1" respuesta="4">
       <Recurso src="image/2/572911_agua-azul-1.jpg" tipo="image" />
       <option value="1" />
@@ -38,7 +38,7 @@
       <option value="Hola5" />
     </Seccion>
   </Pregunta>
-  <Pregunta id="2" texto="Pregunta3" idcreador="2">
+  <Pregunta id="2" texto="Pregunta3" idcreador="1">
     <Seccion texto="Cuanto es 2+2: " tipo="texto" id="1" respuesta="4 o 8/2">
       <Recurso src="image/2/572911_agua-azul-1.jpg" tipo="image" />
     </Seccion>

@@ -10,6 +10,8 @@ export class Texto extends React.Component {
       this.state = {modo:props.modo, id:props.id, Pregunta:this.obtenerPregunta(), Respuesta: this.obtenerRespuesta(), Recurso: this.obtenerRecurso(), RecursosUser: [], Tipo:this.obtenerTipoRecurso()};
     else if(props.modo=="nuevo")
       this.state = {modo:props.modo, id:props.id,Pregunta:"",  Respuesta: "", Recurso: "", RecursosUser: [], Tipo:""};
+    if(props.modo=="ver")
+       sessionStorage.setItem("R"+this.state.id,this.state.Respuesta);
     this.manejadorCambiosEscritura=this.manejadorCambiosEscritura.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
     this.obtenerRecursosUsuario=this.obtenerRecursosUsuario.bind(this);
@@ -25,6 +27,7 @@ export class Texto extends React.Component {
     else if(e.target.name=="Respuesta")
     {
       this.setState({Respuesta:e.target.value});
+      sessionStorage.setItem("RU"+this.state.id,e.target.value);
     }
     //console.log(e.target.value);
   }
@@ -292,7 +295,7 @@ export class Texto extends React.Component {
   {
     var opciones = [];
     opciones.push(<h2>{this.state.Pregunta}</h2>);
-     opciones.push(<input type="text" name="Respuesta" placeholder="Respuesta" key={"id-text"} required/>);
+     opciones.push(<input type="text" name="Respuesta" placeholder="Respuesta" key={"id-text"} required onChange={this.manejadorCambiosEscritura} />);
     opciones.push(<br/>);
      if(this.state.Recurso!="")
       opciones.push(<Recurso src={this.state.Recurso} key={this.state.Recurso+"/"+this.state.Pregunta}/>);

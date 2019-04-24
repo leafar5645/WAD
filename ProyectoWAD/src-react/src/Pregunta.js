@@ -169,7 +169,34 @@ export class Pregunta extends React.Component {
       }
     }
     else
+    {
+      var cal=0;
+      var numPreg=0;
+      for (var i = 0; i < this.state.Preguntas.length; i++) 
+      {
+      	//console.log(this.state.Preguntas[i].key+ "");
+      	var aux= this.state.Preguntas[i].key + "";
+        if(aux.indexOf("b")==-1&&aux!=null)//para ignorar los botones
+        {
+          var us= sessionStorage.getItem("RU"+this.state.Preguntas[i].key);
+          var res = sessionStorage.getItem("R"+this.state.Preguntas[i].key);
+          //console.log("R"+this.state.Preguntas[i].key);
+          //console.log(us);
+          //console.log(res);
+          sessionStorage.removeItem("R"+this.state.Preguntas[i].key);
+          sessionStorage.removeItem("RU"+this.state.Preguntas[i].key);
+          if(us!=null && res!=null)
+          {
+	          numPreg++;
+	          if(us==res)
+	            cal++;
+    	  }
+
+        }
+      }
+      alert("Calificacion= "+cal +"/"+numPreg);
       window.location.replace("TablaPreguntasProfesor.jsp");
+    }
 
   }
   pedir()

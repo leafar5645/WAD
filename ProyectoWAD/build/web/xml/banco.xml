@@ -19,13 +19,13 @@
     </Seccion>
   </Pregunta>
   <Pregunta id="1" texto="Pregunta1" idcreador="2">
+    <Seccion texto="Cuanto es 2+2" tipo="texto" id="1" respuesta="4" />
     <Seccion texto="Hola2" tipo="multiple" id="0" respuesta="Hola2">
       <Recurso src="image/2/Efecto de Sonido   Timbre.mp4" tipo="video" />
       <option value="Hola1" />
       <option value="Hola2" />
       <option value="Hola3" />
     </Seccion>
-    <Seccion texto="Cuanto es 2+2" tipo="texto" id="1" respuesta="4" />
   </Pregunta>
 </Banco>
 

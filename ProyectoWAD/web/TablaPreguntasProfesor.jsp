@@ -17,11 +17,10 @@ Mis Preguntas</title>
         <h1>
             Preguntas de: <% if(a!=null)out.print(a.getNombre()); else response.sendRedirect("index.html");%>
         </h1>
-<center>
+
         <div id="root">
         </div>
-</center>
-        <script src="/ProyectoWAD/TablaPreguntasProfesor.20295238.js"></script>
+        <script src="/ProyectoWAD/TablaPreguntasProfesor.4080e002.js"></script>
         <script src="/ProyectoWAD/BarraNavRender.898bd891.js"></script>
   </body>
 </html>

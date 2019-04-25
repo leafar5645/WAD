@@ -10,15 +10,24 @@ export class Pregunta extends React.Component {
   constructor(props) 
   {
     super(props);
+    //valores en caso de ser nuevo
     var preguntas=[];
     var IDMAX=0;
     var idPreg = this.obtenerIDPreg();
+    var error="";
+    var bien="";
+    var intento=1;
+    //solicita valores del xml
      if(props.modo!="nuevo")
       {
         preguntas = this.pedirPreguntas(idPreg);
         IDMAX =this.obtenerIDMaxSec(idPreg);
+        error = this.pedirmensajeError(idPreg);
+        bien = this.pedirmensajeBien(idPreg);
+        intento = this.pedirIntentos(idPreg);
       }
-      this.state = {Preguntas: preguntas, idPreg: idPreg ,i:IDMAX, modo:props.modo, nombre:props.nombre};
+      //intentosVer: es usado para el modo ver y poder contar el numero de intentos que ha realizado en usuario
+      this.state = {Preguntas: preguntas, idPreg: idPreg ,i:IDMAX, modo:props.modo, nombre:props.nombre, intentos: intento, mError:error, mBien:bien, intentosVer:0};
      //funciones tipos de preguntas
     this.AgregarMultiple=this.AgregarMultiple.bind(this);
     this.AgregarTexto=this.AgregarTexto.bind(this);
@@ -27,6 +36,9 @@ export class Pregunta extends React.Component {
     this.manejadorCambiosTitulo=this.manejadorCambiosTitulo.bind(this);
     this.NuevoTitulo=this.NuevoTitulo.bind(this);
   }
+  //----------------------------------------------------------------------------------------------
+  //-------------------PETICIONES DE XML PARA OBTENER AREAS------------------------------------
+  //----------------------------------------------------------------------------------------------
   //haciendo peticion y obteniendo las secciones
   pedirPreguntas( idPreg)
   {
@@ -101,6 +113,7 @@ export class Pregunta extends React.Component {
        return this.props.id;
      }
   }
+  //obteniendo numero siguiente de secciones
   obtenerIDMaxSec(idPreg)
   {
     var formData = new FormData();
@@ -128,7 +141,95 @@ export class Pregunta extends React.Component {
       });
    return id;
   }
+  //obtener intento
+  pedirIntentos(idPreg)
+  {
+    var formData = new FormData();
+     formData.append("idpregunta" ,idPreg);
+    var intentos=0;
+   $.ajax({
+          url: 'DarPregunta',
+          type: 'Post',
+          data: formData,
+          async:false,
+          processData: false, // tell jQuery not to process the data
+          contentType: false, // tell jQuery not to set contentType
+          success: function (data) {
+
+               var parser = new DOMParser();
+               var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
+               var sec=xmlDoc.getElementsByTagName("Pregunta");
+               intentos= sec[0].getAttribute("intentos");
+          },
+          error: function (data)
+          {
+              console.log(data.toString());
+              alert("ERROR en recepcion de IDMAXSEC");
+          }
+      });
+   return intentos;
+  }
+  //obtener mensaje Bien
+  pedirmensajeBien(idPreg)
+  {
+    var formData = new FormData();
+     formData.append("idpregunta" ,idPreg);
+    var mensaje="";
+   $.ajax({
+          url: 'DarPregunta',
+          type: 'Post',
+          data: formData,
+          async:false,
+          processData: false, // tell jQuery not to process the data
+          contentType: false, // tell jQuery not to set contentType
+          success: function (data) {
+
+               var parser = new DOMParser();
+               var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
+               var sec=xmlDoc.getElementsByTagName("Pregunta");
+               mensaje= sec[0].getAttribute("mensajeBien");
+          },
+          error: function (data)
+          {
+              console.log(data.toString());
+              alert("ERROR en recepcion de IDMAXSEC");
+          }
+      });
+   return mensaje;
+  }
+    //obtener mensaje ERROR
+  pedirmensajeError(idPreg)
+  {
+    var formData = new FormData();
+     formData.append("idpregunta" ,idPreg);
+    var mensaje="";
+   $.ajax({
+          url: 'DarPregunta',
+          type: 'Post',
+          data: formData,
+          async:false,
+          processData: false, // tell jQuery not to process the data
+          contentType: false, // tell jQuery not to set contentType
+          success: function (data) {
+
+               var parser = new DOMParser();
+               var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
+               var sec=xmlDoc.getElementsByTagName("Pregunta");
+               mensaje= sec[0].getAttribute("mensajeError");
+          },
+          error: function (data)
+          {
+              console.log(data.toString());
+              alert("ERROR en recepcion de IDMAXSEC");
+          }
+      });
+   return mensaje;
+  }
+
+
+ //----------------------------------------------------------------------------------------------
   //--------------Funciones de agregado de tipos de preguntas
+  //----------------------------------------------------------------------------------------------
   AgregarMultiple()
   {
     var aux=this.state.Preguntas;
@@ -157,6 +258,9 @@ export class Pregunta extends React.Component {
     //this.setState({Preguntas: aux, i:this.state.i+1});
     return aux;
   }
+  //----------------------------------------------------------------------------------------------
+  //--------------------Funciones interactuar con usuario-----------------------------------------
+  //----------------------------------------------------------------------------------------------
   //para sali de la pantalla.
   handleSubmit()
   {
@@ -168,7 +272,7 @@ export class Pregunta extends React.Component {
         window.location.replace("TablaPreguntasProfesor.jsp");
       }
     }
-    else
+    else//si es modo ver se evalua la pregunta
     {
       var cal=0;
       var numPreg=0;
@@ -180,25 +284,46 @@ export class Pregunta extends React.Component {
         {
           var us= sessionStorage.getItem("RU"+this.state.Preguntas[i].key);
           var res = sessionStorage.getItem("R"+this.state.Preguntas[i].key);
-          //console.log("R"+this.state.Preguntas[i].key);
-          //console.log(us);
-          //console.log(res);
-          sessionStorage.removeItem("R"+this.state.Preguntas[i].key);
-          sessionStorage.removeItem("RU"+this.state.Preguntas[i].key);
           if(us!=null && res!=null)
           {
+          	  //calculo de respuestas correctas
 	          numPreg++;
 	          if(us==res)
-	            cal++;
+	          {
+	          	cal++;
+	          }
     	  }
 
         }
       }
-      alert("Calificacion= "+cal +"/"+numPreg);
-      window.location.replace("TablaPreguntasProfesor.jsp");
+      if(cal/numPreg!=1)//si tuvo errores
+      {
+      	  	//console.log(this.state.intentos);
+      	  	//console.log(this.state.intentosVer);
+    	    alert(this.state.mError+"  Te quedan: "+(this.state.intentos - (this.state.intentosVer+1)) + " Intentos"); 
+    	    if(this.state.intentos<=(this.state.intentosVer+1))//cuando es el mismo numero de intentos
+    	    {
+    	    	alert("Se Acabaron tus Intentos");
+    	    	//limpiamos la session y redirigimos
+    	    	sessionStorage.clear();
+      			window.location.replace("TablaPreguntasProfesor.jsp");
+    	    }
+    	    this.setState((state) => (
+    				{intentosVer:this.state.intentosVer+1})
+    			); 
+      }
+      else
+      {
+      	alert(this.state.mBien);
+      	//limpiamos la session y redirigimos
+    	sessionStorage.clear();
+      	window.location.replace("TablaPreguntasProfesor.jsp");
+      }
+      //alert("Calificacion= "+cal +"/"+numPreg);
     }
 
   }
+  //arma el arreglo que se renderizara
   pedir()
   {
     if(this.state.modo!="ver")
@@ -266,13 +391,22 @@ export class Pregunta extends React.Component {
   }
   manejadorCambiosTitulo(e)
   {
-    this.setState({nombre: e.target.value});
+  	if(e.target.name=="pregunta")
+    	this.setState({nombre: e.target.value});
+    else if(e.target.name=="error")
+    	this.setState({mError: e.target.value});
+    else if(e.target.name=="intentos")
+    	this.setState({intentos: e.target.value});
+    else if(e.target.name=="bien")
+    	this.setState({mBien: e.target.value});
   }
+  //agrega datos generales de la pregunta: titulo, intentos, retroalimentacion
   NuevoTitulo()
   {
     if(this.state.modo=="nuevo")
     {
-       var inicial = "<Pregunta id='"+this.state.idPreg+"' texto='"+this.state.nombre+"' ></Pregunta>";
+    	//armado de nodo pregunta conforma al xml del servidor
+       var inicial = "<Pregunta id='"+this.state.idPreg+"' texto='"+this.state.nombre+"' mensajeBien='"+this.state.mBien+"' mensajeError='"+this.state.mError+"'  intentos='"+this.state.intentos+"'></Pregunta>";
       var parser = new DOMParser();
       var xmlDoc = parser.parseFromString(inicial,"text/xml");
       var oSerializer = new XMLSerializer();
@@ -289,7 +423,7 @@ export class Pregunta extends React.Component {
               success: function (data) {
                   if(data.toString()!="listo")
                     alert("ERROR en envio de Titulo");
-                  alert("Nuevo titulo guardado");
+                  alert("Guardado");
               },
               error: function (data) {
                   console.log(data.toString());
@@ -301,6 +435,9 @@ export class Pregunta extends React.Component {
     else
     {
       //pedimos la pregunta actual
+      var bien = this.state.mBien;
+      var mal= this.state.mError;
+      var intentos= this.state.intentos;
       var pregunta;
        var formData = new FormData();
      formData.append("idpregunta" ,this.state.idPreg);
@@ -315,14 +452,18 @@ export class Pregunta extends React.Component {
               success: function (data) {
                    var parser = new DOMParser();
                   pregunta = parser.parseFromString(data.toString(),"text/xml");
+                  //modificando atributos del xml
                   pregunta.getElementsByTagName('Pregunta')[0].setAttribute("texto",nombre);
+                  pregunta.getElementsByTagName('Pregunta')[0].setAttribute("mensajeBien",bien);
+                  pregunta.getElementsByTagName('Pregunta')[0].setAttribute("mensajeError",mal);
+                  pregunta.getElementsByTagName('Pregunta')[0].setAttribute("intentos",intentos);
               },
               error: function (data) {
                   console.log(data.toString());
                   alert("ERROR en envio de Titulo");
               }
           });
-      console.log(pregunta);
+      //console.log(pregunta);
       var oSerializer = new XMLSerializer();
       var sXML = oSerializer.serializeToString(pregunta);
       var formData = new FormData();
@@ -354,8 +495,19 @@ export class Pregunta extends React.Component {
     if(this.state.modo!="ver")
     {
       editar.push("Nombre de pregunta:");
-      editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo} value={this.state.nombre}/>);
+      editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo} value={this.state.nombre} required/>);
+      editar.push(<br/>);
+      editar.push("Mensaje Si Responde Erroneamente:");
+      editar.push(<input type="text" name="error" onChange={this.manejadorCambiosTitulo} value={this.state.mError} required/>);
+      editar.push(<br/>);
+      editar.push("Mensaje Si Responde Correctamente:");
+      editar.push(<input type="text" name="bien" onChange={this.manejadorCambiosTitulo} value={this.state.mBien} required/>);
+      editar.push(<br/>);
+      editar.push("Intentos:");
+      editar.push(<input type="text" name="intentos" onChange={this.manejadorCambiosTitulo} value={this.state.intentos} required/>);
+      editar.push(<br/>);
       editar.push(<button onClick={this.NuevoTitulo}>Listo</button>);
+      editar.push(<br/>);
       editar.push(<br/>);
       //botones para agregar tipos de preguntas
       editar.push(<button onClick={this.AgregarMultiple}>Agregar Opcion Multiple</button>);

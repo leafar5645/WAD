@@ -11,7 +11,9 @@ export class Texto extends React.Component {
     else if(props.modo=="nuevo")
       this.state = {modo:props.modo, id:props.id,Pregunta:"",  Respuesta: "", Recurso: "", RecursosUser: [], Tipo:""};
     if(props.modo=="ver")
+    {
        sessionStorage.setItem("R"+this.state.id,this.state.Respuesta);
+    }
     this.manejadorCambiosEscritura=this.manejadorCambiosEscritura.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
     this.obtenerRecursosUsuario=this.obtenerRecursosUsuario.bind(this);

@@ -32,9 +32,12 @@ export class Multiple extends React.Component {
       var aux= this.state.Opciones;
       aux[parseInt(pos)]= e.target.value;
       this.setState({Opciones: aux});
+      if(this.props.modo=="nuevo")
+      	 this.setState({Respuesta: ""});
     }
     else if(e.target.checked)
     {
+
       this.setState({Respuesta:e.target.value});
       sessionStorage.setItem("RU"+this.state.id,e.target.value);
     }
@@ -359,7 +362,7 @@ export class Multiple extends React.Component {
     opciones.push(<br/>);
     for (var i = 0 ; i< this.state.Opciones.length; i++) 
     {
-       opciones.push(<input type="radio" id={"radio"} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio"+i} onChange={this.manejadorCambiosEscritura}/>);
+       opciones.push(<input type="radio" id={"radio"} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio:"+i} onChange={this.manejadorCambiosEscritura}/>);
        opciones.push(<label>{this.state.Opciones[i]}</label>);
        opciones.push(<br/>);
     } 
@@ -377,10 +380,10 @@ export class Multiple extends React.Component {
 
     for (var i = 0 ; i< 3; i++) 
     {
-      var opc= <input type="radio" id={"radio"} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio"+i} onChange={this.manejadorCambiosEscritura}/> ;
+      var opc= <input type="radio" id={"radio"}  name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio:"+i} onChange={this.manejadorCambiosEscritura}/> ;
       if(this.state.Respuesta==this.state.Opciones[i])
       {
-        opc= <input type="radio" id={"radio"} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio"+i} onChange={this.manejadorCambiosEscritura} checked />;
+        opc= <input type="radio" id={"radio"} name={"op"+this.state.Pregunta} value={this.state.Opciones[i]} key={"id-radio:"+i} onChange={this.manejadorCambiosEscritura} checked />;
       }
        opciones.push(opc);
        opciones.push(<input type="text" name={"Opcion:"+i} placeholder={"Inserta Opcion "+i} key={"id-text"+i} onChange={this.manejadorCambiosEscritura} value={this.state.Opciones[i]} required/>);

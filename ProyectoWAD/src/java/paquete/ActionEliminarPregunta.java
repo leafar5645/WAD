@@ -86,7 +86,9 @@ public class ActionEliminarPregunta extends ActionSupport {
                 }
             }
           
-          xmlout.setFormat(Format.getPrettyFormat());
+          Format f = Format.getPrettyFormat();
+          f.setEncoding("ISO-8859-1");
+          xmlout.setFormat(f);
                xmlout.output(doc,new FileWriter(path));
                xmlout.output(doc,System.out);
             String    respuesta="listo";

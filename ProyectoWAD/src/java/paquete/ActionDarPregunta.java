@@ -29,6 +29,7 @@ import org.dom4j.io.OutputFormat;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.w3c.dom.Node;
 
@@ -88,11 +89,14 @@ public class ActionDarPregunta extends ActionSupport {
         XMLOutputter xmlout= new XMLOutputter();
       // String hola;
         StringWriter writer = new StringWriter();
+         Format f = Format.getPrettyFormat();
+          f.setEncoding("ISO-8859-1");
+          xmlout.setFormat(f);
           xmlout.output(doc, writer);
           String respuesta=writer.getBuffer().toString();
          int ind= respuesta.indexOf(">");
          respuesta= respuesta.substring(ind+1);
-          System.out.println("" + respuesta);
+          System.out.println("!aqui" + respuesta);
       // Display the XML
      
       responseStream = new StringBufferInputStream(respuesta);

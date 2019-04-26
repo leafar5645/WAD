@@ -53,7 +53,7 @@ public class ActionCrearPregunta extends ActionSupport {
         HttpSession sesion=ServletActionContext.getRequest().getSession();
        Usuarios us =(Usuarios)sesion.getAttribute("user");
         int id =us.getId();
-        System.out.println("" + id);
+       // System.out.println("" + id);
        String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
         System.out.println("" + path);
@@ -63,8 +63,8 @@ public class ActionCrearPregunta extends ActionSupport {
           SAXBuilder builder = new SAXBuilder();
           doc=builder.build(fXmlFile);
            //System.out.println("-----------------llegue" );
-          InputStream stream = new ByteArrayInputStream(pregunta.getBytes("ISO-8859-1"));
-          System.out.println("----" + pregunta);
+          InputStream stream = new ByteArrayInputStream(pregunta.getBytes("UTF-8"));
+       //   System.out.println("----" + pregunta);
           Document Dpregunta = builder.build(stream);
           Element newPregunta=Dpregunta.getRootElement();
           Element newPregunta2=(Element)newPregunta.clone();
@@ -72,7 +72,9 @@ public class ActionCrearPregunta extends ActionSupport {
           newPregunta2.setAttribute("idcreador", ""+id);
           Element root=doc.getRootElement();
           root.addContent(newPregunta2);
-          xmlout.setFormat(Format.getPrettyFormat());
+          Format f = Format.getPrettyFormat();
+          f.setEncoding("ISO-8859-1");
+          xmlout.setFormat(f);
                xmlout.output(doc,new FileWriter(path));
                xmlout.output(doc,System.out);
             String    respuesta="listo";

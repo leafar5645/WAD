@@ -75,7 +75,7 @@ public class ActionAddSection extends ActionSupport {
           SAXBuilder builder = new SAXBuilder();
           doc=builder.build(fXmlFile);
            //System.out.println("-----------------llegue" );
-          InputStream stream = new ByteArrayInputStream(seccion.getBytes("ISO-8859-1"));
+          InputStream stream = new ByteArrayInputStream(seccion.getBytes("UTF-8"));
           System.out.println("----" + seccion);
           Document Dseccion = builder.build(stream);
           Element newSeccion=Dseccion.getRootElement();
@@ -95,7 +95,9 @@ public class ActionAddSection extends ActionSupport {
               }
               
           }
-           xmlout.setFormat(Format.getPrettyFormat());
+            Format f = Format.getPrettyFormat();
+          f.setEncoding("ISO-8859-1");
+          xmlout.setFormat(f);
                xmlout.output(doc,new FileWriter(path));
                xmlout.output(doc,System.out);
             String    respuesta="listo";

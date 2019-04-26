@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE Banco>
 
 <Banco>
@@ -18,34 +18,11 @@
       <option value="option4" />
     </Seccion>
   </Pregunta>
-  <Pregunta id="1" texto="asocia cada imagen con su nombre" mensajeBien="bien hecho" mensajeError="recuerda el dia " intentos="2" idcreador="1">
-    <Seccion texto="de que pais es el de la imagen" tipo="multiple" id="0" respuesta="india">
-      <Recurso src="image/1/19511054_1202380243206987_8622782480564789625_n.jpg" tipo="image" />
-      <option value="india" />
-      <option value="eua" />
-      <option value="mexico" />
-    </Seccion>
-  </Pregunta>
-  <Pregunta id="2" texto="responde esto" mensajeBien="bien hecho" mensajeError="es Arjona" intentos="2" idcreador="1">
-    <Seccion texto="nacionalidad del cantante" tipo="multiple" id="1" respuesta="Guatemalteco">
-      <Recurso src="image/1/01-te guste o no.mp3" tipo="audio" />
-      <option value="Guatemalteco" />
-      <option value="Mexicano" />
-      <option value="Peruano" />
-    </Seccion>
-  </Pregunta>
-  <Pregunta id="1" texto="Pregunta1" mensajeBien="bien" mensajeError="mal" intentos="1" idcreador="2">
-    <Seccion texto="HOLA" tipo="multiple" id="0" respuesta="Holaw23">
-      <option value="1" />
-      <option value="Holaw23" />
-      <option value="4" />
-    </Seccion>
-  </Pregunta>
-  <Pregunta id="2" texto="Pregunta1" mensajeBien="sdfdf" mensajeError="sdfdf" intentos="1" idcreador="2">
-    <Seccion texto="fsdf" tipo="multiple" id="0" respuesta="Hola">
-      <option value="Hola1" />
-      <option value="Hola" />
-      <option value="Hola3" />
+  <Pregunta id="1" texto="¿como estas?" mensajeBien="jkh" mensajeError="hjkh" intentos="1" idcreador="1">
+    <Seccion texto="¿lalal" tipo="multiple" id="0" respuesta="lolo">
+      <option value="lolo" />
+      <option value="lili" />
+      <option value="lele" />
     </Seccion>
   </Pregunta>
 </Banco>

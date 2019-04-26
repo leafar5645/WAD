@@ -111,7 +111,9 @@ public class ActionEliminarSeccion extends ActionSupport {
                 z++;
              
             }
-           xmlout.setFormat(Format.getPrettyFormat());
+            Format f = Format.getPrettyFormat();
+          f.setEncoding("ISO-8859-1");
+          xmlout.setFormat(f);xmlout.setFormat(Format.getPrettyFormat());
                xmlout.output(doc,new FileWriter(path));
                xmlout.output(doc,System.out);
             String    respuesta="listo";

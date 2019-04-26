@@ -6,7 +6,7 @@
 package paquete;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.sun.xml.internal.bind.v2.runtime.XMLSerializer;
+
 import entity.Usuarios;
 
 import java.io.ByteArrayInputStream;

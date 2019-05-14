@@ -1,12 +1,12 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import {Multiple} from "./Multiple.js"
+import {Pregunta} from "./Pregunta.js"
 import {Texto} from "./Texto.js"
 import $ from 'jquery'; 
 
 //tienes tres modos editar nuevo y ver los cuales se envian como props
-export class Pregunta extends React.Component {
+export class Cuestionario extends React.Component {
   constructor(props)
   {
     super(props);
@@ -65,7 +65,7 @@ export class Pregunta extends React.Component {
          */ 
        for (var i = 0; i < 2; i++) 
        {
-            preg.push(<Pregunta modo="ver" id={i} nombre={"Nombre"+i}/>);
+            preg.push(<Pregunta modo="ver" id={i} nombre={"Nombre"+i} key={i}/>);
        }
        return preg;
   }
@@ -108,17 +108,7 @@ export class Pregunta extends React.Component {
   //----------------------------------------------------------------------------------------------
   GuardarPreguntas()
   {
-    var aux=this.state.Preguntas;
-    aux.push(<Multiple modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
-    aux.push(<br/>);
-    aux.push(<button onClick={this.Eliminar.bind(this,this.state.i)} key={"b"+this.state.i}>Eliminar Seccion</button>);
-    aux.push(<br/>);
-    aux.push(<br/>);
-    this.setState((state) => (
-    	{Preguntas: aux, i:this.state.i+1})
-    );
-    //this.setState({Preguntas: aux, i:this.state.i+1});
-    return aux;
+    alert("Actualizar XML");
   }
   EliminarPregunta()
   {
@@ -137,222 +127,34 @@ export class Pregunta extends React.Component {
   //----------------------------------------------------------------------------------------------
   //--------------------Funciones interactuar con usuario-----------------------------------------
   //----------------------------------------------------------------------------------------------
-  //para sali de la pantalla.
+
+  //avanzamos una pregunta
   Avanzar()
   {
-    event.preventDefault();
-    if(this.props.modo!="ver")
-    {
-      if(confirm("¿Esta seguro de finalizar? Se perderan los cambio que no esten guardados."))
-      {
-        window.location.replace("TablaPreguntasProfesor.jsp");
-      }
-    }
-    else//si es modo ver se evalua la pregunta
-    {
-      var cal=0;
-      var numPreg=0;
-      for (var i = 0; i < this.state.Preguntas.length; i++) 
-      {
-      	//console.log(this.state.Preguntas[i].key+ "");
-      	var aux= this.state.Preguntas[i].key + "";
-        if(aux.indexOf("b")==-1&&aux!=null)//para ignorar los botones
-        {
-          var us= sessionStorage.getItem("RU"+this.state.Preguntas[i].key);
-          var res = sessionStorage.getItem("R"+this.state.Preguntas[i].key);
-          if(us!=null && res!=null)
-          {
-          	  //calculo de respuestas correctas
-	          numPreg++;
-	          if(us==res)
-	          {
-	          	cal++;
-	          }
-    	  }
-
-        }
-      }
-      if(cal/numPreg!=1)//si tuvo errores
-      {
-      	  	//console.log(this.state.intentos);
-      	  	//console.log(this.state.intentosVer);
-    	    alert(this.state.mError+"  Te quedan: "+(this.state.intentos - (this.state.intentosVer+1)) + " Intentos"); 
-    	    if(this.state.intentos<=(this.state.intentosVer+1))//cuando es el mismo numero de intentos
-    	    {
-    	    	alert("Se Acabaron tus Intentos");
-    	    	//limpiamos la session y redirigimos
-    	    	sessionStorage.clear();
-      			window.location.replace("TablaPreguntasProfesor.jsp");
-    	    }
-    	    this.setState((state) => (
-    				{intentosVer:this.state.intentosVer+1})
-    			); 
-      }
-      else
-      {
-      	alert(this.state.mBien);
-      	//limpiamos la session y redirigimos
-    	sessionStorage.clear();
-      	window.location.replace("TablaPreguntasProfesor.jsp");
-      }
-      //alert("Calificacion= "+cal +"/"+numPreg);
-    }
+    if(this.state.indiceActual<this.state.Preguntas.length-1)
+      this.setState((state) => (
+        {indiceActual: this.state.indiceActual+1})
+      );
 
   }
-  //arma el arreglo que se renderizara
+  //retrocedemos una pregunta
   Retroceder()
   {
-    if(this.state.modo!="ver")
-    {
-    	var aux=[];
-    	for (var i = 0; i < this.state.Preguntas.length; i++) 
-    	{
-    		aux.push(this.state.Preguntas[i]);
-    	}
-    	return aux;
-    }
-    else//en caso de que solo queremos "ver" todos los modos se cambian a ver
-    {
-      var aux=[];
-      for (var i = 0; i < this.state.Preguntas.length; i++) 
-      {
-        aux.push(this.state.Preguntas[i]);
-        //console.log(aux[i]);
-      }
-      return aux;
-    }
+    if(this.state.indiceActual>0)
+      this.setState((state) => (
+        {indiceActual: this.state.indiceActual-1})
+      );
   }
   Inicio()
   {
-    if(confirm("¿Esta Seguro de Eliminar Esta Seccion?"))
-    {
-      var formData = new FormData();
-      formData.append("idpregunta" ,this.state.idPreg);
-     formData.append("idseccion" ,id);
-     var aux=this.state.Preguntas;
-       $.ajax({
-              url: "EliminarSeccion",
-              type: 'Post',
-              data: formData,
-              async:false,
-              processData: false, // tell jQuery not to process the data
-              contentType: false, // tell jQuery not to set contentType
-              success: function (data) {
-                  console.log(data.toString());
-                  if(data.toString()=="listo")
-                  {
-                    for (var i = 0; i < aux.length; i++) 
-                    {
-                      console.log(aux[i]);
-                      if(aux[i].key==id||aux[i].key=="b"+id)
-                      {
-                        console.log("----entro: "+aux[i]);
-                        aux.splice(i,1);
-                        i--;
-                      }
-                    }
-                    alert("Seccion eliminada");
-                  }
-                  else
-                    alert("ERROR en Eliminacion");
-              },
-              error: function (data) {
-                  console.log(data.toString());
-                  alert("ERROR en peticion eliminacion Seccion");
-              }
-          });
-       this.setState({Preguntas: aux});
-     }
-  	
+    this.setState({indiceActual: 0});
   }
   
-  //agrega datos generales de la pregunta: titulo, intentos, retroalimentacion
+  //Nos movemos al la pregunta final
   Final()
   {
-    if(this.state.modo=="nuevo")
-    {
-    	//armado de nodo pregunta conforma al xml del servidor
-       var inicial = "<Pregunta id='"+this.state.idPreg+"' texto='"+this.state.nombre+"' mensajeBien='"+this.state.mBien+"' mensajeError='"+this.state.mError+"'  intentos='"+this.state.intentos+"'></Pregunta>";
-      var parser = new DOMParser();
-      var xmlDoc = parser.parseFromString(inicial,"text/xml");
-      var oSerializer = new XMLSerializer();
-      var sXML = oSerializer.serializeToString(xmlDoc);
-      var formData = new FormData();
-     formData.append("pregunta" ,sXML);
-      $.ajax({
-              url: 'CrearPregunta',
-              type: 'Post',
-              data: formData,
-              async:false,
-              processData: false, // tell jQuery not to process the data
-              contentType: false, // tell jQuery not to set contentType
-              success: function (data) {
-                  if(data.toString()!="listo")
-                    alert("ERROR en envio de Titulo");
-                  alert("Guardado");
-              },
-              error: function (data) {
-                  console.log(data.toString());
-                  alert("ERROR en envio de Titulo");
-              }
-          });
-      this.setState({modo: "editar"});
-    }
-    else
-    {
-      //pedimos la pregunta actual
-      var bien = this.state.mBien;
-      var mal= this.state.mError;
-      var intentos= this.state.intentos;
-      var pregunta;
-       var formData = new FormData();
-     formData.append("idpregunta" ,this.state.idPreg);
-     var nombre=this.state.nombre;
-      $.ajax({
-              url: 'DarPregunta',
-              type: 'Post',
-              data: formData,
-              async:false,
-              processData: false, // tell jQuery not to process the data
-              contentType: false, // tell jQuery not to set contentType
-              success: function (data) {
-                   var parser = new DOMParser();
-                  pregunta = parser.parseFromString(data.toString(),"text/xml");
-                  //modificando atributos del xml
-                  pregunta.getElementsByTagName('Pregunta')[0].setAttribute("texto",nombre);
-                  pregunta.getElementsByTagName('Pregunta')[0].setAttribute("mensajeBien",bien);
-                  pregunta.getElementsByTagName('Pregunta')[0].setAttribute("mensajeError",mal);
-                  pregunta.getElementsByTagName('Pregunta')[0].setAttribute("intentos",intentos);
-              },
-              error: function (data) {
-                  console.log(data.toString());
-                  alert("ERROR en envio de Titulo");
-              }
-          });
-      //console.log(pregunta);
-      var oSerializer = new XMLSerializer();
-      var sXML = oSerializer.serializeToString(pregunta);
-      var formData = new FormData();
-
-     formData.append("pregunta" ,sXML);
-      $.ajax({
-              url: 'EditarPregunta',
-              type: 'Post',
-              data: formData,
-              async:false,
-              processData: false, // tell jQuery not to process the data
-              contentType: false, // tell jQuery not to set contentType
-              success: function (data) {
-                  if(data.toString()!="listo")
-                    alert("ERROR en envio de Titulo");
-                  alert("Nuevo titulo guardado");
-              },
-              error: function (data) {
-                  console.log(data.toString());
-                  alert("ERROR en envio de Titulo");
-              }
-          });
-    }
+    this.setState({indiceActual: this.state.Preguntas.length - 1});
+       
   }
   Calificar()
   {
@@ -361,7 +163,28 @@ export class Pregunta extends React.Component {
 
   manejadorCambiosEscritura(e)
   {
-    	this.setState({nombre: e.target.value});
+    if(e.target.name=="pregunta")//input pregunta
+      this.setState({nombre: e.target.value});
+    else if(e.target.checked)//checkbox
+    {
+      var aux= this.state.Preguntas;
+      aux.push(<Pregunta modo="ver" id={e.target.id} nombre={"Nombre"+e.target.id} key={e.target.id}/>);
+      this.setState({Preguntas: aux});
+    }
+    else if(e.target.name=="preg")
+    {
+      var aux= this.state.Preguntas;
+      for (let i = 0; i < aux.length; i++) 
+      {
+        const element = aux[i];
+        if(element.key==e.target.name)
+        {
+            aux.splice(i,1);
+            return;
+        }
+      }
+    }
+    
   }
   obtenerTodasPreguntas()
   {
@@ -372,27 +195,30 @@ export class Pregunta extends React.Component {
       preg.push(Pregunta);
     return [preg];
   }
-  render() 
+
+  pedirElementosRenderizar()
   {
-  	var preg=this.pedir();
     var editar=[];
     if(this.state.modo!="ver")
     {
+      console.log(this.state.nombre);
       editar.push("Nombre de Cuestionario:");
-      editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo} value={this.state.nombre} required/>);
+      editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosEscritura} value={this.state.nombre} required/>);
       editar.push(<br/>);
       //creacion de tabla
-      var preg = obtenerTodasPreguntas();
+      var preg = this.obtenerTodasPreguntas();
       var tabla=[];
+      tabla.push(<th>Agregar</th>);
       tabla.push(<th>Nombre</th>); 
       tabla.push(<th>Id</th>);
       for(let i=0; i<preg.length;i++)
+        console.log(preg[i].id)
         tabla.push(<tr key={preg[i].id}>
-        <td><input type="checkbox" name="preg" id={preg[i].id}/></td> 
+        <td><input type="checkbox" name="preg" id={preg[i].id} onChange={this.manejadorCambiosEscritura}/></td> 
         <td>{preg[i].nombre}</td><td>{preg[i].id}</td>
         </tr>);
 
-      editar.push(<table>{tabla}</table>);
+      editar.push(<table border='1'>{tabla}</table>);
       editar.push(<button onClick={this.GuardarPreguntas}>Finalizar</button>);
       editar.push(<br/>);
     }
@@ -406,6 +232,12 @@ export class Pregunta extends React.Component {
         editar.push(<button onClick={this.Avanzar}>Siguiente</button>);
         editar.push(<button onClick={this.Final}>Final</button>);
     }
+    return editar;
+  }
+  render() 
+  {
+    var editar=this.pedirElementosRenderizar();
+    console.log(editar);
     return (
       <div>
        {editar}

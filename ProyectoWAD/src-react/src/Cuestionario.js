@@ -109,6 +109,7 @@ export class Cuestionario extends React.Component {
   GuardarPreguntas()
   {
     alert("Actualizar XML");
+    window.location="TablaPreguntasProfesor.jsp";
   }
   EliminarPregunta()
   {
@@ -177,9 +178,10 @@ export class Cuestionario extends React.Component {
       for (let i = 0; i < aux.length; i++) 
       {
         const element = aux[i];
-        if(element.key==e.target.name)
+        if(element.key==e.target.id)
         {
             aux.splice(i,1);
+            this.setState({Preguntas: aux});
             return;
         }
       }
@@ -193,7 +195,7 @@ export class Cuestionario extends React.Component {
       preg.push(Pregunta);
       var Pregunta = {nombre: "preg2", id: 2};
       preg.push(Pregunta);
-    return [preg];
+    return preg;
   }
 
   pedirElementosRenderizar()
@@ -202,8 +204,9 @@ export class Cuestionario extends React.Component {
     if(this.state.modo!="ver")
     {
       console.log(this.state.nombre);
+      console.log(this.state.Preguntas);
       editar.push("Nombre de Cuestionario:");
-      editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosEscritura} value={this.state.nombre} required/>);
+      editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosEscritura} value={this.state.nombre} key='InputName'required/>);
       editar.push(<br/>);
       //creacion de tabla
       var preg = this.obtenerTodasPreguntas();
@@ -212,14 +215,17 @@ export class Cuestionario extends React.Component {
       tabla.push(<th>Nombre</th>); 
       tabla.push(<th>Id</th>);
       for(let i=0; i<preg.length;i++)
-        console.log(preg[i].id)
-        tabla.push(<tr key={preg[i].id}>
-        <td><input type="checkbox" name="preg" id={preg[i].id} onChange={this.manejadorCambiosEscritura}/></td> 
-        <td>{preg[i].nombre}</td><td>{preg[i].id}</td>
-        </tr>);
-
-      editar.push(<table border='1'>{tabla}</table>);
-      editar.push(<button onClick={this.GuardarPreguntas}>Finalizar</button>);
+      {
+        tabla.push(
+        <tr key={preg[i].id}>
+        <td key={"check"+preg[i].id}><input type="checkbox" name="preg" id={preg[i].id} onChange={this.manejadorCambiosEscritura}/></td> 
+        <td key={"nombre"+preg[i].id} >{preg[i].nombre}</td>
+        <td key={"id:"+preg[i].id}>{preg[i].id}</td>
+        </tr>
+        );
+      }
+      editar.push(<table border='1' key='Tabla'>{tabla}</table>);
+      editar.push(<button onClick={this.GuardarPreguntas} key ='Finalizar'>Finalizar</button>);
       editar.push(<br/>);
     }
     else
@@ -237,7 +243,6 @@ export class Cuestionario extends React.Component {
   render() 
   {
     var editar=this.pedirElementosRenderizar();
-    console.log(editar);
     return (
       <div>
        {editar}

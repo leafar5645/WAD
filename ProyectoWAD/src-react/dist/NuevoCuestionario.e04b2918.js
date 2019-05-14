@@ -25855,7 +25855,7 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.Recurso = Recurso;
-},{"react":"../node_modules/react/index.js"}],"../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"../../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
@@ -36433,7 +36433,7 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{"process":"../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js"}],"Multiple.js":[function(require,module,exports) {
+},{"process":"../../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/node_modules/process/browser.js"}],"Multiple.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38275,6 +38275,7 @@ function (_React$Component) {
     key: "GuardarPreguntas",
     value: function GuardarPreguntas() {
       alert("Actualizar XML");
+      window.location = "TablaPreguntasProfesor.jsp";
     }
   }, {
     key: "EliminarPregunta",
@@ -38370,11 +38371,14 @@ function (_React$Component) {
         } else if (e.target.name == "preg") {
         var aux = this.state.Preguntas;
 
-        for (var _i = 0; _i < aux.length; _i++) {
-          var element = aux[_i];
+        for (var i = 0; i < aux.length; i++) {
+          var element = aux[i];
 
-          if (element.key == e.target.name) {
-            aux.splice(_i, 1);
+          if (element.key == e.target.id) {
+            aux.splice(i, 1);
+            this.setState({
+              Preguntas: aux
+            });
             return;
           }
         }
@@ -38394,7 +38398,7 @@ function (_React$Component) {
         id: 2
       };
       preg.push(Pregunta);
-      return [preg];
+      return preg;
     }
   }, {
     key: "pedirElementosRenderizar",
@@ -38403,12 +38407,14 @@ function (_React$Component) {
 
       if (this.state.modo != "ver") {
         console.log(this.state.nombre);
+        console.log(this.state.Preguntas);
         editar.push("Nombre de Cuestionario:");
         editar.push(_react.default.createElement("input", {
           type: "text",
           name: "pregunta",
           onChange: this.manejadorCambiosEscritura,
           value: this.state.nombre,
+          key: "InputName",
           required: true
         }));
         editar.push(_react.default.createElement("br", null)); //creacion de tabla
@@ -38419,23 +38425,30 @@ function (_React$Component) {
         tabla.push(_react.default.createElement("th", null, "Nombre"));
         tabla.push(_react.default.createElement("th", null, "Id"));
 
-        for (var _i2 = 0; _i2 < preg.length; _i2++) {
-          console.log(preg[_i2].id);
+        for (var i = 0; i < preg.length; i++) {
+          tabla.push(_react.default.createElement("tr", {
+            key: preg[i].id
+          }, _react.default.createElement("td", {
+            key: "check" + preg[i].id
+          }, _react.default.createElement("input", {
+            type: "checkbox",
+            name: "preg",
+            id: preg[i].id,
+            onChange: this.manejadorCambiosEscritura
+          })), _react.default.createElement("td", {
+            key: "nombre" + preg[i].id
+          }, preg[i].nombre), _react.default.createElement("td", {
+            key: "id:" + preg[i].id
+          }, preg[i].id)));
         }
 
-        tabla.push(_react.default.createElement("tr", {
-          key: preg[i].id
-        }, _react.default.createElement("td", null, _react.default.createElement("input", {
-          type: "checkbox",
-          name: "preg",
-          id: preg[i].id,
-          onChange: this.manejadorCambiosEscritura
-        })), _react.default.createElement("td", null, preg[i].nombre), _react.default.createElement("td", null, preg[i].id)));
         editar.push(_react.default.createElement("table", {
-          border: "1"
+          border: "1",
+          key: "Tabla"
         }, tabla));
         editar.push(_react.default.createElement("button", {
-          onClick: this.GuardarPreguntas
+          onClick: this.GuardarPreguntas,
+          key: "Finalizar"
         }, "Finalizar"));
         editar.push(_react.default.createElement("br", null));
       } else {
@@ -38462,7 +38475,6 @@ function (_React$Component) {
     key: "render",
     value: function render() {
       var editar = this.pedirElementosRenderizar();
-      console.log(editar);
       return _react.default.createElement("div", null, editar);
     }
   }]);
@@ -38486,7 +38498,7 @@ _reactDom.default.render(_react.default.createElement(_Cuestionario.Cuestionario
   modo: "nuevo",
   nombre: ""
 }), document.getElementById('root'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Cuestionario.js":"Cuestionario.js"}],"../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./Cuestionario.js":"Cuestionario.js"}],"../../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -38514,7 +38526,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53171" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50012" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -38689,5 +38701,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","NuevoCuestionario.js"], null)
+},{}]},{},["../../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","NuevoCuestionario.js"], null)
 //# sourceMappingURL=/NuevoCuestionario.e04b2918.js.map

@@ -25834,7 +25834,7 @@ _reactDom.default.render(_react.default.createElement(_BarraNav.BarraNav, {
   Vinculos: ['CerrarSession', 'Preguntas', 'Inicio'],
   Opciones: ['Logout', 'TablaPreguntasProfesor.jsp', 'Home']
 }), document.getElementById('barra'));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./BarraNav.js":"BarraNav.js"}],"../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./BarraNav.js":"BarraNav.js"}],"../../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -25862,7 +25862,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53171" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50012" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -26037,5 +26037,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","BarraNavRender.js"], null)
+},{}]},{},["../../../../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","BarraNavRender.js"], null)
 //# sourceMappingURL=/BarraNavRender.4c0336f6.js.map

@@ -12,29 +12,25 @@ export class Pregunta extends React.Component {
     super(props);
     //valores en caso de ser nuevo
     var preguntas=[];
-    var IDMAX=0;
-    var idPreg = this.obtenerIDPreg();
-    var error="";
-    var bien="";
-    var intento=1;
+    var idCuestionario = this.obtenerIDCuestionario();
+    var indiceActual = 0;
     //solicita valores del xml
      if(props.modo!="nuevo")
       {
-        preguntas = this.pedirPreguntas(idPreg);
-        IDMAX =this.obtenerIDMaxSec(idPreg);
-        error = this.pedirmensajeError(idPreg);
-        bien = this.pedirmensajeBien(idPreg);
-        intento = this.pedirIntentos(idPreg);
+        preguntas = this.pedirPreguntas(idCuestionario);
       }
       //intentosVer: es usado para el modo ver y poder contar el numero de intentos que ha realizado en usuario
-      this.state = {Preguntas: preguntas, idPreg: idPreg ,i:IDMAX, modo:props.modo, nombre:props.nombre, intentos: intento, mError:error, mBien:bien, intentosVer:0};
-     //funciones tipos de preguntas
-    this.AgregarMultiple=this.AgregarMultiple.bind(this);
-    this.AgregarTexto=this.AgregarTexto.bind(this);
-    //funciones manejo de datos
-    this.handleSubmit=this.handleSubmit.bind(this);
-    this.manejadorCambiosTitulo=this.manejadorCambiosTitulo.bind(this);
-    this.NuevoTitulo=this.NuevoTitulo.bind(this);
+      this.state = {Preguntas: preguntas, idCuestionario: idCuestionario ,indiceActual:indiceActual, modo:props.modo, nombre:props.nombre};
+     //funciones de preguntas
+    this.GuardarPreguntas=this.GuardarPreguntas.bind(this);
+    this.EliminarPregunta=this.EliminarPregunta.bind(this);
+    //funciones interaccion de usuario
+    this.Avanzar=this.Avanzar.bind(this);
+    this.Retroceder=this.Retroceder.bind(this);
+    this.Inicio=this.Inicio.bind(this);
+    this.Final=this.Final.bind(this);
+    this.Calificar=this.Calificar.bind(this);
+    this.manejadorCambiosEscritura=this.manejadorCambiosEscritura.bind(this);
   }
   //----------------------------------------------------------------------------------------------
   //-------------------PETICIONES DE XML PARA OBTENER AREAS------------------------------------
@@ -43,6 +39,7 @@ export class Pregunta extends React.Component {
   pedirPreguntas( idPreg)
   {
      var preg=[];
+     /*
     var formData = new FormData();
     var sec;
      formData.append("idpregunta" ,idPreg);
@@ -65,32 +62,22 @@ export class Pregunta extends React.Component {
                   alert("ERROR en recepcion de SECCIONES");
               }
           });
-
-       for (var i = 0; i < sec.length; i++) 
+         */ 
+       for (var i = 0; i < 2; i++) 
        {
-         //console.log(sec[i].getAttribute("tipo"));
-         if(sec[i].getAttribute("tipo")=="multiple")
-         {
-            preg.push(<Multiple modo={this.props.modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
-         }
-         else if(sec[i].getAttribute("tipo")=="texto")
-         {
-            preg.push(<Texto modo={this.props.modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
-         }
-         preg.push(<br/>);
-         if(this.props.modo!="ver")
-            preg.push(<button onClick={this.Eliminar.bind(this,sec[i].id)} key={"b"+sec[i].id}>Eliminar Seccion</button>);
+            preg.push(<Pregunta modo="ver" id={i} nombre={"Nombre"+i}/>);
        }
        return preg;
   }
   //haciendo peticion AJAX para obtener el siguiete ID de pregunta.
-  obtenerIDPreg()
+  obtenerIDCuestionario()
   {
+      /*
     if(this.props.modo=="nuevo")
     {
       var result;
        $.ajax({
-              url: 'UltimaPregunta',
+              url: 'UltimoCuestionario',
               type: 'Post',
               async:false,
               processData: false, // tell jQuery not to process the data
@@ -112,125 +99,14 @@ export class Pregunta extends React.Component {
        sessionStorage.removeItem('nombre');
        return this.props.id;
      }
+     */
+    return 0;
   }
-  //obteniendo numero siguiente de secciones
-  obtenerIDMaxSec(idPreg)
-  {
-    var formData = new FormData();
-     formData.append("idpregunta" ,idPreg);
-    var id=0;
-   $.ajax({
-          url: 'DarPregunta',
-          type: 'Post',
-          data: formData,
-          async:false,
-          processData: false, // tell jQuery not to process the data
-          contentType: false, // tell jQuery not to set contentType
-          success: function (data) {
-
-               var parser = new DOMParser();
-               var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-               var sec=xmlDoc.getElementsByTagName("Seccion");
-               id= sec.length;
-          },
-          error: function (data)
-          {
-              console.log(data.toString());
-              alert("ERROR en recepcion de IDMAXSEC");
-          }
-      });
-   return id;
-  }
-  //obtener intento
-  pedirIntentos(idPreg)
-  {
-    var formData = new FormData();
-     formData.append("idpregunta" ,idPreg);
-    var intentos=0;
-   $.ajax({
-          url: 'DarPregunta',
-          type: 'Post',
-          data: formData,
-          async:false,
-          processData: false, // tell jQuery not to process the data
-          contentType: false, // tell jQuery not to set contentType
-          success: function (data) {
-
-               var parser = new DOMParser();
-               var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-               var sec=xmlDoc.getElementsByTagName("Pregunta");
-               intentos= sec[0].getAttribute("intentos");
-          },
-          error: function (data)
-          {
-              console.log(data.toString());
-              alert("ERROR en recepcion de IDMAXSEC");
-          }
-      });
-   return intentos;
-  }
-  //obtener mensaje Bien
-  pedirmensajeBien(idPreg)
-  {
-    var formData = new FormData();
-     formData.append("idpregunta" ,idPreg);
-    var mensaje="";
-   $.ajax({
-          url: 'DarPregunta',
-          type: 'Post',
-          data: formData,
-          async:false,
-          processData: false, // tell jQuery not to process the data
-          contentType: false, // tell jQuery not to set contentType
-          success: function (data) {
-
-               var parser = new DOMParser();
-               var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-               var sec=xmlDoc.getElementsByTagName("Pregunta");
-               mensaje= sec[0].getAttribute("mensajeBien");
-          },
-          error: function (data)
-          {
-              console.log(data.toString());
-              alert("ERROR en recepcion de IDMAXSEC");
-          }
-      });
-   return mensaje;
-  }
-    //obtener mensaje ERROR
-  pedirmensajeError(idPreg)
-  {
-    var formData = new FormData();
-     formData.append("idpregunta" ,idPreg);
-    var mensaje="";
-   $.ajax({
-          url: 'DarPregunta',
-          type: 'Post',
-          data: formData,
-          async:false,
-          processData: false, // tell jQuery not to process the data
-          contentType: false, // tell jQuery not to set contentType
-          success: function (data) {
-
-               var parser = new DOMParser();
-               var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
-               var sec=xmlDoc.getElementsByTagName("Pregunta");
-               mensaje= sec[0].getAttribute("mensajeError");
-          },
-          error: function (data)
-          {
-              console.log(data.toString());
-              alert("ERROR en recepcion de IDMAXSEC");
-          }
-      });
-   return mensaje;
-  }
-
 
  //----------------------------------------------------------------------------------------------
-  //--------------Funciones de agregado de tipos de preguntas
+  //--------------Funciones de preguntas
   //----------------------------------------------------------------------------------------------
-  AgregarMultiple()
+  GuardarPreguntas()
   {
     var aux=this.state.Preguntas;
     aux.push(<Multiple modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
@@ -244,7 +120,7 @@ export class Pregunta extends React.Component {
     //this.setState({Preguntas: aux, i:this.state.i+1});
     return aux;
   }
-  AgregarTexto()
+  EliminarPregunta()
   {
     var aux=this.state.Preguntas;
     aux.push(<Texto modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
@@ -262,7 +138,7 @@ export class Pregunta extends React.Component {
   //--------------------Funciones interactuar con usuario-----------------------------------------
   //----------------------------------------------------------------------------------------------
   //para sali de la pantalla.
-  handleSubmit()
+  Avanzar()
   {
     event.preventDefault();
     if(this.props.modo!="ver")
@@ -324,7 +200,7 @@ export class Pregunta extends React.Component {
 
   }
   //arma el arreglo que se renderizara
-  pedir()
+  Retroceder()
   {
     if(this.state.modo!="ver")
     {
@@ -346,7 +222,7 @@ export class Pregunta extends React.Component {
       return aux;
     }
   }
-  Eliminar(id)
+  Inicio()
   {
     if(confirm("¿Esta Seguro de Eliminar Esta Seccion?"))
     {
@@ -389,19 +265,9 @@ export class Pregunta extends React.Component {
      }
   	
   }
-  manejadorCambiosTitulo(e)
-  {
-  	if(e.target.name=="pregunta")
-    	this.setState({nombre: e.target.value});
-    else if(e.target.name=="error")
-    	this.setState({mError: e.target.value});
-    else if(e.target.name=="intentos")
-    	this.setState({intentos: e.target.value});
-    else if(e.target.name=="bien")
-    	this.setState({mBien: e.target.value});
-  }
+  
   //agrega datos generales de la pregunta: titulo, intentos, retroalimentacion
-  NuevoTitulo()
+  Final()
   {
     if(this.state.modo=="nuevo")
     {
@@ -488,41 +354,61 @@ export class Pregunta extends React.Component {
           });
     }
   }
+  Calificar()
+  {
+
+  }
+
+  manejadorCambiosEscritura(e)
+  {
+    	this.setState({nombre: e.target.value});
+  }
+  obtenerTodasPreguntas()
+  {
+      var preg= [];
+      var Pregunta = {nombre: "preg1", id: 0};
+      preg.push(Pregunta);
+      var Pregunta = {nombre: "preg2", id: 2};
+      preg.push(Pregunta);
+    return [preg];
+  }
   render() 
   {
   	var preg=this.pedir();
     var editar=[];
     if(this.state.modo!="ver")
     {
-      editar.push("Nombre de pregunta:");
+      editar.push("Nombre de Cuestionario:");
       editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo} value={this.state.nombre} required/>);
       editar.push(<br/>);
-      editar.push("Mensaje Si Responde Erroneamente:");
-      editar.push(<input type="text" name="error" onChange={this.manejadorCambiosTitulo} value={this.state.mError} required/>);
+      //creacion de tabla
+      var preg = obtenerTodasPreguntas();
+      var tabla=[];
+      tabla.push(<th>Nombre</th>); 
+      tabla.push(<th>Id</th>);
+      for(let i=0; i<preg.length;i++)
+        tabla.push(<tr key={preg[i].id}>
+        <td><input type="checkbox" name="preg" id={preg[i].id}/></td> 
+        <td>{preg[i].nombre}</td><td>{preg[i].id}</td>
+        </tr>);
+
+      editar.push(<table>{tabla}</table>);
+      editar.push(<button onClick={this.GuardarPreguntas}>Finalizar</button>);
       editar.push(<br/>);
-      editar.push("Mensaje Si Responde Correctamente:");
-      editar.push(<input type="text" name="bien" onChange={this.manejadorCambiosTitulo} value={this.state.mBien} required/>);
-      editar.push(<br/>);
-      editar.push("Intentos:");
-      editar.push(<input type="text" name="intentos" onChange={this.manejadorCambiosTitulo} value={this.state.intentos} required/>);
-      editar.push(<br/>);
-      editar.push(<button onClick={this.NuevoTitulo}>Listo</button>);
-      editar.push(<br/>);
-      editar.push(<br/>);
-      //botones para agregar tipos de preguntas
-      editar.push(<button onClick={this.AgregarMultiple}>Agregar Opcion Multiple</button>);
-      editar.push(<button onClick={this.AgregarTexto}>Agregar Texto Plano</button>);
     }
     else
-    {
-      editar.push(<h1>{this.state.nombre}</h1>);
+    { 
+        editar.push(<h1>{"Nombre de Cuestionario: " +this.state.nombre}</h1>);
+        editar.push(this.state.Preguntas[this.state.indiceActual]);
+        editar.push(<br/>);
+        editar.push(<button onClick={this.Inicio}>Inicio</button>);
+        editar.push(<button onClick={this.Retroceder}>Anterior</button>);
+        editar.push(<button onClick={this.Avanzar}>Siguiente</button>);
+        editar.push(<button onClick={this.Final}>Final</button>);
     }
     return (
       <div>
        {editar}
-       <br/>
-       {preg}  
-       <input type="submit" value="Finalizar" onClick={this.handleSubmit}/>
       </div>
       
     );

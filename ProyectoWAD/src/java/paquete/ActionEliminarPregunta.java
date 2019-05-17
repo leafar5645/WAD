@@ -60,15 +60,17 @@ public class ActionEliminarPregunta extends ActionSupport {
           File fXmlFile = new File(path);
           SAXBuilder builder = new SAXBuilder();
           doc=builder.build(fXmlFile);
-           //System.out.println("-----------------llegue" );
+           System.out.println("-----------------llegue" );
           Element root=doc.getRootElement();
           List lista = root.getChildren("Pregunta");
           int i=0;
+          System.out.println("imp" + lista.size() + pregunta +"--"+ id);
           for(i=0;i<lista.size();i++)
           {
              Element pregunta2=(Element)lista.get(i);
               if(Integer.parseInt(pregunta2.getAttributeValue("id"))==pregunta && Integer.parseInt(pregunta2.getAttributeValue("idcreador"))==id)
               {
+                  System.out.println("entre");
                   break;
               }
           }
@@ -81,9 +83,41 @@ public class ActionEliminarPregunta extends ActionSupport {
                 Element pregunta3 = (Element)lista.get(i);
                 if(Integer.parseInt(pregunta3.getAttributeValue("idcreador"))==id)
                 {
-                pregunta3.getAttribute("id").setValue("" + z);
+                pregunta3.getAttribute("id").setValue("" + (z+1));
                 z++;
                 }
+            }
+            List listaE = root.getChildren("Cuestionario");
+            int indiceg=-1;
+            for(int p=0; p<listaE.size(); p++)
+            {
+                Element Exa=(Element) listaE.get(p);
+                if(Integer.parseInt(Exa.getAttributeValue("idcreador"))==id)
+                {
+                    List listap= Exa.getChildren("pregunta");
+                     System.out.println("el cuest " + p );
+                    for(int n=0; n<listap.size();n++)
+                    {
+                        Element Pre = (Element) listap.get(n);
+                        System.out.println("la preg" + n);
+                        if(Integer.parseInt(Pre.getAttributeValue("valor"))==pregunta){indiceg=n;  System.out.println("indi" + indiceg);}
+                        else if(Integer.parseInt(Pre.getAttributeValue("valor"))>pregunta){
+                            int w= Integer.parseInt(Pre.getAttributeValue("valor"));
+                            int np=w;
+                            w=w-1; Pre.getAttribute("valor").setValue(""+w);
+                            System.out.println("meti " +  w + " en donde estaba " + np);
+                                    
+                                    }
+                    }
+                    if(indiceg!=-1)
+                    {
+                    Element Pre = (Element) listap.get(indiceg);
+                    Pre.detach();
+                    }
+                    
+                }
+                indiceg=-1;
+                System.out.println("lo hice" + indiceg);
             }
           
           Format f = Format.getPrettyFormat();

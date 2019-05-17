@@ -138,5 +138,66 @@
                         <param name="inputName">responseStream</param>
                     </result>
         </action>
+          <action name="CrearExamen" class="paquete.ActionCrearExamen">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                      <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
+         <action name="EliminarExamen" class="paquete.ActionEliminarExamen">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                      <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
+          <action name="EditarExamen" class="paquete.ActionEditarExamen">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                      <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
+        <action name="MisExamenes" class="paquete.ActionMisExamenes">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                      <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
+        <action name="UltimoExamen" class="paquete.ActionUltimoExamen">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                      <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
+         <action name="DarExamen" class="paquete.ActionDarExamen">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+                      <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+        </action>
+        
      </package>
 </struts>

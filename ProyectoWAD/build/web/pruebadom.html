@@ -28,15 +28,15 @@ and open the template in the editor.
         //var sXML = oSerializer.serializeToString(xmlDoc);
         //alert(sXML);
         var formd= new FormData();
-        formd.append("idpregunta" ,0 );
-        formd.append("idseccion" ,2 );
+        formd.append("pregunta" ,2 );
         $.ajax({
-            url: 'EliminarSeccion',
+            url: 'EliminarPregunta',
             type: 'Post',
             data: formd,
             processData: false, // tell jQuery not to process the data
             contentType: false, // tell jQuery not to set contentType
             success: function (data) {
+                console.log("voy")
                 var a = data.toString();
                 alert(a);
           // alert(data.toString());

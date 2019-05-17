@@ -5,6 +5,7 @@
  */
 package paquete;
 
+import static com.opensymphony.xwork2.Action.SUCCESS;
 import com.opensymphony.xwork2.ActionSupport;
 import entity.Usuarios;
 import java.io.File;
@@ -16,14 +17,14 @@ import org.apache.struts2.ServletActionContext;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
 
 /**
  *
  * @author Marcus
  */
-public class ActionMisPreguntas extends ActionSupport {
-        InputStream responseStream;
+public class ActionMisExamenes extends ActionSupport {
+    
+         InputStream responseStream;
 
     public InputStream getResponseStream() {
         return responseStream;
@@ -33,39 +34,35 @@ public class ActionMisPreguntas extends ActionSupport {
         this.responseStream = responseStream;
     }
     
-    public ActionMisPreguntas() {
-    }
-    
+       
     public String execute() throws Exception {
-         HttpSession sesion=ServletActionContext.getRequest().getSession();
+        HttpSession sesion=ServletActionContext.getRequest().getSession();
         Usuarios us =(Usuarios)sesion.getAttribute("user");
         int id =us.getId();
-         //idpregunta=0;  //en lo que nos ponemos deacuerdo como se el id de la pregunta donde va la seccion
         String path=ServletActionContext.getServletContext().getRealPath("/xml");
         path=path + "/banco.xml";
-        System.out.println("" + path);
-       // XMLOutputter xmlout= new XMLOutputter();
-          Document doc = new Document();
-          File fXmlFile = new File(path);
-          SAXBuilder builder = new SAXBuilder();
-          doc=builder.build(fXmlFile);
-          Element root = doc.getRootElement();
-          List lista = root.getChildren("Pregunta");
-          String [] preguntas= new String [lista.size()];
-          for(int i=0;i<lista.size();i++)
+        Document doc = new Document();
+        File fXmlFile = new File(path);
+        SAXBuilder builder = new SAXBuilder();
+        doc=builder.build(fXmlFile);
+        Element root = doc.getRootElement();
+        List lista = root.getChildren("Cuestionario");
+        String [] Examenes= new String [lista.size()];
+        System.out.println("----" + lista.size());
+        for(int i=0;i<lista.size();i++)
           {
-              Element pregunta=(Element)lista.get(i);
-              if(Integer.parseInt(pregunta.getAttributeValue("idcreador"))==id)
+              Element Examen=(Element)lista.get(i);
+              if(Integer.parseInt(Examen.getAttributeValue("idcreador"))==id)
               {
-                  System.out.println("entre: " + pregunta.getAttributeValue("id") );
-                  preguntas[Integer.parseInt(pregunta.getAttributeValue("id"))-1]=pregunta.getAttributeValue("id") + ")" +pregunta.getAttributeValue("texto") ;
+                  
+                  Examenes[Integer.parseInt(Examen.getAttributeValue("id"))-1]=Examen.getAttributeValue("id") + ")" +Examen.getAttributeValue("nombre") ;
               }
           }
           String respuesta="";
-          for(int i=0; i<preguntas.length ; i++)
+          for(int i=0; i<Examenes.length ; i++)
           {
-              if(preguntas[i]!= null)
-              respuesta=respuesta + preguntas[i] + "@";
+              if(Examenes[i]!= null)
+              respuesta=respuesta + Examenes[i] + "@";
           }
          if(respuesta.equals(""))
              respuesta="@_VACIO_@@";
@@ -73,5 +70,4 @@ public class ActionMisPreguntas extends ActionSupport {
           responseStream = new StringBufferInputStream(respuesta);
         return SUCCESS;
     }
-    
 }

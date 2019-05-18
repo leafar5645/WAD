@@ -38399,6 +38399,21 @@ function (_React$Component) {
       };
       preg.push(Pregunta);
       return preg;
+    } //valida que el ID se encuentre contenido en las preguntas seleccionadas
+
+  }, {
+    key: "contienePreguntas",
+    value: function contienePreguntas(id) {
+      for (var i = 0; i < this.state.Preguntas.length; i++) {
+        var element = this.state.Preguntas[i];
+
+        if (element.key == id) {
+          console.log(element.key);
+          return true;
+        }
+      }
+
+      return false;
     }
   }, {
     key: "pedirElementosRenderizar",
@@ -38426,7 +38441,7 @@ function (_React$Component) {
         tabla.push(_react.default.createElement("th", null, "Id"));
 
         for (var i = 0; i < preg.length; i++) {
-          tabla.push(_react.default.createElement("tr", {
+          if (!this.contienePreguntas(preg[i].id)) tabla.push(_react.default.createElement("tr", {
             key: preg[i].id
           }, _react.default.createElement("td", {
             key: "check" + preg[i].id
@@ -38435,6 +38450,20 @@ function (_React$Component) {
             name: "preg",
             id: preg[i].id,
             onChange: this.manejadorCambiosEscritura
+          })), _react.default.createElement("td", {
+            key: "nombre" + preg[i].id
+          }, preg[i].nombre), _react.default.createElement("td", {
+            key: "id:" + preg[i].id
+          }, preg[i].id)));else tabla.push(_react.default.createElement("tr", {
+            key: preg[i].id
+          }, _react.default.createElement("td", {
+            key: "check" + preg[i].id
+          }, _react.default.createElement("input", {
+            type: "checkbox",
+            name: "preg",
+            id: preg[i].id,
+            onChange: this.manejadorCambiosEscritura,
+            checked: true
           })), _react.default.createElement("td", {
             key: "nombre" + preg[i].id
           }, preg[i].nombre), _react.default.createElement("td", {
@@ -38526,7 +38555,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50012" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50010" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

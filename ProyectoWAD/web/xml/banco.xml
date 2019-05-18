@@ -17,4 +17,5 @@
             <option value='option4'></option>
         </Seccion>                         
     </Pregunta>
+    <Cuestionario id='0' nombre='BASE' idcreador='-1'></Cuestionario>
 </Banco>

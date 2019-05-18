@@ -20,10 +20,6 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-/**
- *
- * @author Marcus
- */
 public class ActionCrearPregunta extends ActionSupport {
      private String pregunta;
      InputStream responseStream;

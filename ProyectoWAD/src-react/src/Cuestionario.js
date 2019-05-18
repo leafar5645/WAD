@@ -36,15 +36,15 @@ export class Cuestionario extends React.Component {
   //-------------------PETICIONES DE XML PARA OBTENER AREAS------------------------------------
   //----------------------------------------------------------------------------------------------
   //haciendo peticion y obteniendo las secciones
-  pedirPreguntas( idPreg)
+  pedirPreguntas( idCuest)
   {
-     var preg=[];
-     /*
+    var preg=[];
+     
     var formData = new FormData();
-    var sec;
-     formData.append("idpregunta" ,idPreg);
+    var cuest;
+     formData.append("idExamen" ,idCuest);
        $.ajax({
-              url: 'DarPregunta',
+              url: 'DarExamen',
               type: 'Post',
               data: formData,
               async:false,
@@ -54,62 +54,116 @@ export class Cuestionario extends React.Component {
                    var parser = new DOMParser();
                    var xmlDoc = parser.parseFromString(data.toString(),"text/xml");
 
-                   sec=xmlDoc.getElementsByTagName("Seccion");
+                   cuest=xmlDoc.getElementsByTagName("Cuestionario")[0];
                    
               },
               error: function (data)
               {
-                  alert("ERROR en recepcion de SECCIONES");
+                  alert("ERROR en recepcion de Preguntas");
               }
           });
-         */ 
-       for (var i = 0; i < 2; i++) 
+          //console.log(cuest);
+       var preguntas= cuest.getElementsByTagName("pregunta");
+       for (var i = 0; i < preguntas.length; i++) 
        {
-            preg.push(<Pregunta modo="ver" id={i} nombre={"Nombre"+i} key={i}/>);
+            preg.push(<Pregunta modo="examen" id={preguntas[i].getAttribute("valor")} nombre={preguntas[i].getAttribute("nombre")} key={preguntas[i].getAttribute("valor")}/>);
        }
+       sessionStorage.removeItem('idExamen');
+       sessionStorage.removeItem('nombreExamen');
+       sessionStorage.clear();
        return preg;
+
   }
   //haciendo peticion AJAX para obtener el siguiete ID de pregunta.
   obtenerIDCuestionario()
   {
-      /*
+    var id=0;
     if(this.props.modo=="nuevo")
     {
-      var result;
-       $.ajax({
-              url: 'UltimoCuestionario',
-              type: 'Post',
-              async:false,
-              processData: false, // tell jQuery not to process the data
-              contentType: false, // tell jQuery not to set contentType
-              success: function (data) {
-                  result= data.toString();
-              },
-              error: function (data) {
-                  console.log(data.toString());
-                  alert("ERROR en recepcion de IDPREG");
-              }
-          });
-       return result;
-     }
-     else 
-     {
-      //quitando archivos de session al haber sido llamado el modo editar o ver en TablaPreguntas
-       sessionStorage.removeItem('id');
-       sessionStorage.removeItem('nombre');
-       return this.props.id;
-     }
-     */
-    return 0;
+    $.ajax({
+          url: 'UltimoExamen',
+          type: 'Post',
+          async:false,
+          processData: false, // tell jQuery not to process the data
+          contentType: false, // tell jQuery not to set contentType
+          success: function (data) {
+              id= data.toString();
+          },
+          error: function (data) {
+              console.log(data.toString());
+              alert("ERROR en recepcion de IDCuestionario");
+          }
+      });
+    }
+    else
+    {
+      id=this.props.id;
+    }
+    return id;
   }
 
- //----------------------------------------------------------------------------------------------
-  //--------------Funciones de preguntas
+ //-----------------------------------------------------------------------------------------------
+  //--------------Funciones de preguntas----------------------------------------------------------
   //----------------------------------------------------------------------------------------------
   GuardarPreguntas()
   {
-    alert("Actualizar XML");
-    window.location="TablaPreguntasProfesor.jsp";
+    var id = this.state.idCuestionario;
+    var urlConsulta;
+    if(this.state.modo=="nuevo")
+    {
+       urlConsulta="CrearExamen";
+    }
+    else
+    {
+      urlConsulta="EditarExamen" ;
+    }
+          var inicial = "<Cuestionario id='"+id+"' nombre='"+this.state.nombre+"'></Cuestionario>";
+          var parser = new DOMParser();
+          var xmlDoc = parser.parseFromString(inicial,"text/xml");
+          //Agregando preguntas
+          for (let i = 0; i < this.state.Preguntas.length; i++) 
+          {
+            const element = this.state.Preguntas[i];            
+            var preg=xmlDoc.createElement("pregunta");
+            var att = xmlDoc.createAttribute("valor");      
+            att.value = element.key; 
+            preg.setAttributeNode(att);
+            
+            att = xmlDoc.createAttribute("nombre");      
+            att.value = element.props.nombre; 
+            //console.log("Nombre:"+element.props.nombre);
+            preg.setAttributeNode(att);
+            xmlDoc.getElementsByTagName("Cuestionario")[0].appendChild(preg);
+          }
+          
+          //console.log(xmlDoc.getElementsByTagName("Cuestionario")[0]);
+
+          var oSerializer = new XMLSerializer();
+          var sXML = oSerializer.serializeToString(xmlDoc);
+          var formData = new FormData();
+           formData.append("examen" ,sXML);
+        $.ajax({
+                url: urlConsulta,
+                type: 'Post',
+                data: formData,
+                async:false,
+                processData: false, // tell jQuery not to process the data
+                contentType: false, // tell jQuery not to set contentType
+                success: function (data) {
+                    if(!data.toString()=="listo")
+                      alert("ERROR en respuesta");  
+                      else
+                      {
+                        alert("Examen Guardado");
+                        window.location="TablaExamenes.html";
+                      }                    
+                },
+                error: function (data) {
+                    console.log(data.toString());
+                    alert("ERROR en peticion");
+                }
+            });
+    
   }
   EliminarPregunta()
   {
@@ -159,7 +213,14 @@ export class Cuestionario extends React.Component {
   }
   Calificar()
   {
-
+     var resultado=0;
+     for (let i = 0; i < this.state.Preguntas.length; i++) {
+       const element = this.state.Preguntas[i];
+       var cal = sessionStorage.getItem("Res:"+element.key); 
+       resultado+=parseInt(cal);
+     }
+     alert("Calificacion: "+((resultado/this.state.Preguntas.length))*100);
+     window.location="TablaExamenes.html";
   }
 
   manejadorCambiosEscritura(e)
@@ -169,7 +230,7 @@ export class Cuestionario extends React.Component {
     else if(e.target.checked)//checkbox
     {
       var aux= this.state.Preguntas;
-      aux.push(<Pregunta modo="ver" id={e.target.id} nombre={"Nombre"+e.target.id} key={e.target.id}/>);
+      aux.push(<Pregunta modo="examen" id={e.target.id.split(":")[0]} nombre={e.target.id.split(":")[1]} key={e.target.id.split(":")[0]}/>);
       this.setState({Preguntas: aux});
     }
     else if(e.target.name=="preg")
@@ -178,7 +239,7 @@ export class Cuestionario extends React.Component {
       for (let i = 0; i < aux.length; i++) 
       {
         const element = aux[i];
-        if(element.key==e.target.id)
+        if(element.key==e.target.id.split(":")[0])
         {
             aux.splice(i,1);
             this.setState({Preguntas: aux});
@@ -190,21 +251,61 @@ export class Cuestionario extends React.Component {
   }
   obtenerTodasPreguntas()
   {
+    var nombres=[];
+    var ids= [];
+    $.ajax({
+              url: 'MisPreguntas',
+              type: 'Post',
+              async:false,
+              processData: false, // tell jQuery not to process the data
+              contentType: false, // tell jQuery not to set contentType
+              success: function (data) {
+                  //console.log(data.toString());
+                  if(data.toString()!="@_VACIO_@")
+                  {
+                    var aux= data.toString().split("@");
+                    for (var i = 0; i < aux.length; i++) 
+                    {
+                      nombres[i]=aux[i].split(")")[1];
+                      ids[i]=aux[i].split(")")[0];
+                    }
+                  }
+              },
+              error: function (data) 
+              {
+                  console.log(data.toString());
+                  nombres=["Ejemplo1","Ejemplo2"];
+                  alert("ERROR en Obtencion de Todas las Preguntas");
+              }
+          });    
       var preg= [];
-      var Pregunta = {nombre: "preg1", id: 0};
-      preg.push(Pregunta);
-      var Pregunta = {nombre: "preg2", id: 2};
-      preg.push(Pregunta);
+      for (let i = 0; i < ids.length; i++) 
+      {
+        var Pregunta = {nombre: nombres[i], id: ids[i]};
+        preg.push(Pregunta);        
+      }
     return preg;
   }
-
+  //valida que el ID se encuentre contenido en las preguntas seleccionadas
+  contienePreguntas(id)
+  {
+    for (let i = 0; i < this.state.Preguntas.length; i++) 
+    {
+      const element = this.state.Preguntas[i];
+      if(element.key==id)
+      {
+        return true;
+      }
+    }
+    return false;
+  }
   pedirElementosRenderizar()
   {
     var editar=[];
     if(this.state.modo!="ver")
     {
-      console.log(this.state.nombre);
-      console.log(this.state.Preguntas);
+      //console.log(this.state.nombre);
+      //console.log(this.state.Preguntas);
       editar.push("Nombre de Cuestionario:");
       editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosEscritura} value={this.state.nombre} key='InputName'required/>);
       editar.push(<br/>);
@@ -216,13 +317,22 @@ export class Cuestionario extends React.Component {
       tabla.push(<th>Id</th>);
       for(let i=0; i<preg.length;i++)
       {
+        if(!this.contienePreguntas(preg[i].id))
+          tabla.push(
+          <tr key={preg[i].id}>
+          <td key={"check"+preg[i].id}><input type="checkbox" name="preg" id={preg[i].id+":"+preg[i].nombre} onChange={this.manejadorCambiosEscritura}/></td> 
+          <td key={"nombre"+preg[i].id} >{preg[i].nombre}</td>
+          <td key={"id:"+preg[i].id}>{preg[i].id}</td>
+          </tr>
+          );
+        else
         tabla.push(
-        <tr key={preg[i].id}>
-        <td key={"check"+preg[i].id}><input type="checkbox" name="preg" id={preg[i].id} onChange={this.manejadorCambiosEscritura}/></td> 
-        <td key={"nombre"+preg[i].id} >{preg[i].nombre}</td>
-        <td key={"id:"+preg[i].id}>{preg[i].id}</td>
-        </tr>
-        );
+          <tr key={preg[i].id}>
+          <td key={"check"+preg[i].id}><input type="checkbox" name="preg" id={preg[i].id} onChange={this.manejadorCambiosEscritura} checked/></td> 
+          <td key={"nombre"+preg[i].id} >{preg[i].nombre}</td>
+          <td key={"id:"+preg[i].id}>{preg[i].id}</td>
+          </tr>
+          ); 
       }
       editar.push(<table border='1' key='Tabla'>{tabla}</table>);
       editar.push(<button onClick={this.GuardarPreguntas} key ='Finalizar'>Finalizar</button>);
@@ -237,6 +347,7 @@ export class Cuestionario extends React.Component {
         editar.push(<button onClick={this.Retroceder}>Anterior</button>);
         editar.push(<button onClick={this.Avanzar}>Siguiente</button>);
         editar.push(<button onClick={this.Final}>Final</button>);
+        editar.push(<button onClick={this.Calificar}>Finalizar Cuestionario</button>);
     }
     return editar;
   }

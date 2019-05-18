@@ -37,6 +37,7 @@ public class ActionUltimoExamen extends ActionSupport {
    
     
     public String execute() throws Exception {
+       // System.out.println("ENTRE");
            HttpSession sesion=ServletActionContext.getRequest().getSession();
         Usuarios us =(Usuarios)sesion.getAttribute("user");
         int id =us.getId();
@@ -52,6 +53,7 @@ public class ActionUltimoExamen extends ActionSupport {
             int mayor=0;
             int n=0;
             int p=0;
+           // System.out.println("Preguntas: "+preguntas.size());
             for (int z=0; z<preguntas.size() ; z++)
             {
                 Element pregunta =(Element)preguntas.get(z);
@@ -63,8 +65,10 @@ public class ActionUltimoExamen extends ActionSupport {
             }
            n=mayor+1;
            respuesta=""+n;
+            //System.out.println("-----------------------TERMINE");
            }
 	   catch (IOException | JDOMException io) {
+               System.out.println("ERROR en ULTIMO EXAMEN");
 		System.out.println(io.getMessage());
 	  }
         responseStream = new StringBufferInputStream(respuesta);

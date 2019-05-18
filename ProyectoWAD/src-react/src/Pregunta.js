@@ -45,6 +45,9 @@ export class Pregunta extends React.Component {
      var preg=[];
     var formData = new FormData();
     var sec;
+    var modo=this.props.modo;
+    if(modo=="examen")
+      modo="ver";
      formData.append("idpregunta" ,idPreg);
        $.ajax({
               url: 'DarPregunta',
@@ -71,14 +74,14 @@ export class Pregunta extends React.Component {
          //console.log(sec[i].getAttribute("tipo"));
          if(sec[i].getAttribute("tipo")=="multiple")
          {
-            preg.push(<Multiple modo={this.props.modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
+            preg.push(<Multiple modo={modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
          }
          else if(sec[i].getAttribute("tipo")=="texto")
          {
-            preg.push(<Texto modo={this.props.modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
+            preg.push(<Texto modo={modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
          }
          preg.push(<br/>);
-         if(this.props.modo!="ver")
+         if(this.props.modo!="ver"&&this.props.modo!="examen")
             preg.push(<button onClick={this.Eliminar.bind(this,sec[i].id)} key={"b"+sec[i].id}>Eliminar Seccion</button>);
        }
        return preg;
@@ -261,19 +264,34 @@ export class Pregunta extends React.Component {
   //----------------------------------------------------------------------------------------------
   //--------------------Funciones interactuar con usuario-----------------------------------------
   //----------------------------------------------------------------------------------------------
-  //para sali de la pantalla.
+  //para salir de la pantalla.
   handleSubmit()
   {
     event.preventDefault();
-    if(this.props.modo!="ver")
+    if(this.props.modo!="ver"&&this.props.modo!="examen")
     {
-      if(confirm("¿Esta seguro de finalizar? Se perderan los cambio que no esten guardados."))
+      if(confirm("¿Esta seguro de finalizar? Se perderan los cambios que no esten guardados."))
       {
         window.location.replace("TablaPreguntasProfesor.jsp");
       }
     }
-    else//si es modo ver se evalua la pregunta
+    else//si es modo ver o examen se evalua la pregunta
     {
+      if(this.props.modo=="examen")
+      {
+        //console.log(sessionStorage.getItem("Res:"+this.state.idPreg));
+        if(sessionStorage.getItem("Res:"+this.state.idPreg)==0)
+        {
+          alert("Pregunta Finalizada como Incorrecta");
+          return;
+        }
+        else if(sessionStorage.getItem("Res:"+this.state.idPreg)==1)
+        {
+         alert("Pregunta Finalizada como Correcta");
+         return;
+        }
+         
+      }
       var cal=0;
       var numPreg=0;
       for (var i = 0; i < this.state.Preguntas.length; i++) 
@@ -292,7 +310,7 @@ export class Pregunta extends React.Component {
 	          {
 	          	cal++;
 	          }
-    	  }
+    	    }
 
         }
       }
@@ -305,8 +323,14 @@ export class Pregunta extends React.Component {
     	    {
     	    	alert("Se Acabaron tus Intentos");
     	    	//limpiamos la session y redirigimos
-    	    	sessionStorage.clear();
-      			window.location.replace("TablaPreguntasProfesor.jsp");
+            
+            if(this.props.modo=="ver")
+            {
+              sessionStorage.clear();
+              window.location.replace("TablaPreguntasProfesor.jsp");
+            }
+            else if(this.props.modo=="examen")//Guardamos el error en session
+              sessionStorage.setItem("Res:"+this.state.idPreg,0); 
     	    }
     	    this.setState((state) => (
     				{intentosVer:this.state.intentosVer+1})
@@ -316,8 +340,14 @@ export class Pregunta extends React.Component {
       {
       	alert(this.state.mBien);
       	//limpiamos la session y redirigimos
-    	sessionStorage.clear();
-      	window.location.replace("TablaPreguntasProfesor.jsp");
+        
+        if(this.props.modo=="ver")
+        {
+          sessionStorage.clear();
+          window.location.replace("TablaPreguntasProfesor.jsp");
+        }
+        else if(this.props.modo=="examen")//Guardamos el acierto en session
+        sessionStorage.setItem("Res:"+this.state.idPreg,1); 
       }
       //alert("Calificacion= "+cal +"/"+numPreg);
     }
@@ -326,7 +356,7 @@ export class Pregunta extends React.Component {
   //arma el arreglo que se renderizara
   pedir()
   {
-    if(this.state.modo!="ver")
+    if(this.state.modo!="ver"&&this.props.modo!="examen")
     {
     	var aux=[];
     	for (var i = 0; i < this.state.Preguntas.length; i++) 
@@ -492,7 +522,7 @@ export class Pregunta extends React.Component {
   {
   	var preg=this.pedir();
     var editar=[];
-    if(this.state.modo!="ver")
+    if(this.state.modo!="ver"&&this.props.modo!="examen")
     {
       editar.push("Nombre de pregunta:");
       editar.push(<input type="text" name="pregunta" onChange={this.manejadorCambiosTitulo} value={this.state.nombre} required/>);
@@ -522,7 +552,7 @@ export class Pregunta extends React.Component {
        {editar}
        <br/>
        {preg}  
-       <input type="submit" value="Finalizar" onClick={this.handleSubmit}/>
+       <input type="submit" value="Evaluar Esta Pregunta" onClick={this.handleSubmit}/>
       </div>
       
     );

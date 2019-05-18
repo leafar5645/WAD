@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package paquete;
 
 import static com.opensymphony.xwork2.Action.SUCCESS;
@@ -18,10 +14,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-/**
- *
- * @author Marcus
- */
 public class ActionMisExamenes extends ActionSupport {
     
          InputStream responseStream;

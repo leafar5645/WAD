@@ -2,7 +2,7 @@
 <!DOCTYPE Banco>
 
 <Banco>
-  <Pregunta id="1" texto="Pregunta de prueba" idcreador="1">
+  <Pregunta id="0" texto="Pregunta de prueba" idcreador="0">
     <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
       <Recurso tipo="audio" src="audio.mp3" />
       <option value="option1" />
@@ -18,46 +18,20 @@
       <option value="option4" />
     </Seccion>
   </Pregunta>
-  <Pregunta id="2" texto="Pregunta de prueba 3" idcreador="1">
-    <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
-      <Recurso tipo="audio" src="audio.mp3" />
-      <option value="option1" />
-      <option value="option2" />
-      <option value="option3" />
-      <option value="option4" />
-    </Seccion>
-    <Seccion texto="texto1" tipo="seleccion 2" id="2" respuesta="option2">
-      <Recurso tipo="video" src="video.mp4" />
-      <option value="option1" />
-      <option value="option2" />
-      <option value="option3" />
-      <option value="option4" />
+  <Cuestionario id="0" nombre="BASE" idcreador="-1" />
+  <Pregunta id="1" texto="Una Pregunta" mensajeBien="Mal" mensajeError="Bien" intentos="2" idcreador="2">
+    <Seccion texto="2+2" tipo="multiple" id="0" respuesta="4">
+      <option value="1" />
+      <option value="2" />
+      <option value="4" />
     </Seccion>
   </Pregunta>
-  <Pregunta id="3" texto="Pregunta de prueba 4" idcreador="1">
-    <Seccion texto="texto1" tipo="seleccion" id="1" respuesta="option1">
-      <Recurso tipo="audio" src="audio.mp3" />
-      <option value="option1" />
-      <option value="option2" />
-      <option value="option3" />
-      <option value="option4" />
-    </Seccion>
-    <Seccion texto="texto1" tipo="seleccion 2" id="2" respuesta="option2">
-      <Recurso tipo="video" src="video.mp4" />
-      <option value="option1" />
-      <option value="option2" />
-      <option value="option3" />
-      <option value="option4" />
-    </Seccion>
+  <Pregunta id="2" texto="otra Pregunta" mensajeBien="Bien" mensajeError="Mal" intentos="3" idcreador="2">
+    <Seccion texto="2+3" tipo="texto" id="0" respuesta="5" />
   </Pregunta>
-  <Cuestionario id="1" nombre="Este es el nombre 1" idcreador="1">
-    <pregunta valor="3" />
-    <pregunta valor="1" />
-    <pregunta valor="2" />
-  </Cuestionario>
-  <Cuestionario id="2" nombre="Este es el nombre 3" idcreador="1">
-    <pregunta valor="3" />
-    <pregunta valor="2" />
+  <Cuestionario id="1" nombre="Examen2" idcreador="2">
+    <pregunta valor="2" nombre="otra Pregunta" />
+    <pregunta valor="1" nombre="Una Pregunta" />
   </Cuestionario>
 </Banco>
 

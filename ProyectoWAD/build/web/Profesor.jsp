@@ -16,7 +16,7 @@
     <body>
         <div id="barra">
      </div>
-<script src="/ProyectoWAD/BarraNavRender.898bd891.js"> </script> 
+<script src="/ProyectoWAD/BarraNavRender.f2254f6c.js"> </script> 
 
         <br>
         <% Usuarios a =(Usuarios) session.getAttribute("user"); %>

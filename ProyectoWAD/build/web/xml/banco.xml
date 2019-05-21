@@ -29,9 +29,5 @@
   <Pregunta id="2" texto="otra Pregunta" mensajeBien="Bien" mensajeError="Mal" intentos="3" idcreador="2">
     <Seccion texto="2+3" tipo="texto" id="0" respuesta="5" />
   </Pregunta>
-  <Cuestionario id="1" nombre="Examen2" idcreador="2">
-    <pregunta valor="2" nombre="otra Pregunta" />
-    <pregunta valor="1" nombre="Una Pregunta" />
-  </Cuestionario>
 </Banco>
 

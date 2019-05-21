@@ -23,7 +23,6 @@ export class Cuestionario extends React.Component {
       this.state = {Preguntas: preguntas, idCuestionario: idCuestionario ,indiceActual:indiceActual, modo:props.modo, nombre:props.nombre};
      //funciones de preguntas
     this.GuardarPreguntas=this.GuardarPreguntas.bind(this);
-    this.EliminarPregunta=this.EliminarPregunta.bind(this);
     //funciones interaccion de usuario
     this.Avanzar=this.Avanzar.bind(this);
     this.Retroceder=this.Retroceder.bind(this);
@@ -165,20 +164,6 @@ export class Cuestionario extends React.Component {
             });
     
   }
-  EliminarPregunta()
-  {
-    var aux=this.state.Preguntas;
-    aux.push(<Texto modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
-    aux.push(<br/>);
-    aux.push(<button onClick={this.Eliminar.bind(this,this.state.i)} key={"b"+this.state.i}>Eliminar Seccion</button>);
-    aux.push(<br/>);
-    aux.push(<br/>);
-    this.setState((state) => (
-      {Preguntas: aux, i:this.state.i+1})
-    );
-    //this.setState({Preguntas: aux, i:this.state.i+1});
-    return aux;
-  }
   //----------------------------------------------------------------------------------------------
   //--------------------Funciones interactuar con usuario-----------------------------------------
   //----------------------------------------------------------------------------------------------
@@ -219,7 +204,7 @@ export class Cuestionario extends React.Component {
        var cal = sessionStorage.getItem("Res:"+element.key); 
        resultado+=parseInt(cal);
      }
-     alert("Calificacion: "+((resultado/this.state.Preguntas.length))*100);
+     alert("Calificacion: "+(((resultado/this.state.Preguntas.length))*100)+"%");
      window.location="TablaExamenes.html";
   }
 

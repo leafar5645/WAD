@@ -108,7 +108,7 @@ export class TablaExamenes extends React.Component {
               processData: false, // tell jQuery not to process the data
               contentType: false, // tell jQuery not to set contentType
               success: function (data) {
-                 window.location.replace("TablaExamenesProfesor.jsp");
+                 window.location.replace("TablaExamenes.html");
               },
               error: function (data) {
                   

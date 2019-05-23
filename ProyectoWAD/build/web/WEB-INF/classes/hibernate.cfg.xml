@@ -48,5 +48,6 @@ Contributor(s):
     <property name="hibernate.connection.password">root</property>
     <property name="hibernate.connection.pool_size">5</property>
     <mapping resource="entity/Usuarios.hbm.xml"/>
+    <mapping resource="entity/Calificaciones.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

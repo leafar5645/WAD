@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 4/04/2019 07:29:10 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated 21/05/2019 08:16:01 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="entity.Usuarios" table="usuarios" catalog="proyectowad2" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
@@ -20,5 +20,11 @@
         <property name="tipo" type="string">
             <column name="tipo" length="100" />
         </property>
+        <set name="calificacioneses" table="calificaciones" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idusuari" />
+            </key>
+            <one-to-many class="entity.Calificaciones" />
+        </set>
     </class>
 </hibernate-mapping>

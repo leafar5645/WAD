@@ -74,9 +74,9 @@ export class TablaExamenes extends React.Component {
       const fila=<tr key={this.state.ID[i]}>
       <td key='0'>{this.state.Nombres[i]}</td>
       <td key='1'>{this.state.ID[i]}</td>
-      <td key='2'><button onClick={this.Eliminar.bind(this,this.state.ID[i],this.state.Nombres[i])}>Eliminar Pregunta</button></td>
-      <td key='3'><button onClick={this.Modificar.bind(this,this.state.ID[i],this.state.Nombres[i])}>Modificar Pregunta</button></td>
-      <td key='4'><button onClick={this.Ver.bind(this,this.state.ID[i],this.state.Nombres[i])}>Ver Pregunta</button></td>
+      <td key='2'><button onClick={this.Eliminar.bind(this,this.state.ID[i],this.state.Nombres[i])}>Eliminar Examen</button></td>
+      <td key='3'><button onClick={this.Modificar.bind(this,this.state.ID[i],this.state.Nombres[i])}>Modificar Examen</button></td>
+      <td key='4'><button onClick={this.Ver.bind(this,this.state.ID[i],this.state.Nombres[i])}>Ver Examen</button></td>
       </tr>;
       tabla.push(fila);
     }

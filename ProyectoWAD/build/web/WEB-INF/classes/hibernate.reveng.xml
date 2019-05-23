@@ -41,5 +41,6 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="proyectowad2"/>
+  <table-filter match-name="calificaciones"/>
   <table-filter match-name="usuarios"/>
 </hibernate-reverse-engineering>

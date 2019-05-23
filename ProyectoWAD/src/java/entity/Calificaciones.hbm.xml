@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21/05/2019 08:16:01 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entity.Calificaciones" table="calificaciones" catalog="proyectowad2" optimistic-lock="version">
+        <id name="idcal" type="java.lang.Integer">
+            <column name="idcal" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="usuarios" class="entity.Usuarios" fetch="select">
+            <column name="idusuari" />
+        </many-to-one>
+        <property name="calificacion" type="java.lang.Integer">
+            <column name="calificacion" />
+        </property>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" not-null="true" />
+        </property>
+        <property name="idExamen" type="java.lang.Integer">
+            <column name="idExamen" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -19,15 +19,20 @@
     </Seccion>
   </Pregunta>
   <Cuestionario id="0" nombre="BASE" idcreador="-1" />
-  <Pregunta id="1" texto="Una Pregunta" mensajeBien="Mal" mensajeError="Bien" intentos="2" idcreador="2">
-    <Seccion texto="2+2" tipo="multiple" id="0" respuesta="4">
-      <option value="1" />
-      <option value="2" />
-      <option value="4" />
+  <Pregunta id="1" texto="Responde lo siguiente" mensajeBien="bien" mensajeError="mal" intentos="2" idcreador="1">
+    <Seccion texto="de quien es la bandera?" tipo="multiple" id="0" respuesta="Mexico">
+      <Recurso src="image/1/descarga.png" tipo="image" />
+      <option value="Mexico" />
+      <option value="Francia" />
+      <option value="Italia" />
     </Seccion>
   </Pregunta>
-  <Pregunta id="2" texto="otra Pregunta" mensajeBien="Bien" mensajeError="Mal" intentos="3" idcreador="2">
-    <Seccion texto="2+3" tipo="texto" id="0" respuesta="5" />
+  <Pregunta id="2" texto="responde lo siguiente" mensajeBien="bien " mensajeError="mal " intentos="3" idcreador="1">
+    <Seccion texto="2+2" tipo="texto" id="0" respuesta="4" />
   </Pregunta>
+  <Cuestionario id="1" nombre="Nuevo1" idcreador="1">
+    <pregunta valor="1" nombre="Responde lo siguiente" />
+    <pregunta valor="2" nombre="responde lo siguiente" />
+  </Cuestionario>
 </Banco>
 

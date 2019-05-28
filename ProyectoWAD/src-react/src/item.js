@@ -1,31 +1,27 @@
 import React from "react";
 import $ from 'jquery'; 
 import { DragSource } from 'react-dnd'
+let styles ={border: '1px solid black'};
 const itemSource={
-	beginDrag(props){return props.isReady},
-isDragging(props, monitor) {
+	beginDrag(props){
+    console.log("hola");
+    return props.items},
+  isDragging(props, monitor) {
+    console.log("moviendo");
     return monitor.getItem().id === props.id
-  },
-  beginDrag(props, monitor, component) {
-    // Return the data describing the dragged item
-    const item = { id: props.id }
-    return item
   },
 
   endDrag(props, monitor, component) {
-    if (!monitor.didDrop()) {
-      // You can check whether the drop was successful
+   
+      if(!monitor.didDrop())
+      {
+      // You can check wshether the drop was successful
       // or if the drag ended but nobody handled the drop
-      return
-	}
-	 const item = monitor.getItem()
-
-    // You may also read the drop result from the drop target
-    // that handled the drop, if it returned an object from
-    // its drop() method.
-    const dropResult = monitor.getDropResult()
-
-    // This is a good place to call some Flux action
+      return;
+      }
+      return;
+      //return props.handleDrop(props.items.id);
+	    // This is a good place to call some Flux action
     //CardActions.moveCardToList(item.id, dropResult.listId)
   },
 }
@@ -40,11 +36,12 @@ function collect(connect, monitor) {
     // Call this function inside render()
     // to let React DnD handle the drag events:
     connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
     // You can ask the monitor about the current drag state:
     isDragging: monitor.isDragging(),
   }
 }
-export class item extends React.Component
+class Item extends React.Component
 {
 	
 constructor(props) {
@@ -55,10 +52,14 @@ constructor(props) {
 
     // These props are injected by React DnD,
     // as defined by your `collect` function above:
-    const { isDragging, connectDragSource } = this.props
+    
 	render() {
-		return connectDragSource <div className="item"><img className="item-img" src="descarga.png"/> 
-		{isDragging && ' (and I am being dragged now)'}</div>
-	}
+    const { isDragging, connectDragSource , item } = this.props;
+     let res="Recursos/" + this.props.items.Recurso;
+		return connectDragSource ( <div style={styles}> <img className="item-img" src= {res}/> 
+    {this.props.items.name}
+      </div>
+    )
+  }
 }
-export default DragSource("item", itemSource, collect)(item)
+export default DragSource ("item", itemSource, collect)(Item);

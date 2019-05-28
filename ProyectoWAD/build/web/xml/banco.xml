@@ -19,20 +19,42 @@
     </Seccion>
   </Pregunta>
   <Cuestionario id="0" nombre="BASE" idcreador="-1" />
-  <Pregunta id="1" texto="Responde lo siguiente" mensajeBien="bien" mensajeError="mal" intentos="2" idcreador="1">
-    <Seccion texto="de quien es la bandera?" tipo="multiple" id="0" respuesta="Mexico">
-      <Recurso src="image/1/descarga.png" tipo="image" />
-      <option value="Mexico" />
-      <option value="Francia" />
-      <option value="Italia" />
+  <Pregunta id="1" texto="Responde lo siguiente" mensajeBien="bien " mensajeError="mal" intentos="3" idcreador="1" />
+  <Pregunta id="2" texto="asocia lo siguiente" mensajeBien="bien" mensajeError="mal" intentos="1" idcreador="1" />
+  <Pregunta id="3" texto="Responde lo siguient" mensajeBien="bien" mensajeError="mal" intentos="3" idcreador="1" />
+  <Cuestionario id="1" nombre="Examen 1" idcreador="1">
+    <pregunta valor="1" nombre="Responde lo siguiente" />
+  </Cuestionario>
+  <Cuestionario id="2" nombre="Examen editado" idcreador="1">
+    <pregunta valor="1" nombre="Responde lo siguiente" />
+    <pregunta valor="2" nombre="asocia lo siguiente" />
+    <pregunta valor="3" nombre="Responde lo siguient" />
+  </Cuestionario>
+  <Pregunta id="4" texto="Preguntas Audio" mensajeBien="bien" mensajeError="mal" intentos="3" idcreador="1">
+    <Seccion texto="Cantante de la canción" tipo="multiple" id="0" respuesta="Quinta Estacion">
+      <Recurso src="image/1/audio1.mp3" tipo="audio" />
+      <option value="Quinta Estacion" />
+      <option value="Camila" />
+      <option value="La oreja de van gogh" />
     </Seccion>
   </Pregunta>
-  <Pregunta id="2" texto="responde lo siguiente" mensajeBien="bien " mensajeError="mal " intentos="3" idcreador="1">
-    <Seccion texto="2+2" tipo="texto" id="0" respuesta="4" />
+  <Pregunta id="5" texto="Pregunta imagen" mensajeBien=" Bien" mensajeError="mal" intentos="3" idcreador="1">
+    <Seccion texto="Nombre del personaje de la imagen" tipo="multiple" id="0" respuesta="JD Fenix">
+      <Recurso src="image/1/JD.jpg" tipo="image" />
+      <option value="JD Fenix" />
+      <option value="Marcus Fenix" />
+      <option value="Bird" />
+    </Seccion>
   </Pregunta>
-  <Cuestionario id="1" nombre="Nuevo1" idcreador="1">
-    <pregunta valor="1" nombre="Responde lo siguiente" />
-    <pregunta valor="2" nombre="responde lo siguiente" />
+  <Pregunta id="6" texto="Pregunta video" mensajeBien="bien" mensajeError="mal " intentos="1" idcreador="1">
+    <Seccion texto="Programa del video" tipo="texto" id="0" respuesta="Netbeans">
+      <Recurso src="image/1/Letras 28_09_2018 08_39_16 p. m..mp4" tipo="video" />
+    </Seccion>
+  </Pregunta>
+  <Cuestionario id="3" nombre="Prueba" idcreador="1">
+    <pregunta valor="4" nombre="Preguntas Audio" />
+    <pregunta valor="5" nombre="Pregunta imagen" />
+    <pregunta valor="6" nombre="Pregunta video" />
   </Cuestionario>
 </Banco>
 

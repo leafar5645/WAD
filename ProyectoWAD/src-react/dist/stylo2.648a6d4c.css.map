@@ -1,0 +1,1 @@
+{"version":3,"sources":["CSS/stylo2.css"],"names":[],"mappings":"AAAA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA","file":"stylo2.648a6d4c.css","sourceRoot":"..\\src","sourcesContent":[".item-img{\r\n\theight:100;\r\n\twidth:100;\r\n\t\r\n}\r\n.targets{\r\n\theight:200;\r\n\twidth: 200;\r\n\tborder: 1px solid black;\r\n}"]}

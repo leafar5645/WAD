@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {DnD} from "./DnD.js";
+import DnD from "./DnD";
 import $ from 'jquery';
 ReactDOM.render(
-  <DnD  />,
+  <DnD   />,
   document.getElementById('root')
 );

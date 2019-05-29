@@ -15,6 +15,7 @@ drop(props , monitor , component){
 const dragIndex = monitor.getItem().id;
 const hoverIndex= props.id;
 console.log("voy " + dragIndex);
+console.log("soy " + hoverIndex);
 if(dragIndex==hoverIndex)
 {
     console.log("correcto");

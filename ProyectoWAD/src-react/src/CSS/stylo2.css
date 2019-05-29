@@ -1,10 +1,27 @@
 .item-img{
-	height:100;
-	width:100;
+	height:250;
+	width:250;
+	background-color: white;
 	
 }
+
 .targets{
-	height:400;
-	width: 400;
+	height:250;
+	width: 250;
 	border: 1px solid black;
+
+}
+.container-items{
+
+	float: "left";
+	width: 500px;
+}
+.container-targets{
+
+	float: "right";
+	width: 500px;
+}
+.drag{
+width: 1500;
+height: 3000;
 }

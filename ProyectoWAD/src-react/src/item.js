@@ -1,7 +1,8 @@
 import React from "react";
 import $ from 'jquery'; 
-import { DragSource } from 'react-dnd'
-let styles ={border: '1px solid black'};
+import { DragSource } from 'react-dnd';
+import {Recurso} from './recurso.js';
+let styles ={border: '1px solid black' , height : 250 , width: 250, 	backgroundColor: "white"  };
 const itemSource={
 	beginDrag(props){
     console.log("hola");
@@ -56,7 +57,7 @@ constructor(props) {
 	render() {
     const { isDragging, connectDragSource , item } = this.props;
      let res="Recursos/" + this.props.items.Recurso;
-		return connectDragSource ( <div style={styles}> <img className="item-img" src= {res}/> 
+		return connectDragSource ( <div className="myitem" style={styles}> <Recurso key={this.props.items.id} src= {res}/> 
     {this.props.items.name}
       </div>
     )

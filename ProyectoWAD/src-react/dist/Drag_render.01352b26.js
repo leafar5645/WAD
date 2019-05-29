@@ -41803,116 +41803,7 @@ exports.__EXPERIMENTAL_DND_HOOKS_THAT_MAY_CHANGE_AND_BREAK_MY_BUILD__ = {
     useDrop: hooks_1.useDrop,
 };
 
-},{"./DragDropContext":"../node_modules/react-dnd/lib/cjs/DragDropContext.js","./DragLayer":"../node_modules/react-dnd/lib/cjs/DragLayer.js","./DragSource":"../node_modules/react-dnd/lib/cjs/DragSource.js","./DropTarget":"../node_modules/react-dnd/lib/cjs/DropTarget.js","./DragPreviewImage":"../node_modules/react-dnd/lib/cjs/DragPreviewImage.js","./hooks":"../node_modules/react-dnd/lib/cjs/hooks/index.js"}],"Item.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _jquery = _interopRequireDefault(require("jquery"));
-
-var _reactDnd = require("react-dnd");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var styles = {
-  border: '1px solid black'
-};
-var itemSource = {
-  beginDrag: function beginDrag(props) {
-    console.log("hola");
-    return props.items;
-  },
-  isDragging: function isDragging(props, monitor) {
-    console.log("moviendo");
-    return monitor.getItem().id === props.id;
-  },
-  endDrag: function endDrag(props, monitor, component) {
-    if (!monitor.didDrop()) {
-      // You can check wshether the drop was successful
-      // or if the drag ended but nobody handled the drop
-      return;
-    }
-
-    return; //return props.handleDrop(props.items.id);
-    // This is a good place to call some Flux action
-    //CardActions.moveCardToList(item.id, dropResult.listId)
-  }
-};
-/**
- * Specifies which props to inject into your component.
- */
-
-function collect(connect, monitor) {
-  return {
-    // Call this function inside render()
-    // to let React DnD handle the drag events:
-    connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
-    // You can ask the monitor about the current drag state:
-    isDragging: monitor.isDragging()
-  };
-}
-
-var Item =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(Item, _React$Component);
-
-  function Item(props) {
-    _classCallCheck(this, Item);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Item).call(this, props));
-  } // These props are injected by React DnD,
-  // as defined by your `collect` function above:
-
-
-  _createClass(Item, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          isDragging = _this$props.isDragging,
-          connectDragSource = _this$props.connectDragSource,
-          item = _this$props.item;
-      var res = "Recursos/" + this.props.items.Recurso;
-      return connectDragSource(_react.default.createElement("div", {
-        style: styles
-      }, " ", _react.default.createElement("img", {
-        className: "item-img",
-        src: res
-      }), this.props.items.name));
-    }
-  }]);
-
-  return Item;
-}(_react.default.Component);
-
-var _default = (0, _reactDnd.DragSource)("item", itemSource, collect)(Item);
-
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","jquery":"../node_modules/jquery/dist/jquery.js","react-dnd":"../node_modules/react-dnd/lib/cjs/index.js"}],"recurso.js":[function(require,module,exports) {
+},{"./DragDropContext":"../node_modules/react-dnd/lib/cjs/DragDropContext.js","./DragLayer":"../node_modules/react-dnd/lib/cjs/DragLayer.js","./DragSource":"../node_modules/react-dnd/lib/cjs/DragSource.js","./DropTarget":"../node_modules/react-dnd/lib/cjs/DropTarget.js","./DragPreviewImage":"../node_modules/react-dnd/lib/cjs/DragPreviewImage.js","./hooks":"../node_modules/react-dnd/lib/cjs/hooks/index.js"}],"recurso.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42019,7 +41910,122 @@ function (_React$Component) {
 }(_react.default.Component);
 
 exports.Recurso = Recurso;
-},{"react":"../node_modules/react/index.js"}],"DragTarget.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js"}],"Item.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _jquery = _interopRequireDefault(require("jquery"));
+
+var _reactDnd = require("react-dnd");
+
+var _recurso = require("./recurso.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var styles = {
+  border: '1px solid black',
+  height: 250,
+  width: 250,
+  backgroundColor: "white"
+};
+var itemSource = {
+  beginDrag: function beginDrag(props) {
+    console.log("hola");
+    return props.items;
+  },
+  isDragging: function isDragging(props, monitor) {
+    console.log("moviendo");
+    return monitor.getItem().id === props.id;
+  },
+  endDrag: function endDrag(props, monitor, component) {
+    if (!monitor.didDrop()) {
+      // You can check wshether the drop was successful
+      // or if the drag ended but nobody handled the drop
+      return;
+    }
+
+    return; //return props.handleDrop(props.items.id);
+    // This is a good place to call some Flux action
+    //CardActions.moveCardToList(item.id, dropResult.listId)
+  }
+};
+/**
+ * Specifies which props to inject into your component.
+ */
+
+function collect(connect, monitor) {
+  return {
+    // Call this function inside render()
+    // to let React DnD handle the drag events:
+    connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
+    // You can ask the monitor about the current drag state:
+    isDragging: monitor.isDragging()
+  };
+}
+
+var Item =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(Item, _React$Component);
+
+  function Item(props) {
+    _classCallCheck(this, Item);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Item).call(this, props));
+  } // These props are injected by React DnD,
+  // as defined by your `collect` function above:
+
+
+  _createClass(Item, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          isDragging = _this$props.isDragging,
+          connectDragSource = _this$props.connectDragSource,
+          item = _this$props.item;
+      var res = "Recursos/" + this.props.items.Recurso;
+      return connectDragSource(_react.default.createElement("div", {
+        className: "myitem",
+        style: styles
+      }, " ", _react.default.createElement(_recurso.Recurso, {
+        key: this.props.items.id,
+        src: res
+      }), this.props.items.name));
+    }
+  }]);
+
+  return Item;
+}(_react.default.Component);
+
+var _default = (0, _reactDnd.DragSource)("item", itemSource, collect)(Item);
+
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","jquery":"../node_modules/jquery/dist/jquery.js","react-dnd":"../node_modules/react-dnd/lib/cjs/index.js","./recurso.js":"recurso.js"}],"DragTarget.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42070,6 +42076,7 @@ var itemDragTarjet = {
     var dragIndex = monitor.getItem().id;
     var hoverIndex = props.id;
     console.log("voy " + dragIndex);
+    console.log("soy " + hoverIndex);
 
     if (dragIndex == hoverIndex) {
       console.log("correcto");
@@ -42178,6 +42185,10 @@ function (_React$Component) {
         id: 2,
         name: "Item 2",
         Recurso: "descarga.jpg"
+      }, {
+        id: 3,
+        name: "item3",
+        Recurso: "preso.mp4"
       }],
       objetivos: [{
         id: 1,
@@ -42187,6 +42198,10 @@ function (_React$Component) {
         id: 2,
         name: "taget2",
         Recurso: "descarga.jpg"
+      }, {
+        id: 3,
+        name: "taget3",
+        Recurso: "preso.mp4"
       }]
     };
     return _this;
@@ -42209,7 +42224,10 @@ function (_React$Component) {
 
         });
 
+        var br = _react.default.createElement("br", null);
+
         conItem.push(option);
+        conItem.push(br);
       }
 
       return conItem;
@@ -42221,20 +42239,50 @@ function (_React$Component) {
 
       var obj = this.state.objetivos;
       var conItem2 = [];
-      console.log(obj);
+      var targetsdesorcen = [];
+      var z = 0;
+      var existe = false;
 
       for (var i = 0; i < obj.length; i++) {
-        console.log(obj[i]);
+        targetsdesorcen[i] = -1;
+      }
+
+      while (z < obj.length) {
+        var randomM = Math.floor(Math.random() * obj.length); //console.log(randomM);
+
+        for (var p = 0; p < obj.length; p++) {
+          if (targetsdesorcen[p] === randomM) {
+            existe = true;
+          }
+        }
+
+        if (existe === false) {
+          targetsdesorcen[z] = randomM;
+          z++;
+        } else {
+          existe = false;
+        }
+      }
+
+      console.log(targetsdesorcen);
+
+      for (var _i = 0; _i < obj.length; _i++) {
+        var envia = obj[targetsdesorcen[_i]];
+        var enviaid = obj[targetsdesorcen[_i]].id;
+        console.log(enviaid);
 
         var option = _react.default.createElement(_DragTarget.default, {
-          items: obj[i],
-          id: i + 1,
+          items: envia,
+          id: enviaid,
           handleDrop: function handleDrop(id) {
             return _this2.deleteItem(id);
           }
         });
 
+        var br = _react.default.createElement("br", null);
+
         conItem2.push(option);
+        conItem2.push(br);
       }
 
       return conItem2;
@@ -42257,9 +42305,25 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var styles = {
+        float: "left"
+      };
+      var styles2 = {
+        float: "right"
+      };
+      var styledrag = {
+        backgroundColor: "aqua"
+      };
       return _react.default.createElement("div", {
-        className: "drag"
-      }, this.TodosI(), _react.default.createElement("br", null), this.TodosT(), _react.default.createElement("br", null));
+        className: "drag",
+        style: styledrag
+      }, _react.default.createElement("div", {
+        className: "container-items",
+        style: styles
+      }, this.TodosI()), _react.default.createElement("div", {
+        className: "container-targets",
+        style: styles2
+      }, this.TodosT()));
     }
   }]);
 
@@ -42311,7 +42375,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55150" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61185" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

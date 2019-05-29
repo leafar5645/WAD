@@ -16,6 +16,9 @@ import DragTarget from './DragTarget';
 		items:[ 
 			{id:1 ,name:"Item 1", Recurso:"imagen.jpg" },
 			{id:2 ,name:"Item 2", Recurso:"descarga.jpg" }],
+		objetivos:[
+			{id:1 , name:"taget1", Recurso:"imagen.jpg" },
+			{id:2 , name:"taget2", Recurso:"descarga.jpg" }],	
 			 }
 			}
 			TodosI()
@@ -31,6 +34,22 @@ import DragTarget from './DragTarget';
 				}
 				
 				return conItem;
+			}
+			TodosT()
+			{
+				let obj=this.state.objetivos;
+				let conItem2=[];
+				console.log(obj);
+				for(let i=0; i<obj.length;i++)
+				{
+					console.log(obj[i]);
+					let option = <DragTarget items={obj[i]} id={i+1}   handleDrop={(id) => this.deleteItem(id)} /> 
+					
+					conItem2.push(option);
+					
+				}
+				
+				return conItem2;
 			}
 	deleteItem(id)
 	{
@@ -49,11 +68,10 @@ import DragTarget from './DragTarget';
 	<div className="drag">
 	{this.TodosI()}
 		<br/>
+	{this.TodosT()}
 		
-		soy el 1<DragTarget id="1"  handleDrop={(id) => this.deleteItem(id)} /> 
 		<br/>
 		
-		soy el 2<DragTarget id="2"  handleDrop={(id) => this.deleteItem(id)} /> 
 		</div>		
 		
 		

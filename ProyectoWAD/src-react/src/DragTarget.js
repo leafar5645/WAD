@@ -1,5 +1,6 @@
 import React from 'react';
 import { DropTarget } from 'react-dnd';
+import {Recurso} from './recurso.js';
 let styles ={border: '1px solid black'};
 function collect(connect , monitor){
     return {connectDropTarget:connect.dropTarget(),
@@ -23,14 +24,19 @@ if(dragIndex==hoverIndex)
 
 }
 class DragTarget extends React.Component{
-
+    constructor(props) {
+        super(props);
+       
+                 }
 
     render(){
         const {connectDropTarget, hovered , item }= this.props;
         const backgroundColor = hovered ? 'lightgreen' : 'white';
+        let res="Recursos/" + this.props.items.Recurso;
         return connectDropTarget(
           <div className="targets" style={{background: backgroundColor}} >
-                Target
+              
+                <Recurso key={this.props.id} src={res}/>
           </div>  
         );
 

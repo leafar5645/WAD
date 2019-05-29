@@ -41912,7 +41912,114 @@ function (_React$Component) {
 var _default = (0, _reactDnd.DragSource)("item", itemSource, collect)(Item);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","jquery":"../node_modules/jquery/dist/jquery.js","react-dnd":"../node_modules/react-dnd/lib/cjs/index.js"}],"DragTarget.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","jquery":"../node_modules/jquery/dist/jquery.js","react-dnd":"../node_modules/react-dnd/lib/cjs/index.js"}],"recurso.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Recurso = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Recurso =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(Recurso, _React$Component);
+
+  function Recurso(props) {
+    var _this;
+
+    _classCallCheck(this, Recurso);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Recurso).call(this, props));
+    _this.state = {
+      Nombre: _this.props.src,
+      Tipo: _this.obtenerTipo(),
+      Ext: _this.obtenerExtension()
+    };
+    return _this;
+  }
+
+  _createClass(Recurso, [{
+    key: "obtenerTipo",
+    value: function obtenerTipo() {
+      var aux = this.props.src.split(".");
+      var ex = aux[aux.length - 1];
+      if (ex == "jpeg" || ex == "jpg" || ex == "png" || ex == "gif") return "img";else if (ex == "mp4") return "video";else if (ex == "mp3" || ex == "m4a") return "audio";else return "error";
+    }
+  }, {
+    key: "obtenerExtension",
+    value: function obtenerExtension() {
+      var aux = this.props.src.split(".");
+      var ex = aux[aux.length - 1];
+      return ex;
+    }
+  }, {
+    key: "generarEtiqueta",
+    value: function generarEtiqueta() {
+      if (this.state.Tipo == "video") {
+        //console.log("video");
+        var etq = _react.default.createElement("video", {
+          width: "200",
+          height: "200",
+          controls: true
+        }, _react.default.createElement("source", {
+          src: this.state.Nombre,
+          type: "video/" + this.state.Ext,
+          key: this.state.Nombre
+        }), "Tu navegador no implementa el elemento");
+      } else if (this.state.Tipo == "img") {
+        var etq = _react.default.createElement("img", {
+          src: this.state.Nombre,
+          width: "200",
+          height: "200",
+          key: this.state.Nombre
+        });
+      } else if (this.state.Tipo == "audio") {
+        var etq = _react.default.createElement("audio", {
+          src: this.state.Nombre,
+          controls: true,
+          key: this.state.Nombre
+        }, _react.default.createElement("p", null, "Tu navegador no implementa el elemento audio"));
+      } //console.log(this.state.Tipo);
+      //console.log(etq);
+
+
+      return etq;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react.default.createElement("div", null, "Nombre de Recurso: ", this.state.Nombre, _react.default.createElement("br", null), this.generarEtiqueta());
+    }
+  }]);
+
+  return Recurso;
+}(_react.default.Component);
+
+exports.Recurso = Recurso;
+},{"react":"../node_modules/react/index.js"}],"DragTarget.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41923,6 +42030,8 @@ exports.default = void 0;
 var _react = _interopRequireDefault(require("react"));
 
 var _reactDnd = require("react-dnd");
+
+var _recurso = require("./recurso.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -41974,10 +42083,10 @@ var DragTarget =
 function (_React$Component) {
   _inherits(DragTarget, _React$Component);
 
-  function DragTarget() {
+  function DragTarget(props) {
     _classCallCheck(this, DragTarget);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(DragTarget).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(DragTarget).call(this, props));
   }
 
   _createClass(DragTarget, [{
@@ -41988,12 +42097,16 @@ function (_React$Component) {
           hovered = _this$props.hovered,
           item = _this$props.item;
       var backgroundColor = hovered ? 'lightgreen' : 'white';
+      var res = "Recursos/" + this.props.items.Recurso;
       return connectDropTarget(_react.default.createElement("div", {
         className: "targets",
         style: {
           background: backgroundColor
         }
-      }, "Target"));
+      }, _react.default.createElement(_recurso.Recurso, {
+        key: this.props.id,
+        src: res
+      })));
     }
   }]);
 
@@ -42003,7 +42116,7 @@ function (_React$Component) {
 var _default = (0, _reactDnd.DropTarget)('item', itemDragTarjet, collect)(DragTarget);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-dnd":"../node_modules/react-dnd/lib/cjs/index.js"}],"DnD.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dnd":"../node_modules/react-dnd/lib/cjs/index.js","./recurso.js":"recurso.js"}],"DnD.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42065,6 +42178,15 @@ function (_React$Component) {
         id: 2,
         name: "Item 2",
         Recurso: "descarga.jpg"
+      }],
+      objetivos: [{
+        id: 1,
+        name: "taget1",
+        Recurso: "imagen.jpg"
+      }, {
+        id: 2,
+        name: "taget2",
+        Recurso: "descarga.jpg"
       }]
     };
     return _this;
@@ -42093,6 +42215,31 @@ function (_React$Component) {
       return conItem;
     }
   }, {
+    key: "TodosT",
+    value: function TodosT() {
+      var _this2 = this;
+
+      var obj = this.state.objetivos;
+      var conItem2 = [];
+      console.log(obj);
+
+      for (var i = 0; i < obj.length; i++) {
+        console.log(obj[i]);
+
+        var option = _react.default.createElement(_DragTarget.default, {
+          items: obj[i],
+          id: i + 1,
+          handleDrop: function handleDrop(id) {
+            return _this2.deleteItem(id);
+          }
+        });
+
+        conItem2.push(option);
+      }
+
+      return conItem2;
+    }
+  }, {
     key: "deleteItem",
     value: function deleteItem(id) {
       console.log("delete" + id);
@@ -42110,21 +42257,9 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
       return _react.default.createElement("div", {
         className: "drag"
-      }, this.TodosI(), _react.default.createElement("br", null), "soy el 1", _react.default.createElement(_DragTarget.default, {
-        id: "1",
-        handleDrop: function handleDrop(id) {
-          return _this2.deleteItem(id);
-        }
-      }), _react.default.createElement("br", null), "soy el 2", _react.default.createElement(_DragTarget.default, {
-        id: "2",
-        handleDrop: function handleDrop(id) {
-          return _this2.deleteItem(id);
-        }
-      }));
+      }, this.TodosI(), _react.default.createElement("br", null), this.TodosT(), _react.default.createElement("br", null));
     }
   }]);
 
@@ -42176,7 +42311,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55018" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55150" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

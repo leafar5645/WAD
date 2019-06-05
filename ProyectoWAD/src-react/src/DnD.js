@@ -1,6 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import $ from 'jquery';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import Item from './Item';
@@ -8,30 +6,33 @@ import DragTarget from './DragTarget';
 
  class DnD extends React.Component
 {
-	
-	
-		 constructor(props) {
-    super(props);
-	this.state ={
-		items:[ 
-			{id:1 ,name:"Item 1", Recurso:"imagen.jpg" },
-			{id:2 ,name:"Item 2", Recurso:"descarga.jpg" },
-			{id:3 , name:"item3", Recurso:"preso.mp4" }],
-		objetivos:[
-			{id:1 , name:"taget1", Recurso:"imagen.jpg" },
-			{id:2 , name:"taget2", Recurso:"descarga.jpg" },
-			{id:3 , name:"taget3", Recurso:"preso.mp4" }],	
-			 }
-			}
+	constructor(props) 
+	{
+		super(props);
+		var items= JSON.parse( JSON.stringify( this.props.items ) );
+		this.state =
+		{
+		items:this.props.items,
+		objetivos:this.props.objetivos,
+		itemsBase: items
+		}
+		this.Reiniciar=this.Reiniciar.bind(this);
+	}
+	Reiniciar()
+	{
 		
-			TodosI()
-			{
+		var itms= JSON.parse( JSON.stringify(this.state.itemsBase) );
+		this.setState({items:itms});
+		sessionStorage.setItem("RU"+this.props.id,2);//valor de inicio
+	}
+	TodosI()
+		{
 				let items=this.state.items;
 				let conItem=[];
-				console.log(items.length);
+				//console.log(items.length);
 				for(let i=0; i<items.length;i++)
 				{
-					console.log("entre");
+					
 					let option =<Item key={i}  items={items[i]} /* handleDrop={(id) => this.deleteItem(id)}*/ />;
 					let br =<br/>
 					conItem.push(option);
@@ -40,7 +41,7 @@ import DragTarget from './DragTarget';
 				}
 				
 				return conItem;
-			}
+		}
 			TodosT()
 			{
 				let obj=this.state.objetivos;
@@ -69,8 +70,8 @@ import DragTarget from './DragTarget';
 				{
 					let envia=(obj[targetsdesorcen[i]]);
 					let enviaid=obj[targetsdesorcen[i]].id;
-					console.log(enviaid);
-					let option = <DragTarget items={envia} id={enviaid}   handleDrop={(id) => this.deleteItem(id)} /> 
+					//console.log(enviaid);
+					let option = <DragTarget items={envia} id={enviaid}   handleDrop={(id) => this.deleteItem(id)} handleDropBad={(id) => this.deleteItemMal(id)} /> 
 					let br =<br/>
 					conItem2.push(option);
 					conItem2.push(br);
@@ -87,6 +88,22 @@ import DragTarget from './DragTarget';
 		items.splice(index, 1);
 		return {items};
 		} );
+		//para calificar si esta correctamente contestado
+		if(this.state.items.length==0)
+		{
+			if(sessionStorage.getItem("RU"+this.props.id)!=0)
+			sessionStorage.setItem("RU"+this.props.id,1);
+		}
+	}
+	deleteItemMal(id)
+	{
+		//console.log("delete" + id);
+		this.setState(prevState => {let items=prevState.items;
+		const index= items.findIndex(item=> item.id==id);
+		items.splice(index, 1);
+		return {items};
+		} );
+		sessionStorage.setItem("RU"+this.props.id,0);
 	}
 	
 	render()
@@ -102,6 +119,9 @@ import DragTarget from './DragTarget';
 		
 		<div className="container-targets" style={styles2}>		
 			{this.TodosT()}
+		</div>
+		<div>
+		<button onClick={this.Reiniciar}>Reiniciar</button>
 		</div>
 	
 		

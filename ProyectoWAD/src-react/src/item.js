@@ -56,7 +56,7 @@ constructor(props) {
     
 	render() {
     const { isDragging, connectDragSource , item } = this.props;
-     let res="Recursos/" + this.props.items.Recurso;
+     let res=this.props.items.Recurso;
 		return connectDragSource ( <div className="myitem" style={styles}> <Recurso key={this.props.items.id} src= {res}/> 
     {this.props.items.name}
       </div>

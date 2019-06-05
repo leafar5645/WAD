@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import {Multiple} from "./Multiple.js"
 import {Texto} from "./Texto.js"
 import $ from 'jquery'; 
+import { DragAndDrop } from "./DragAndDrop.js";
 
 //tienes tres modos editar nuevo y ver los cuales se envian como props
 export class Pregunta extends React.Component {
@@ -31,6 +32,8 @@ export class Pregunta extends React.Component {
      //funciones tipos de preguntas
     this.AgregarMultiple=this.AgregarMultiple.bind(this);
     this.AgregarTexto=this.AgregarTexto.bind(this);
+    this.AgregarDND=this.AgregarDND.bind(this);
+    
     //funciones manejo de datos
     this.handleSubmit=this.handleSubmit.bind(this);
     this.manejadorCambiosTitulo=this.manejadorCambiosTitulo.bind(this);
@@ -79,6 +82,10 @@ export class Pregunta extends React.Component {
          else if(sec[i].getAttribute("tipo")=="texto")
          {
             preg.push(<Texto modo={modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
+         }
+         else if(sec[i].getAttribute("tipo")=="DND")
+         {
+            preg.push(<DragAndDrop modo={modo} idPreg={idPreg} id={sec[i].id} key={sec[i].id}/>);  
          }
          preg.push(<br/>);
          if(this.props.modo!="ver"&&this.props.modo!="examen")
@@ -251,6 +258,20 @@ export class Pregunta extends React.Component {
   {
     var aux=this.state.Preguntas;
     aux.push(<Texto modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
+    aux.push(<br/>);
+    aux.push(<button onClick={this.Eliminar.bind(this,this.state.i)} key={"b"+this.state.i}>Eliminar Seccion</button>);
+    aux.push(<br/>);
+    aux.push(<br/>);
+    this.setState((state) => (
+      {Preguntas: aux, i:this.state.i+1})
+    );
+    //this.setState({Preguntas: aux, i:this.state.i+1});
+    return aux;
+  }
+  AgregarDND()
+  {
+    var aux=this.state.Preguntas;
+    aux.push(<DragAndDrop modo="nuevo" idPreg={this.state.idPreg} id={this.state.i} key={this.state.i}/>,);
     aux.push(<br/>);
     aux.push(<button onClick={this.Eliminar.bind(this,this.state.i)} key={"b"+this.state.i}>Eliminar Seccion</button>);
     aux.push(<br/>);
@@ -540,19 +561,28 @@ export class Pregunta extends React.Component {
       editar.push(<br/>);
       editar.push(<br/>);
       //botones para agregar tipos de preguntas
-      editar.push(<button onClick={this.AgregarMultiple}>Agregar Opcion Multiple</button>);
-      editar.push(<button onClick={this.AgregarTexto}>Agregar Texto Plano</button>);
+        editar.push(<button onClick={this.AgregarMultiple}>Agregar Opcion Multiple</button>);
+        editar.push(<button onClick={this.AgregarTexto}>Agregar Texto Plano</button>);
+
+
+        editar.push(<button onClick={this.AgregarDND}>Agregar Opcion DND</button>);
+
     }
     else
     {
       editar.push(<h1>{this.state.nombre}</h1>);
     }
+    if(this.state.modo=="editar"||this.state.modo=="nuevo")
+    preg.push(<input type="submit" value="Finalizar" onClick={this.handleSubmit}/>);
+    
+    else
+    preg.push(<input type="submit" value="Evaluar Esta Pregunta" onClick={this.handleSubmit}/>);
     return (
       <div>
        {editar}
        <br/>
        {preg}  
-       <input type="submit" value="Evaluar Esta Pregunta" onClick={this.handleSubmit}/>
+       
       </div>
       
     );

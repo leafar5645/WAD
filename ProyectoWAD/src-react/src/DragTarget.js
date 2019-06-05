@@ -9,18 +9,25 @@ function collect(connect , monitor){
     }
 }
 const itemDragTarjet={
-drop(props , monitor , component){
-
-  
-const dragIndex = monitor.getItem().id;
-const hoverIndex= props.id;
-console.log("voy " + dragIndex);
-console.log("soy " + hoverIndex);
-if(dragIndex==hoverIndex)
+drop(props , monitor , component)
 {
-    console.log("correcto");
-    return props.handleDrop(monitor.getItem().id);
-}
+
+    
+    const dragIndex = monitor.getItem().id;
+    const hoverIndex= props.id;
+    //console.log("voy " + dragIndex);
+    //console.log("soy " + hoverIndex);
+    if(dragIndex==hoverIndex)
+    {
+        //console.log("correcto");
+        return props.handleDrop(monitor.getItem().id);
+    }
+    else
+    {
+        //console.log("incorrecto");
+        return props.handleDropBad(monitor.getItem().id);
+    }
+    
 }
 
 }
@@ -33,7 +40,7 @@ class DragTarget extends React.Component{
     render(){
         const {connectDropTarget, hovered , item }= this.props;
         const backgroundColor = hovered ? 'lightgreen' : 'white';
-        let res="Recursos/" + this.props.items.Recurso;
+        let res=this.props.items.Recurso;
         return connectDropTarget(
           <div className="targets" style={{background: backgroundColor}} >
               

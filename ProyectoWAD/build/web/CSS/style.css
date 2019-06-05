@@ -186,8 +186,8 @@ li a:hover {
   } 
   img
   {
-      width: 350px;
-      height: 350px;
+      width: 250px !important;
+      height: 250px !important;
      
   }
  .custom-file::-webkit-file-upload-button {

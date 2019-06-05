@@ -19,18 +19,16 @@
     </Seccion>
   </Pregunta>
   <Cuestionario id="0" nombre="BASE" idcreador="-1" />
-  <Pregunta id="1" texto="pregDND" mensajeBien="MUY BIEN" mensajeError="MUY MAL" intentos="3" idcreador="2">
-    <Seccion texto="Mi pregunta DND" tipo="DND" id="0" respuesta="">
-      <target id="0" nombre="" recurso="image/2/572911_agua-azul-1.jpg" />
-      <item id="0" nombre="" recurso="image/2/572911_agua-azul-1.jpg" />
-      <target id="1" nombre="" recurso="image/2/FB_IMG_1552410370718.jpg" />
-      <item id="1" nombre="" recurso="image/2/FB_IMG_1552410370718.jpg" />
-      <target id="2" nombre="" recurso="image/2/FB_IMG_1554828687582.jpg" />
-      <item id="2" nombre="" recurso="image/2/FB_IMG_1554828687582.jpg" />
+  <Pregunta id="1" texto="Paises" mensajeBien="MUY BIEN =)" mensajeError="MUY MAL=)" intentos="3" idcreador="1">
+    <Seccion texto="Relaciona la bandera con su Mapa" tipo="DND" id="0" respuesta="">
+      <target id="0" nombre="" recurso="image/1/EUM.jpg" />
+      <item id="0" nombre="" recurso="image/1/EU.png" />
+      <target id="1" nombre="" recurso="image/1/mexicom.png" />
+      <item id="1" nombre="" recurso="image/1/mexico.png" />
     </Seccion>
   </Pregunta>
-  <Cuestionario id="1" nombre="Mi Examen" idcreador="2">
-    <pregunta valor="1" nombre="pregDND" />
+  <Cuestionario id="1" nombre="Examen1" idcreador="1">
+    <pregunta valor="1" nombre="Paises" />
   </Cuestionario>
 </Banco>
 

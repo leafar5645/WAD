@@ -204,6 +204,29 @@ export class Cuestionario extends React.Component {
        var cal = sessionStorage.getItem("Res:"+element.key); 
        resultado+=parseInt(cal);
      }
+	//Envio Calificaciona a servidor	
+	var formData = new FormData();
+           formData.append("cal" ,(((resultado/this.state.Preguntas.length)*100)+""));
+		   formData.append("idexam" ,this.state.idCuestionario);
+		   
+        $.ajax({
+                url: "Calificame",
+                type: 'Post',
+                data: formData,
+                async:false,
+                processData: false, // tell jQuery not to process the data
+                contentType: false, // tell jQuery not to set contentType
+                success: function (data) {
+                    if(!data.toString()=="Bien")
+                      alert("ERROR en respuesta");  
+                  
+                },
+                error: function (data) {
+                    console.log(data.toString());
+                    alert("ERROR en peticion");
+                }
+            });
+    
      alert("Calificacion: "+(((resultado/this.state.Preguntas.length))*100)+"%");
      window.location="TablaExamenes.html";
   }
